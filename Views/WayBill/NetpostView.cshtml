@@ -1,0 +1,489 @@
+﻿@model HPExpress.Context.Bill
+@{
+    
+    ViewBag.Title = "NetpostView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Mẫu NETPOST</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Crud</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Forms &amp; Controls</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Form Validation</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Form Controls</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Actions-->
+                <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Actions</a>
+                <!--end::Actions-->
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
+                    <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="svg-icon svg-icon-success svg-icon-2x">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                    <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-header font-weight-bold py-4">
+                                <span class="font-size-lg">Choose Label:</span>
+                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
+                            </li>
+                            <li class="navi-separator mb-3 opacity-70"></li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-success">Customer</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-danger">Partner</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-warning">Suplier</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-primary">Member</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-dark">Staff</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-separator mt-3 opacity-70"></li>
+                            <li class="navi-footer py-4">
+                                <a class="btn btn-clean font-weight-bold btn-sm" href="#">
+                                    <i class="ki ki-plus icon-sm"></i>Add new
+                                </a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+                <!--end::Dropdown-->
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+            <!--begin::Card-->
+            <div class="row">
+
+                <div class="col-lg">
+                    <div class="card card-custom example example-compact">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2><span style="color: #7d2f2f;">NET</span><span style="color:#ea3639;">POST</span></h2>
+                            </div>
+
+                        </div>
+                        <!--begin::Form-->
+                        <form class="form" id="kt_form_2">
+                            <div class="card-body">
+                                <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
+                                    <div class="alert-icon">
+                                        <i class="flaticon2-bell-5"></i>
+                                    </div>
+                                    <div class="alert-text font-weight-bold">Oh snap! Change a few things up and try submitting again.</div>
+                                    <div class="alert-close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span>
+                                                <i class="ki ki-close"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Mã vạch:<span class="text-danger">*</span></label>
+                                                <input type="text" id="barcode" name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Ngày gửi:<span class="text-danger">*</span></label>
+                                                <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
+                                                    <input type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" />
+                                                    <div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
+                                                        <span class="input-group-text">
+                                                            <i class="ki ki-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>1. Thông tin người gửi:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Mã khách hàng:<span class="text-danger">*</span></label>
+                                                <input type="text" name="billing_card_name" class="form-control" placeholder="" value="70187" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người gửi:<span class="text-danger">*</span></label>
+                                                <input type="text" name="billing_card_name" class="form-control" placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input type="text" name="billing_card_name" class="form-control" placeholder="" value="123456789" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>2. Thông tin người nhận:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Công ti nhận:<span class="text-danger">*</span></label>
+                                                <input type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="Công Ty TNHH Canon Việt Nam-Chi Nhánh Quế Võ" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người nhận:<span class="text-danger">*</span></label>
+                                                <input type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="MS.Hoa" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea id="customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input type="text" name="customer_phone" class="form-control" placeholder="" value="123456789" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">
+                                        <b>3. Nội dung BPBK</b>
+                                        <i data-toggle="tooltip" data-width="auto" class="mb-3__help" title="If different than the corresponding address"></i>
+                                    </h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>* Số HĐ:</label>
+                                                <input type="text" id="contract_numb" name="contract_numb" class="form-control" placeholder="Nhập số HĐ" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>* Số kiện:</label>
+                                                <input type="text" id="package_numb" name="package_numb" class="form-control" placeholder="Nhập số kiện" value="" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>* Loại hàng:</label>
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" id="CatBox1" name="CatBox1" />
+                                                        <span></span>
+                                                        Hàng Hóa
+                                                    </label>
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" id="CatBox2" name="CatBox2" />
+                                                        <span></span>
+                                                        Tài liệu
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>* Trọng lượng:</label>
+                                                <div class="input-group">
+                                                    <input id="pro_wei" name="pro_wei" type="text" class="form-control" placeholder="Nhập trọng lượng" />
+
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">kg</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>* Kích thước:</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
+                                                    <input type="text" id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
+                                                    <input type="text" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">m</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>4. Hình thức vận chuyển:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức vận chuyển:</label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" id="transCPN" value="1" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển phát nhanh
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="transHT" value="2" name="transRadios" />
+                                                        <span></span>
+                                                        Phát theo YC, hỏa tốc
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="transGTC" value="3" name="transRadios" />
+                                                        <span></span>
+                                                        Hàng GTC, hàng Express
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="transTC" value="4" name="transRadios" />
+                                                        <span></span>
+                                                        Tiêu chuẩn/ 30-36h
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="transTK" value="5" name="transRadios" />
+                                                        <span></span>
+                                                        Tiết kiệm/ 48h
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="transT" value="6" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển thường/ Đường bộ
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>5. Hình thức thanh toán:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức thanh toán:</label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" value="1" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán ngay
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="2" idname="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán cuối tháng
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="3" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán đầu nhận
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="4" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán Đầu nhận - Cuối tháng
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Trường hợp không phát được:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình cách xử lý:</label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input value="1" type="radio" name="cantshipRadios" />
+                                                        <span></span>
+                                                        Chuyển tiếp
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input value="2" type="radio" name="cantshipRadios" />
+                                                        <span></span>
+                                                        Chuyển hoàn
+                                                    </label>
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>7. Dịch vụ gia tăng:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>* Chọn dịch vụ gia tăng:</label>
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" id="ServiceCheckbox1" name="ServiceCheckboxes" />
+                                                        <span></span>
+                                                        Hàng Hóa
+                                                    </label>
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" id="ServiceCheckbox2" name="ServiceCheckboxes" />
+                                                        <span></span>
+                                                        Tài liệu
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>8. Ghi chú thêm:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="exampleTextarea">Ghi chú <span class="text-danger">*</span></label>
+                                                <textarea style="resize: none;" class="form-control" id="exampleTextarea" rows="3" placeholder="Nhập ghi chú"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button id="printData" type="submit" class="btn btn-primary font-weight-bold mr-2">Print</button>
+                                        <button type="reset" class="btn btn-light-primary font-weight-bold">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<script type="text/javascript">
+    $("#printData").click(function () {
+        var barcode = $("#barcode").val();
+        alert(barcode)
+    });
+
+</script>
+

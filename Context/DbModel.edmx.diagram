@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="31431aaa0ee34419b704451d5616b214" Name="Diagram1">
+        <EntityTypeShape EntityType="BillManagerDBModel.Bill" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.Payment" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.ProductCategory" Width="1.5" PointX="7.5" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.Role" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.Service" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.ShippingProvider" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.sysdiagram" Width="1.5" PointX="9.5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.Transpot" Width="1.5" PointX="3" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillManagerDBModel.User" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_Payments" ManuallyRouted="false" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_Services" ManuallyRouted="false" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_ShippingProviders" ManuallyRouted="false" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_Transpots" ManuallyRouted="false" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Users_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="BillManagerDBModel.CatInBill" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

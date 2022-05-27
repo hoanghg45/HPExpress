@@ -1,0 +1,100 @@
+﻿@model IEnumerable<HPExpress.Context.Bill>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CatID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BillContent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductPakage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductWeight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerInf)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Note)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateAT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Payment.PaymentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Service.ServiceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShippingProvider.ProviderName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transpot.TransName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CatID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillContent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductPakage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductWeight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerInf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Note)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateAT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Payment.PaymentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Service.ServiceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ShippingProvider.ProviderName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Transpot.TransName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.BillID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BillID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.BillID })
+        </td>
+    </tr>
+}
+
+</table>
