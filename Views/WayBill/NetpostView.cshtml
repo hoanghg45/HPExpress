@@ -1,5 +1,4 @@
-﻿@model HPExpress.Context.Bill
-@{
+﻿@{
     
     ViewBag.Title = "NetpostView";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -132,7 +131,7 @@
 
                         </div>
                         <!--begin::Form-->
-                        <form class="form" id="kt_form_2">
+                        <form class="form" method="post" action="javascript:void(0)" id="kt_form_2">
                             <div class="card-body">
                                 <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
                                     <div class="alert-icon">
@@ -161,7 +160,7 @@
                                             <div class="col-lg-6">
                                                 <label> Ngày gửi:<span class="text-danger">*</span></label>
                                                 <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
-                                                    <input type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" />
+                                                    <input type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" />
                                                     <div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
                                                         <span class="input-group-text">
                                                             <i class="ki ki-calendar"></i>
@@ -264,12 +263,12 @@
                                                 <label>* Loại hàng:</label>
                                                 <div class="checkbox-inline">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" id="CatBox1" name="CatBox1" />
+                                                        <input type="checkbox" id="CatBox1" value="false" name="CatBox1" />
                                                         <span></span>
                                                         Hàng Hóa
                                                     </label>
                                                     <label class="checkbox">
-                                                        <input type="checkbox" id="CatBox2" name="CatBox2" />
+                                                        <input type="checkbox" id="CatBox2" value="false" name="CatBox2" />
                                                         <span></span>
                                                         Tài liệu
                                                     </label>
@@ -368,7 +367,7 @@
                                                         Thanh toán ngay
                                                     </label>
                                                     <label class="radio">
-                                                        <input type="radio" value="2" idname="paymentRadios" />
+                                                        <input type="radio" value="2" name="paymentRadios" />
                                                         <span></span>
                                                         Thanh toán cuối tháng
                                                     </label>
@@ -427,12 +426,12 @@
                                                 <label>* Chọn dịch vụ gia tăng:</label>
                                                 <div class="checkbox-inline">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" id="ServiceCheckbox1" name="ServiceCheckboxes" />
+                                                        <input type="checkbox" id="ServiceCheckbox1" name="ServiceCheckbox1" />
                                                         <span></span>
                                                         Hàng Hóa
                                                     </label>
                                                     <label class="checkbox">
-                                                        <input type="checkbox" id="ServiceCheckbox2" name="ServiceCheckboxes" />
+                                                        <input type="checkbox" id="ServiceCheckbox2" name="ServiceCheckbox2" />
                                                         <span></span>
                                                         Tài liệu
                                                     </label>
@@ -481,9 +480,18 @@
 </div>
 <script type="text/javascript">
     $("#printData").click(function () {
-        var barcode = $("#barcode").val();
-        alert(barcode)
+          $.ajax({
+              type: "post",
+              url: '@Url.Action("Print","WayBill")',
+                data: $("#kt_form_2").serialize(),
+                datatype: 'json',
+              success: function (data) {
+
+                  console.log(data)
+
+                }
+            })
     });
-
+   
 </script>
-
+<script src="~/assets/js/PropCheckBox.js"></script>

@@ -1,4 +1,5 @@
 ﻿using HPExpress.Context;
+using HPExpress.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,44 @@ namespace HPExpress.Controllers
             catch
             {
                 return View();
+            }
+        }
+        //Print
+        [HttpPost]
+        public JsonResult Print(FormCollection collection)
+        {
+            try
+            {
+                
+                // TODO: Add insert logic here
+                NetpostViewModels models = new NetpostViewModels(
+                collection["customer_comp"],
+                collection["customer_name"],
+                collection["customer_add"],
+                collection["customer_phone"],
+                collection["date"],
+                collection["contract_numb"],
+                collection["package_numb"],
+                collection["CatBox1"],
+                collection["CatBox2"],
+                collection["pro_wei"],
+                collection["pro_leng"],
+                collection["pro_wid"],
+                collection["pro_hei"],
+                collection["transRadios"],
+                collection["paymentRadios"],
+                collection["cantshipRadios"],
+                collection["ServiceCheckbox1"],
+                collection["ServiceCheckbox2"]
+
+                    );
+                return Json(models, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch
+            {
+                return Json(collection, JsonRequestBehavior.AllowGet);
             }
         }
 
