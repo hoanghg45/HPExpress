@@ -4,7 +4,9 @@ var KTBootstrapDatetimepicker = function () {
     // Private functions
     var baseDemos = function () {
         // Demo 1
-        $('#kt_datetimepicker_1').datetimepicker();
+        $('#kt_datetimepicker_1').datetimepicker({
+            locale: 'de'
+        });
 
         // Demo 2
         $('#kt_datetimepicker_2').datetimepicker({

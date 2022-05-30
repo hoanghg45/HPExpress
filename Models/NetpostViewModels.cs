@@ -7,12 +7,12 @@ namespace HPExpress.Models
 {
     public class NetpostViewModels
     {
-        public NetpostViewModels(string cusomer_comp, string cusomer_name, string cusomer_address, string cusomer_phone, string date, string contract_numb, string package_numb, string cate1, string cate2, string pro_wei, string pro_leng, string pro_wid, string pro_hei, string trans, string payment, string cantship, string service1, string service2)
+        public NetpostViewModels(string customer_comp, string customer_name, string customer_address, string customer_phone, string date, string contract_numb, string package_numb, string cate1, string cate2, string pro_wei, string pro_leng, string pro_wid, string pro_hei, string trans, string payment, string cantship, string service1, string service2)
         {
-            this.cusomer_comp = cusomer_comp;
-            this.cusomer_name = cusomer_name;
-            this.cusomer_address = cusomer_address;
-            this.cusomer_phone = cusomer_phone;
+            this.customer_comp = customer_comp;
+            this.customer_name = customer_name;
+            this.customer_address = customer_address;
+            this.customer_phone = customer_phone;
             this.date = date;
             this.contract_numb = contract_numb;
             this.package_numb = package_numb;
@@ -29,10 +29,10 @@ namespace HPExpress.Models
             this.service2 = service2;
         }
 
-        public string cusomer_comp { get; set; }
-        public string cusomer_name { get; set; }
-        public string cusomer_address { get; set; }
-        public string cusomer_phone { get; set; }  
+        public string customer_comp { get; set; }
+        public string customer_name { get; set; }
+        public string customer_address { get; set; }
+        public string customer_phone { get; set; }  
         public string date { get; set; }
         public string contract_numb { get; set; }
         public string package_numb { get; set; }
