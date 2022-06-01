@@ -27,10 +27,20 @@ namespace HPExpress.Controllers
         // GET: WayBill/Create/{id}
         public ActionResult Create(int ?id)
         {
-            if(id == 1)
+            switch (id)
             {
-                return View("NetpostView");
+                case 1:
+                    return View("NetpostView");
+                    
+                case 2:
+                    return View("ViettelPostView");
+                    
+                default:
+                    // code block
+                    break;
             }
+
+          
 
             return View("Error");
         }
@@ -77,7 +87,11 @@ namespace HPExpress.Controllers
                 collection["paymentRadios"],
                 collection["cantshipRadios"],
                 collection["ServiceCheckbox1"],
-                collection["ServiceCheckbox2"]
+                collection["ServiceCheckbox2"],
+                collection["ServiceCheckbox3"],
+                collection["ServiceCheckbox4"],
+                collection["content"]
+
 
                     );
                 return Json(models, JsonRequestBehavior.AllowGet);

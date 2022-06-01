@@ -2248,6 +2248,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\WayBill\NetpostView.cshtml" />
     <Content Include="Views\WayBill\Index.cshtml" />
+    <Content Include="Views\WayBill\ViettelPostView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
