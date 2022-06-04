@@ -24,7 +24,6 @@ namespace HPExpress.Context
         public Nullable<int> UserID { get; set; }
         public Nullable<int> ServiceID { get; set; }
         public Nullable<int> PaymentID { get; set; }
-        public Nullable<int> CatID { get; set; }
         public Nullable<int> ProviderID { get; set; }
         public Nullable<int> TransID { get; set; }
         public string BillContent { get; set; }
@@ -33,6 +32,7 @@ namespace HPExpress.Context
         public string CustomerInf { get; set; }
         public string Note { get; set; }
         public Nullable<System.DateTime> CreateAT { get; set; }
+        public Nullable<int> BillNumber { get; set; }
     
         public virtual Payment Payment { get; set; }
         public virtual Service Service { get; set; }

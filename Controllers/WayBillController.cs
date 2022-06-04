@@ -1,6 +1,8 @@
 ﻿using HPExpress.Context;
 using HPExpress.Models;
+using HPExpress.Context;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,13 +12,87 @@ namespace HPExpress.Controllers
 {
     public class WayBillController : Controller
     {
-        BillManagerDBEntities _context;
-       
+        BillManagerDBEntities _context = new BillManagerDBEntities();
+        [HttpPost]
+        public JsonResult data(int id = 0, int? page = 0)
+        {
+
+
+            //_context.Configuration.ProxyCreationEnabled = false;
+            var table = from obj in _context.Bills
+                        join se in _context.Transpots on obj.TransID equals se.TransID
+                        join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
+                        select new
+                        {
+                            Id = obj.BillID.Trim(),
+                            Cusinf = obj.CustomerInf.Trim(),
+                            Content = obj.BillContent,
+                            Provider = pro.ProviderID,
+                            Trans = se.TransName,
+                            Billnum = obj.BillNumber,
+                            Package = obj.ProductPakage,
+                            Weight = obj.ProductWeight,
+                            Dateship = obj.CreateAT.ToString(),
+                            Category = (obj.ProductCategorys.Select(c => c.CatName).ToList())
+                        };
+            if (id != 0)
+            {
+                table = from obj in _context.Bills
+                        join se in _context.Transpots on obj.TransID equals se.TransID
+                        join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
+                        where obj.ProviderID == id
+                        select new
+                        {
+                            Id = obj.BillID.Trim(),
+                            Cusinf = obj.CustomerInf.Trim(),
+                            Content = obj.BillContent,
+                            Provider = pro.ProviderID,
+                            Trans = se.TransName,
+                            Billnum = obj.BillNumber,
+                            Package = obj.ProductPakage,
+                            Weight = obj.ProductWeight,
+                            Dateship = obj.CreateAT.ToString(),
+                            Category = (obj.ProductCategorys.Select(c => c.CatName).ToList())
+                        };
+            }
+            int pageSize = 3;
+            page = (page > 0) ? page : 1;
+            int start = (int)(page - 1) * pageSize;
+
+            ViewBag.pageCurrent = page;
+            int totalBill = table.Count();
+            float totalNumsize = (totalBill / (float)pageSize);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            table = table.OrderByDescending(x => x.Dateship).Skip(start).Take(pageSize);
+
+            
+
+
+            return this.Json(
+         new
+         {
+             data = table,
+             pageCurrent = page,
+             numSize = numSize,
+             total = totalBill,
+             size = pageSize
+        }
+         , JsonRequestBehavior.AllowGet
+         );
+        }
+
         // GET: WayBill
         public ActionResult Index()
-        {
-            return View();
+        { 
+            List<Bill> lstbills = _context.Bills.ToList();
+            List<ShippingProvider> catlst = new List<ShippingProvider>();
+            catlst = _context.ShippingProviders.ToList();
+            ViewBag.ProvList = catlst;
+            
+            return View(lstbills);
         }
+       
 
         // GET: WayBill/Details/5
         public ActionResult Details(int id)
@@ -47,18 +123,66 @@ namespace HPExpress.Controllers
 
         // POST: WayBill/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public JsonResult Create(FormCollection collection)
         {
             try
             {
                 // TODO: Add insert logic here
-                
+                Bill bill = new Bill();
+                bill.BillID = collection["barcode"].Trim();
+                bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
+                string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["customer_phone"];
+                bill.CustomerInf = cus_inf.Trim();
+                List<ProductCategory> catlst = new List<ProductCategory>();
+                if (collection["CatBox1"] != null)
+                {
+                    int cate1 = Int16.Parse(collection["CatBox1"]);
+                    catlst.Add(_context.ProductCategorys.Where(a => a.CatID == cate1).FirstOrDefault());
+                }
+                if (collection["CatBox2"] != null)
+                {
+                    int cate2 = Int16.Parse(collection["CatBox2"]);
+                    catlst.Add(_context.ProductCategorys.Where(a => a.CatID == cate2).FirstOrDefault());
+                }
+                if (collection["CatBox3"] != null)
+                {
+                    int cate3 = Int16.Parse(collection["CatBox3"]);
+                    catlst.Add(_context.ProductCategorys.Where(a => a.CatID == cate3).FirstOrDefault());
+                }
+                bill.ProductCategorys = catlst;
+                bill.ProductPakage = Int32.Parse(collection["package_numb"]);
+                int billnum = Int32.Parse(collection["contract_numb"]);
+                if (_context.Bills.Any(b => b.BillNumber == billnum))
+                {
+                    return Json(new { message = "Số HĐ đã trùng với 1 phiếu trước đó, vui lòng kiểm tra và thử lại" });
+                }
 
-                return RedirectToAction("Index");
+                else { bill.BillNumber = billnum ; }
+                
+                bill.CreateAT = DateTime.Parse(collection["date"]);
+                bill.PaymentID = Int32.Parse(collection["paymentRadios"]);
+                
+                bill.TransID = Int32.Parse(collection["transRadios"]);
+                bill.BillContent = collection["content"];
+                bill.ProductWeight = Int32.Parse(collection["pro_wei"]);
+                if(collection["serviceRadios"] != null)
+                {
+                    bill.ServiceID = Int32.Parse(collection["serviceRadios"]);
+                }
+                if(collection["note"] != null)
+                {
+                    bill.Note = collection["note"];
+                }
+
+                _context.Bills.Add(bill);
+                _context.SaveChanges();
+                return Json(new { message = "Success" });
             }
-            catch
+            catch(Exception e)
             {
-                return View();
+                
+                return Json(new { message = e.ToString() });
             }
         }
         //Print
@@ -86,10 +210,8 @@ namespace HPExpress.Controllers
                 collection["transRadios"],
                 collection["paymentRadios"],
                 collection["cantshipRadios"],
-                collection["ServiceCheckbox1"],
-                collection["ServiceCheckbox2"],
-                collection["ServiceCheckbox3"],
-                collection["ServiceCheckbox4"],
+                collection["serviceRadios"],
+                
                 collection["content"]
 
 

@@ -2,7 +2,9 @@
 
 $(document).ready(function () {
     $('input[type="checkbox"]').click(function () {
-        $(this).val($(this).is(':checked'));
+        $(this).data('check', $(this).is(':checked'));
+        var a = $(this).data('check')
+        console.log(a)
     });
 });
 

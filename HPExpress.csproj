@@ -164,51 +164,49 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\Bill.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\DbModel.Context.cs">
+    <Compile Include="Context\BillManagerDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DbModel.Context.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\DbModel.cs">
+    <Compile Include="Context\BillManagerDB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\DbModel.Designer.cs">
+    <Compile Include="Context\BillManagerDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DbModel.edmx</DependentUpon>
+      <DependentUpon>BillManagerDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Context\Payment.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\ProductCategory.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Role.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Service.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\ShippingProvider.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\sysdiagram.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Transpot.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\User.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\WayBillController.cs" />
+    <Compile Include="Extension\PaginationExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -250,6 +248,7 @@
     <Content Include="assets\css\themes\layout\header\base\light.css" />
     <Content Include="assets\css\themes\layout\header\menu\dark.css" />
     <Content Include="assets\css\themes\layout\header\menu\light.css" />
+    <Content Include="assets\js\BillTable.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-visibility.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\footer-callback.js" />
@@ -2136,15 +2135,15 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Context\DbModel.Context.tt">
+    <Content Include="Context\BillManagerDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DbModel.edmx</DependentUpon>
-      <LastGenOutput>DbModel.Context.cs</LastGenOutput>
+      <DependentUpon>BillManagerDB.edmx</DependentUpon>
+      <LastGenOutput>BillManagerDB.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Context\DbModel.tt">
+    <Content Include="Context\BillManagerDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DbModel.edmx</DependentUpon>
-      <LastGenOutput>DbModel.cs</LastGenOutput>
+      <DependentUpon>BillManagerDB.edmx</DependentUpon>
+      <LastGenOutput>BillManagerDB.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -2194,12 +2193,12 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
-    <EntityDeploy Include="Context\DbModel.edmx">
+    <EntityDeploy Include="Context\BillManagerDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DbModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>BillManagerDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Context\DbModel.edmx.diagram">
-      <DependentUpon>DbModel.edmx</DependentUpon>
+    <Content Include="Context\BillManagerDB.edmx.diagram">
+      <DependentUpon>BillManagerDB.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

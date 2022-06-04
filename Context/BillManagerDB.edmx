@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BillManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bills">
+          <Key>
+            <PropertyRef Name="BillID" />
+          </Key>
+          <Property Name="BillID" Type="char" MaxLength="30" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ServiceID" Type="int" />
+          <Property Name="PaymentID" Type="int" />
+          <Property Name="ProviderID" Type="int" />
+          <Property Name="TransID" Type="int" />
+          <Property Name="BillNumber" Type="int" />
+          <Property Name="BillContent" Type="nvarchar" MaxLength="200" />
+          <Property Name="ProductPakage" Type="int" />
+          <Property Name="ProductWeight" Type="float" />
+          <Property Name="CustomerInf" Type="nvarchar" MaxLength="500" />
+          <Property Name="Note" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreateAT" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CatInBill">
+          <Key>
+            <PropertyRef Name="BillID" />
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="BillID" Type="char" MaxLength="30" Nullable="false" />
+          <Property Name="CatID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreateAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="date" />
+        </EntityType>
+        <EntityType Name="ProductCategorys">
+          <Key>
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="CatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CatName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="20" />
+          <Property Name="RoleDesc" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreateAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="ServiceID" />
+          </Key>
+          <Property Name="ServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ShippingProviders">
+          <Key>
+            <PropertyRef Name="ProviderID" />
+          </Key>
+          <Property Name="ProviderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProviderName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProviderPhone" Type="nchar" MaxLength="10" />
+          <Property Name="CreateAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Transpots">
+          <Key>
+            <PropertyRef Name="TransID" />
+          </Key>
+          <Property Name="TransID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="UserName" Type="nchar" MaxLength="30" />
+          <Property Name="UserPass" Type="nchar" MaxLength="30" />
+          <Property Name="UserEmail" Type="nchar" MaxLength="10" />
+          <Property Name="UserPhone" Type="nchar" MaxLength="10" />
+          <Property Name="CreateAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Bills_Payments">
+          <End Role="Payments" Type="Self.Payments" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payments">
+              <PropertyRef Name="PaymentID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="PaymentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_ShippingProviders">
+          <End Role="ShippingProviders" Type="Self.ShippingProviders" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShippingProviders">
+              <PropertyRef Name="ProviderID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_Transpots">
+          <End Role="Transpots" Type="Self.Transpots" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transpots">
+              <PropertyRef Name="TransID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="TransID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatInBill_Bills">
+          <End Role="Bills" Type="Self.Bills" Multiplicity="1" />
+          <End Role="CatInBill" Type="Self.CatInBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bills">
+              <PropertyRef Name="BillID" />
+            </Principal>
+            <Dependent Role="CatInBill">
+              <PropertyRef Name="BillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatInBill_ProductCategorys">
+          <End Role="ProductCategorys" Type="Self.ProductCategorys" Multiplicity="1" />
+          <End Role="CatInBill" Type="Self.CatInBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategorys">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="CatInBill">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BillManagerDBModelStoreContainer">
+          <EntitySet Name="Bills" EntityType="Self.Bills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatInBill" EntityType="Self.CatInBill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCategorys" EntityType="Self.ProductCategorys" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShippingProviders" EntityType="Self.ShippingProviders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transpots" EntityType="Self.Transpots" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bills_Payments" Association="Self.FK_Bills_Payments">
+            <End Role="Payments" EntitySet="Payments" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_Services" Association="Self.FK_Bills_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_ShippingProviders" Association="Self.FK_Bills_ShippingProviders">
+            <End Role="ShippingProviders" EntitySet="ShippingProviders" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_Transpots" Association="Self.FK_Bills_Transpots">
+            <End Role="Transpots" EntitySet="Transpots" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_Users" Association="Self.FK_Bills_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatInBill_Bills" Association="Self.FK_CatInBill_Bills">
+            <End Role="Bills" EntitySet="Bills" />
+            <End Role="CatInBill" EntitySet="CatInBill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatInBill_ProductCategorys" Association="Self.FK_CatInBill_ProductCategorys">
+            <End Role="ProductCategorys" EntitySet="ProductCategorys" />
+            <End Role="CatInBill" EntitySet="CatInBill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BillManagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="BillID" />
+          </Key>
+          <Property Name="BillID" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ServiceID" Type="Int32" />
+          <Property Name="PaymentID" Type="Int32" />
+          <Property Name="ProviderID" Type="Int32" />
+          <Property Name="TransID" Type="Int32" />
+          <Property Name="BillContent" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProductPakage" Type="Int32" />
+          <Property Name="ProductWeight" Type="Double" />
+          <Property Name="CustomerInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateAT" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK_Bills_Payments" FromRole="Bills" ToRole="Payments" />
+          <NavigationProperty Name="Service" Relationship="Self.FK_Bills_Services" FromRole="Bills" ToRole="Services" />
+          <NavigationProperty Name="ShippingProvider" Relationship="Self.FK_Bills_ShippingProviders" FromRole="Bills" ToRole="ShippingProviders" />
+          <NavigationProperty Name="Transpot" Relationship="Self.FK_Bills_Transpots" FromRole="Bills" ToRole="Transpots" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Bills_Users" FromRole="Bills" ToRole="Users" />
+          <NavigationProperty Name="ProductCategorys" Relationship="Self.CatInBill" FromRole="Bills" ToRole="ProductCategorys" />
+          <Property Name="BillNumber" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_Payments" FromRole="Payments" ToRole="Bills" />
+        </EntityType>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="Self.CatInBill" FromRole="ProductCategorys" ToRole="Bills" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RoleDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ServiceID" />
+          </Key>
+          <Property Name="ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_Services" FromRole="Services" ToRole="Bills" />
+        </EntityType>
+        <EntityType Name="ShippingProvider">
+          <Key>
+            <PropertyRef Name="ProviderID" />
+          </Key>
+          <Property Name="ProviderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProviderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderPhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_ShippingProviders" FromRole="ShippingProviders" ToRole="Bills" />
+        </EntityType>
+        <EntityType Name="Transpot">
+          <Key>
+            <PropertyRef Name="TransID" />
+          </Key>
+          <Property Name="TransID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_Transpots" FromRole="Transpots" ToRole="Bills" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="UserPass" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="UserEmail" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UserPhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_Users" FromRole="Users" ToRole="Bills" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK_Bills_Payments">
+          <End Role="Payments" Type="Self.Payment" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payments">
+              <PropertyRef Name="PaymentID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="PaymentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_Services">
+          <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_ShippingProviders">
+          <End Role="ShippingProviders" Type="Self.ShippingProvider" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShippingProviders">
+              <PropertyRef Name="ProviderID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_Transpots">
+          <End Role="Transpots" Type="Self.Transpot" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transpots">
+              <PropertyRef Name="TransID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="TransID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bills_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CatInBill">
+          <End Role="Bills" Type="Self.Bill" Multiplicity="*" />
+          <End Role="ProductCategorys" Type="Self.ProductCategory" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BillManagerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bills" EntityType="Self.Bill" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="ProductCategorys" EntityType="Self.ProductCategory" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Services" EntityType="Self.Service" />
+          <EntitySet Name="ShippingProviders" EntityType="Self.ShippingProvider" />
+          <EntitySet Name="Transpots" EntityType="Self.Transpot" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Bills_Payments" Association="Self.FK_Bills_Payments">
+            <End Role="Payments" EntitySet="Payments" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_Services" Association="Self.FK_Bills_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_ShippingProviders" Association="Self.FK_Bills_ShippingProviders">
+            <End Role="ShippingProviders" EntitySet="ShippingProviders" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_Transpots" Association="Self.FK_Bills_Transpots">
+            <End Role="Transpots" EntitySet="Transpots" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bills_Users" Association="Self.FK_Bills_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="CatInBill" Association="Self.CatInBill">
+            <End Role="Bills" EntitySet="Bills" />
+            <End Role="ProductCategorys" EntitySet="ProductCategorys" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BillManagerDBModelStoreContainer" CdmEntityContainer="BillManagerDBEntities">
+          <EntitySetMapping Name="Bills">
+            <EntityTypeMapping TypeName="BillManagerDBModel.Bill">
+              <MappingFragment StoreEntitySet="Bills">
+                <ScalarProperty Name="BillNumber" ColumnName="BillNumber" />
+                <ScalarProperty Name="BillID" ColumnName="BillID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="TransID" ColumnName="TransID" />
+                <ScalarProperty Name="BillContent" ColumnName="BillContent" />
+                <ScalarProperty Name="ProductPakage" ColumnName="ProductPakage" />
+                <ScalarProperty Name="ProductWeight" ColumnName="ProductWeight" />
+                <ScalarProperty Name="CustomerInf" ColumnName="CustomerInf" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CreateAT" ColumnName="CreateAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="BillManagerDBModel.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="PaymentName" ColumnName="PaymentName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCategorys">
+            <EntityTypeMapping TypeName="BillManagerDBModel.ProductCategory">
+              <MappingFragment StoreEntitySet="ProductCategorys">
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="CatName" ColumnName="CatName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="BillManagerDBModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDesc" ColumnName="RoleDesc" />
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="BillManagerDBModel.Service">
+              <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShippingProviders">
+            <EntityTypeMapping TypeName="BillManagerDBModel.ShippingProvider">
+              <MappingFragment StoreEntitySet="ShippingProviders">
+                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="ProviderPhone" ColumnName="ProviderPhone" />
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transpots">
+            <EntityTypeMapping TypeName="BillManagerDBModel.Transpot">
+              <MappingFragment StoreEntitySet="Transpots">
+                <ScalarProperty Name="TransID" ColumnName="TransID" />
+                <ScalarProperty Name="TransName" ColumnName="TransName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BillManagerDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPass" ColumnName="UserPass" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CatInBill" TypeName="BillManagerDBModel.CatInBill" StoreEntitySet="CatInBill">
+            <EndProperty Name="Bills">
+              <ScalarProperty Name="BillID" ColumnName="BillID" />
+            </EndProperty>
+            <EndProperty Name="ProductCategorys">
+              <ScalarProperty Name="CatID" ColumnName="CatID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

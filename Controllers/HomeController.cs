@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HPExpress.Context;
 
 namespace HPExpress.Controllers
-{
+{   
     public class HomeController : Controller
     {
+        public BillManagerDBEntities _db = new BillManagerDBEntities();
+
         public ActionResult Index()
         {
+           
             return View();
         }
 

@@ -1,11 +1,11 @@
-"use strict";
+﻿"use strict";
 // Class definition
 
-var KTDatatableRemoteAjaxDemo = function() {
+var KTDatatableRemoteAjaxDemo = function (id) {
     // Private functions
-
+    
     // basic demo
-    var demo = function() {
+      function demo (id) {
 
         var datatable = $('#kt_datatable').KTDatatable({
             // datasource definition
@@ -13,10 +13,10 @@ var KTDatatableRemoteAjaxDemo = function() {
                 type: 'remote',
                 source: {
                     read: {
-                        url: HOST_URL + '/api/datatables/demos/default.php',
+                        url: HOST_URL + 'data' +'/?id=' +id ,
                         // sample custom headers
                         // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
-                        map: function(raw) {
+                        map: function (raw) {
                             // sample data mapping
                             var dataSet = raw;
                             if (typeof raw.data !== 'undefined') {
@@ -45,104 +45,113 @@ var KTDatatableRemoteAjaxDemo = function() {
 
             search: {
                 input: $('#kt_datatable_search_query'),
-                key: 'generalSearch'
+                key: 'id'
             },
 
             // columns definition
-            columns: [{
-                field: 'RecordID',
-                title: '#',
-                sortable: 'asc',
-                width: 30,
-                type: 'number',
-                selector: false,
-                textAlign: 'center',
-            }, {
-                field: 'OrderID',
-                title: 'Order ID',
-            }, {
-                field: 'Country',
-                title: 'Country',
-                template: function(row) {
-                    return row.Country + ' ' + row.ShipCountry;
+            columns: [
+                {
+                    field: 'Id',
+                    title: 'Mã hóa đơn',
                 },
-            }, {
-                field: 'ShipDate',
-                title: 'Ship Date',
-                type: 'date',
-                format: 'MM/DD/YYYY',
-            }, {
-                field: 'CompanyName',
-                title: 'Company Name',
-            }, {
-                field: 'Status',
-                title: 'Status',
-                // callback function support for column rendering
-                template: function(row) {
-                    var status = {
-                        1: {
-                            'title': 'Pending',
-                            'class': ' label-light-success'
-                        },
-                        2: {
-                            'title': 'Delivered',
-                            'class': ' label-light-danger'
-                        },
-                        3: {
-                            'title': 'Canceled',
-                            'class': ' label-light-primary'
-                        },
-                        4: {
-                            'title': 'Success',
-                            'class': ' label-light-success'
-                        },
-                        5: {
-                            'title': 'Info',
-                            'class': ' label-light-info'
-                        },
-                        6: {
-                            'title': 'Danger',
-                            'class': ' label-light-danger'
-                        },
-                        7: {
-                            'title': 'Warning',
-                            'class': ' label-light-warning'
-                        },
-                    };
-                    return '<span class="label font-weight-bold label-lg ' + status[row.Status].class + ' label-inline">' + status[row.Status].title + '</span>';
+
+                {
+                    field: 'Dateship',
+                    title: 'Ngày gửi',
+                    type: 'date',
+                    format: 'DD/MM/YYYY',
                 },
-            }, {
-                field: 'Type',
-                title: 'Type',
-                autoHide: false,
-                // callback function support for column rendering
-                template: function(row) {
-                    var status = {
-                        1: {
-                            'title': 'Online',
-                            'state': 'danger'
-                        },
-                        2: {
-                            'title': 'Retail',
-                            'state': 'primary'
-                        },
-                        3: {
-                            'title': 'Direct',
-                            'state': 'success'
-                        },
-                    };
-                    return '<span class="label label-' + status[row.Type].state + ' label-dot mr-2"></span><span class="font-weight-bold text-' + status[row.Type].state + '">' +
-                        status[row.Type].title + '</span>';
+
+                {
+                    field: 'Content',
+                    title: 'Nội dung',
                 },
-            }, {
-                field: 'Actions',
-                title: 'Actions',
-                sortable: false,
-                width: 125,
-                overflow: 'visible',
-                autoHide: false,
-                template: function() {
-                    return '\
+                {
+                    field: 'Provider',
+                    title: 'Đơn vị vận chuyển',
+                    // callback function support for column rendering
+                    template: function (row) {
+                        var status =
+                        {
+                            1: {
+                                'title': 'NetPost',
+                                'class': ' label-light-danger'
+                            },
+                            2: {
+                                'title': 'ViettelPost',
+                                'class': ' label-light-warning'
+                            },
+                            3: {
+                                'title': 'Tasetco',
+                                'class': ' label-light-success'
+                            },
+
+                        };
+                        return '<span class="label font-weight-bold label-lg ' + status[row.Provider].class + ' label-inline">' + status[row.Provider].title + '</span>';
+                    },
+                },
+                {
+                    field: 'Trans',
+                    title: 'Loại hình gửi',
+
+                },
+                {
+                    field: 'Category',
+                    title: 'Phân loại',
+                    template: function (row) {
+                        var a = row.Category.join(", ");
+                        return a;
+                    },
+
+                },
+                {
+                    field: 'Cusinf',
+                    title: 'Công ti nhận',
+                    template: function (row) {
+                        var a = row.Cusinf.split("|")
+                        return a[1];
+                    },
+                },
+                {
+                    field: 'Cusinf1',
+                    title: 'Địa chỉ',
+                    template: function (row) {
+                        var a = row.Cusinf.split("|")
+                        return a[2];
+                    },
+                },
+                {
+                    field: 'Cusinf2',
+                    title: 'Người nhận',
+                    template: function (row) {
+                        var a = row.Cusinf.split("|")
+                        return a[0];
+                    },
+                },
+                {
+                    field: 'Billnum',
+                    title: 'Số HĐ',
+
+                },
+                {
+                    field: 'Weight',
+                    title: 'Trọng lượng',
+
+                },
+                {
+                    field: 'Package',
+                    title: 'Số kiện',
+
+                },
+                {
+                    field: 'Actions',
+                    title: 'Actions',
+                    sortable: false,
+                    width: 125,
+                    overflow: 'visible',
+                    autoHide: false,
+                    template: function () {
+                        return '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
                                 <span class="svg-icon svg-icon-md">\
@@ -215,26 +224,32 @@ var KTDatatableRemoteAjaxDemo = function() {
                             </span>\
                         </a>\
                     ';
-                },
-            }],
+                    },
+                }],
 
         });
 
-		$('#kt_datatable_search_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
+          $('#kt_datatable_search_status').on('change', function () {
+              $('#kt_datatable_search_status').on('change', function () {
+                  var id = $(this).val()
+                  KTDatatableRemoteAjaxDemo.init(id);
+                  
 
+              });
+
+          });
+    
         $('#kt_datatable_search_type').on('change', function() {
             datatable.search($(this).val().toLowerCase(), 'Type');
         });
 
-        $('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
+        /*$('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();*/
     };
 
     return {
         // public functions
-        init: function() {
-            demo();
+        init: function(id) {
+            demo(id);
         },
     };
 }();
@@ -242,3 +257,4 @@ var KTDatatableRemoteAjaxDemo = function() {
 jQuery(document).ready(function() {
     KTDatatableRemoteAjaxDemo.init();
 });
+

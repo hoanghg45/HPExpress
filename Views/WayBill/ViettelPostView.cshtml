@@ -123,12 +123,14 @@
                     <div class="card card-custom example example-compact">
                         <div class="card-header">
                             <div class="card-title">
-                                <h2><b><span style="color: #7d2f2f;">NET</span><span style="color:#ea3639;">POST</span></b></h2>
+                                <h2><b><span style="color: #01766b;">VIETTEL</span><span style="color: #f27510;">POST</span></b></h2>
                             </div>
 
                         </div>
                         <!--begin::Form-->
                         <form class="form" action="/" method="post" id="kt_form_2">
+                            @Html.AntiForgeryToken()
+                            <input hidden type="text" name="prov_id" class="form-control" value="1" />
                             <div class="card-body">
                                 <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
                                     <div class="alert-icon">
@@ -265,14 +267,19 @@
                                                 <label> Loại hàng<span class="text-danger">*</span></label>
                                                 <div class="checkbox-inline">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" id="CatBox1" value="false" name="CatBox1" />
+                                                        <input type="checkbox" data-check="false" id="CatBox1" value="1" name="CatBox1" />
                                                         <span></span>
                                                         Hàng Hóa
                                                     </label>
                                                     <label class="checkbox">
-                                                        <input type="checkbox" id="CatBox2" value="false" name="CatBox2" />
+                                                        <input type="checkbox" data-check="false" id="CatBox2" value="2" name="CatBox2" />
                                                         <span></span>
                                                         Tài liệu
+                                                    </label>
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" data-check="false" id="CatBox3" value="3" name="CatBox3" />
+                                                        <span></span>
+                                                        Hóa chất
                                                     </label>
 
 
@@ -326,30 +333,18 @@
                                                         Chuyển phát nhanh
                                                     </label>
                                                     <label class="radio">
-                                                        <input type="radio" id="transHT" value="2" name="transRadios" />
+                                                        <input type="radio" id="transHT" value="7" name="transRadios" />
                                                         <span></span>
-                                                        Phát theo YC, hỏa tốc
+                                                        Chuyển phát tiết kiệm
                                                     </label>
                                                     <label class="radio">
-                                                        <input type="radio" id="transGTC" value="3" name="transRadios" />
+                                                        <input type="radio" id="transGTC" value="6" name="transRadios" />
                                                         <span></span>
-                                                        Hàng GTC, hàng Express
+                                                        Giao hàng thu tiền
                                                     </label>
-                                                    <label class="radio">
-                                                        <input type="radio" id="transTC" value="4" name="transRadios" />
-                                                        <span></span>
-                                                        Tiêu chuẩn/ 30-36h
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" id="transTK" value="5" name="transRadios" />
-                                                        <span></span>
-                                                        Tiết kiệm/ 48h
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" id="transT" value="6" name="transRadios" />
-                                                        <span></span>
-                                                        Chuyển thường/ Đường bộ
-                                                    </label>
+
+
+
 
                                                 </div>
                                             </div>
@@ -368,23 +363,14 @@
                                                     <label class="radio">
                                                         <input type="radio" checked value="1" name="paymentRadios" />
                                                         <span></span>
-                                                        Thanh toán ngay
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" value="2" name="paymentRadios" />
-                                                        <span></span>
-                                                        Thanh toán cuối tháng
+                                                        Người gửi
                                                     </label>
                                                     <label class="radio">
                                                         <input type="radio" value="3" name="paymentRadios" />
                                                         <span></span>
-                                                        Thanh toán đầu nhận
+                                                        Người nhận
                                                     </label>
-                                                    <label class="radio">
-                                                        <input type="radio" value="4" name="paymentRadios" />
-                                                        <span></span>
-                                                        Thanh toán Đầu nhận - Cuối tháng
-                                                    </label>
+
 
                                                 </div>
                                             </div>
@@ -395,529 +381,501 @@
                                 <div class="separator separator-dashed my-10"></div>
 
 
+
+
                                 <div class="mb-3">
-                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Trường hợp không phát được:</b></h3>
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Dịch vụ gia tăng:</b></h3>
                                     <div class="mb-2">
                                         <div class="form-group row">
                                             <div class="col-lg-12">
-                                                <label>Chọn hình cách xử lý:</label>
+                                                <label>Chọn hình thức thanh toán: <span class="text-danger">*</span></label>
                                                 <div class="radio-inline">
                                                     <label class="radio">
-                                                        <input value="1" type="radio" name="cantshipRadios" />
+                                                        <input type="radio" checked value="5" name="serviceRadios" />
                                                         <span></span>
-                                                        Chuyển tiếp
+                                                        Giao hẹn giờ
                                                     </label>
                                                     <label class="radio">
-                                                        <input value="2" type="radio" name="cantshipRadios" />
+                                                        <input type="radio" value="4" name="serviceRadios" />
                                                         <span></span>
-                                                        Chuyển hoàn
+                                                        Bảo hiểm
                                                     </label>
-
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="separator separator-dashed my-10"></div>
-
-                                <div class="mb-3">
-                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>7. Dịch vụ gia tăng:</b></h3>
-                                    <div class="mb-2">
-                                        <div class="form-group row">
-                                            <div class="col-lg-12">
-                                                <label> Chọn dịch vụ gia tăng:</label>
-                                                <div class="checkbox-inline">
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" id="ServiceCheckbox1" name="ServiceCheckbox1" value="false" />
-                                                        <span></span>
-                                                        Bảo phát
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" id="ServiceCheckbox2" name="ServiceCheckbox2" value="false" />
+                                                    <label class="radio">
+                                                        <input type="radio" value="2" name="serviceRadios" />
                                                         <span></span>
                                                         Đồng kiểm
                                                     </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" id="ServiceCheckbox3" name="ServiceCheckbox3" value="false" />
-                                                        <span></span>
-                                                        Phát tận tay
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" id="ServiceCheckbox4" name="ServiceCheckbox4" value="false" />
-                                                        <span></span>
-                                                        Khác
-                                                    </label>
+
+
+
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+
                                 </div>
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="mb-3">
-                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>8. Ghi chú thêm:</b></h3>
-                                    <div class="mb-2">
-                                        <div class="form-group row">
-                                            <div class="col-lg-12">
-                                                <label for="exampleTextarea">Ghi chú <span class="text-danger">*</span></label>
-                                                <textarea style="resize: none;" class="form-control" id="exampleTextarea" rows="3" placeholder="Nhập ghi chú"></textarea>
-                                            </div>
+                                <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>7. Ghi chú thêm:</b></h3>
+                                <div class="mb-2">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label for="exampleTextarea">Ghi chú <span class="text-danger">*</span></label>
+                                            <textarea style="resize: none;" class="form-control" id="exampleTextarea" rows="3" placeholder="Nhập ghi chú"></textarea>
                                         </div>
-
                                     </div>
+
                                 </div>
+                            </div>
 
 
-                                @*billtable*@
-                                <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-                                    <table class="MsoTableGrid" cellspacing=0 cellpadding=0 width=688 style="width:18.2cm;border-collapse:collapse;border:none; margin-left:6.75pt;margin-right:6.75pt">
-                                        <tr style='height:0.5cm'>
-                                            <td width=9cm colspan=8 style='width:9cm;border:solid windowtext 1.0pt;
+
+                            @*billtable*@
+                            <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+                                <table class="MsoTableGrid" cellspacing=0 cellpadding=0 width=688 style="width:18.2cm;border-collapse:collapse;border:none; margin-left:6.75pt;margin-right:6.75pt">
+                                    <tr style='height:0.5cm'>
+                                        <td width=9cm colspan=8 style='width:9cm;border:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height: 0.5cm;'>
-                                                <p class=MsoNormal style='margin-top:0cm;margin-right:0;margin-bottom:
+                                            <p class=MsoNormal style='margin-top:0cm;margin-right:0;margin-bottom:
               0cm;margin-left:-7.1pt;margin-bottom:.0001pt;text-indent:7.1pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=9.2cm colspan=2 valign=top style='width:9.2cm;border:solid windowtext 1.0pt;
+                                        </td>
+                                        <td width=9.2cm colspan=2 valign=top style='width:9.2cm;border:solid windowtext 1.0pt;
               border-left:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=right style='margin-top:0cm;margin: right 0;
+                                            <p class=MsoNormal align=right style='margin-top:0cm;margin: right 0;
               margin-bottom:0cm;margin-left:6.0pt;margin-bottom:.0001pt;text-align:right;
               text-indent:-6.0pt;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=9cm colspan=8 valign=top style='width:9cm;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=9cm colspan=8 valign=top style='width:9cm;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=9.2cm colspan=2 valign=top style='width:9.2cm;border-top:none;
+                                        </td>
+                                        <td width=9.2cm colspan=2 valign=top style='width:9.2cm;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="cus_name" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="cus_name" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;text-indent:36.75pt;line-height:normal'><span style='font-size:10.0pt'>Ms Hoa</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:2.3cm'>
-                                            <td width=9cm colspan=8 valign=top style='width:9cm;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:2.3cm'>
+                                        <td width=9cm colspan=8 valign=top style='width:9cm;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=9.2cm colspan=2 valign=top style='width:9.2cm;border-top:none;
+                                        </td>
+                                        <td width=9.2cm colspan=2 valign=top style='width:9.2cm;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt'>
-                                                <p id="cus_inf" class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="cus_inf" class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:right;text-indent:36.75pt;line-height:normal'>
 
-                                                    <span id="cus_comp" style='font-size:10.0pt'>
+                                                <span id="cus_comp" style='font-size:10.0pt'>
 
-                                                    </span>
-                                                    <br />
-                                                    <span id="cus_add" style='font-size:10.0pt'>
+                                                </span>
+                                                <br />
+                                                <span id="cus_add" style='font-size:10.0pt'>
 
-                                                    </span>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=9cm colspan=8 valign=top style='width:9cm;border:solid windowtext 1.0pt;
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=9cm colspan=8 valign=top style='width:9cm;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=9.2cm colspan=2 style='width:9.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=9.2cm colspan=2 style='width:9.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="customer_phone" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="customer_phone" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>123456789</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=106 valign=top style='width:2.8cm;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=106 valign=top style='width:2.8cm;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=right style='margin-top:0cm;margin-right:8.95pt;
+                                            <p class=MsoNormal align=right style='margin-top:0cm;margin-right:8.95pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=102 colspan=3 valign=top style='width:3.7cm;border-top:none;
+                                        </td>
+                                        <td width=102 colspan=3 valign=top style='width:3.7cm;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_cat1" class=MsoNormal align=right style='margin-top:0cm;margin-right:13pt;
+                                            <p id="pro_cat1" class=MsoNormal align=right style='margin-top:0cm;margin-right:13pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=132 colspan=4 valign=top style='width:99.1pt;border-top:none;
+                                        </td>
+                                        <td width=132 colspan=4 valign=top style='width:99.1pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 6.5pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_cat2" class=MsoNormal align=right style='margin-top:0cm;margin-right:16pt;
+                                            <p id="pro_cat2" class=MsoNormal align=right style='margin-top:0cm;margin-right:16pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=151 valign=top style='width:4.0cm;border-top:none;border-left:none;
+                                        </td>
+                                        <td width=151 valign=top style='width:4.0cm;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:right;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:right;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=106 rowspan=3 style='width:2.8cm;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=106 rowspan=3 style='width:2.8cm;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="bill_content" class=MsoNormal align=center style='margin-top:0cm;margin-right:8.95pt;
+                                            <p id="bill_content" class=MsoNormal align=center style='margin-top:0cm;margin-right:8.95pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:center;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=102 colspan=3 valign=top style='width:3.7cm;border-top:none;
+                                        </td>
+                                        <td width=102 colspan=3 valign=top style='width:3.7cm;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
 
 
-                                            </td>
-                                            <td width=132 colspan=4 valign=top style='width:99.1pt;border-top:none;
+                                        </td>
+                                        <td width=132 colspan=4 valign=top style='width:99.1pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'></span></p>
 
-                                            </td>
-                                            <td width=151 valign=bottom style='width:4.0cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=151 valign=bottom style='width:4.0cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="trans_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
+                                            <p id="trans_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=102 colspan=3 rowspan=2 valign=top style='width:3.7cm;border-top:
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=102 colspan=3 rowspan=2 valign=top style='width:3.7cm;border-top:
               none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_weight" class=MsoNormal style="margin-top: 5pt;margin-bottom:.0001pt;
+                                            <p id="pro_weight" class=MsoNormal style="margin-top: 5pt;margin-bottom:.0001pt;
                                               line-height:
                                               normal;
                                               text-align: center;">
-                                                    <span style='font-size:10.0pt'></span>
-                                                </p>
-                                            </td>
-                                            <td width=132 colspan=4 rowspan=2 valign=top style='width:99.1pt;border-top:
+                                                <span style='font-size:10.0pt'></span>
+                                            </p>
+                                        </td>
+                                        <td width=132 colspan=4 rowspan=2 valign=top style='width:99.1pt;border-top:
               none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
 
-                                            </td>
-                                            <td width=151 valign=top style='width:4.0cm;border-top:none;border-left:none;
+                                        </td>
+                                        <td width=151 valign=top style='width:4.0cm;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="trans_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
+                                            <p id="trans_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=151 rowspan=4 valign=top style='width:4.0cm;border-top:none;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=151 rowspan=4 valign=top style='width:4.0cm;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="trans_3" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
+                                            <p id="trans_3" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=106 rowspan=3 style='width:2.8cm;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=106 rowspan=3 style='width:2.8cm;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="bill_HD" class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="bill_HD" class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:right;line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=73 colspan=2 rowspan=3 valign=top style='width:54.95pt;border-top:
+                                        </td>
+                                        <td width=73 colspan=2 rowspan=3 valign=top style='width:54.95pt;border-top:
               none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=29 valign=top style='width:21.6pt;border-top:none;border-left:none;
+                                        </td>
+                                        <td width=29 valign=top style='width:21.6pt;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=44 valign=top style='width:33.0pt;border-top:none;border-left:none;
+                                        </td>
+                                        <td width=44 valign=top style='width:33.0pt;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=34 valign=top style='width:25.15pt;border-top:none;border-left:
+                                        </td>
+                                        <td width=34 valign=top style='width:25.15pt;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=55 colspan=2 valign=top style='width:40.95pt;border-top:none;
+                                        </td>
+                                        <td width=55 colspan=2 valign=top style='width:40.95pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="trans_4" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
+                                            <p id="trans_4" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=29 rowspan=2 style='width:21.6pt;border-top:none;border-left:none;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=29 rowspan=2 style='width:21.6pt;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_length" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="pro_length" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=44 rowspan=2 style='width:33.0pt;border-top:none;border-left:none;
+                                        </td>
+                                        <td width=44 rowspan=2 style='width:33.0pt;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_height" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="pro_height" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=34 rowspan=2 style='width:25.15pt;border-top:none;border-left:none;
+                                        </td>
+                                        <td width=34 rowspan=2 style='width:25.15pt;border-top:none;border-left:none;
               border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_width" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="pro_width" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=55 colspan=2 rowspan=2 style='width:40.95pt;border-top:none;
+                                        </td>
+                                        <td width=55 colspan=2 rowspan=2 style='width:40.95pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pro_package" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+                                            <p id="pro_package" class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
               text-align:center;line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="trans_5" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
+                                            <p id="trans_5" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="trans_6" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
+                                            <p id="trans_6" class=MsoNormal align=right style='margin-top:0cm;margin-right:1.85pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.3cm'>
-                                            <td colspan=6 valign=top style='width:214.05pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.3cm'>
+                                        <td colspan=6 valign=top style='width:214.05pt;border:solid windowtext 1.0pt;
               border-top:none;'>
-                                            </td>
-                                            <td colspan=3 valign=top style='width:154.35pt;border-top:none;
+                                        </td>
+                                        <td colspan=3 valign=top style='width:154.35pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               '>
-                                            </td>
-                                            <td valign=top style='width:5.2cm;border-top:none;border-left:
+                                        </td>
+                                        <td valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
              '>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=113 colspan=2 valign=top style='width:85.0pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=113 colspan=2 valign=top style='width:85.0pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 0pt 0cm 5.4pt'>
-                                                <p id="pays_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:0pt;
+                                            <p id="pays_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:0pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=172 colspan=4 style='width:129.05pt;border-top:none;border-left:
+                                        </td>
+                                        <td width=172 colspan=4 style='width:129.05pt;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;'>
-                                                <p id="pays_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:10.65pt;
+                                            <p id="pays_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:10.65pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=206 colspan=3 style='width:154.35pt;border-top:none;border-left:
+                                        </td>
+                                        <td width=206 colspan=3 style='width:154.35pt;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;'>
-                                                <p id="timedate" class=MsoNormal style='margin-bottom: 0cm; margin-bottom: .0001pt; line-height: normal;'>
-                                                    &nbsp;&nbsp;
-                                                    <span id="timehour" style='font-size:10.0pt'></span>
-                                                    &nbsp;&nbsp;
-                                                    <span id="timeminu" style='font-size:10.0pt'></span>
-                                                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span id="dateday" style='font-size:10.0pt'></span>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span id="datemonth" style='font-size:10.0pt'></span>
-                                                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span id="dateyear" style='font-size:10.0pt'></span>
-                                                </p>
-                                            </td>
-                                            <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
+                                            <p id="timedate" class=MsoNormal style='margin-bottom: 0cm; margin-bottom: .0001pt; line-height: normal;'>
+                                                &nbsp;&nbsp;
+                                                <span id="timehour" style='font-size:10.0pt'></span>
+                                                &nbsp;&nbsp;
+                                                <span id="timeminu" style='font-size:10.0pt'></span>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span id="dateday" style='font-size:10.0pt'></span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span id="datemonth" style='font-size:10.0pt'></span>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span id="dateyear" style='font-size:10.0pt'></span>
+                                            </p>
+                                        </td>
+                                        <td width=197 valign=top style='width:5.2cm;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;'>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pays_3" class=MsoNormal align=right style='margin-top:0cm;margin-right:11.8pt;
+                                            <p id="pays_3" class=MsoNormal align=right style='margin-top:0cm;margin-right:11.8pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=205 colspan=2 rowspan=3 valign=top style='width:153.9pt;border-top:
+                                        </td>
+                                        <td width=205 colspan=2 rowspan=3 valign=top style='width:153.9pt;border-top:
               none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=197 rowspan=7 valign=top style='width:5.2cm;border-top:none;
+                                        </td>
+                                        <td width=197 rowspan=7 valign=top style='width:5.2cm;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="pays_4" class=MsoNormal align=right style='margin-top:0cm;margin-right:11.8pt;
+                                            <p id="pays_4" class=MsoNormal align=right style='margin-top:0cm;margin-right:11.8pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=113 colspan=2 style='width:85.0pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=113 colspan=2 style='width:85.0pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="cantship_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:2pt;
+                                            <p id="cantship_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:2pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=173 colspan=5 style='width:129.5pt;border-top:none;border-left:
+                                        </td>
+                                        <td width=173 colspan=5 style='width:129.5pt;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="cantship_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:12pt;
+                                            <p id="cantship_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:12pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=205 colspan=2 valign=top style='width:153.9pt;border-top:none;
+                                        </td>
+                                        <td width=205 colspan=2 valign=top style='width:153.9pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=286 colspan=7 valign=top style='width:214.5pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal align=right style='margin-top:0cm;margin-right:11.8pt;
+                                            <p class=MsoNormal align=right style='margin-top:0cm;margin-right:11.8pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                            <td width=205 colspan=2 valign=top style='width:153.9pt;border:none;
+                                        </td>
+                                        <td width=205 colspan=2 valign=top style='width:153.9pt;border:none;
               border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=113 colspan=2 style='width:85.0pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=113 colspan=2 style='width:85.0pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="service_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:2pt;
+                                            <p id="service_1" class=MsoNormal align=right style='margin-top:0cm;margin-right:2pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=172 colspan=4 style='width:129.05pt;border-top:none;border-left:
+                                        </td>
+                                        <td width=172 colspan=4 style='width:129.05pt;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="service_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:12pt;
+                                            <p id="service_2" class=MsoNormal align=right style='margin-top:0cm;margin-right:12pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=206 colspan=3 valign=top style='width:154.35pt;border:none;
+                                        </td>
+                                        <td width=206 colspan=3 valign=top style='width:154.35pt;border:none;
               border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr style='height:0.5cm'>
-                                            <td width=113 colspan=2 valign=top style='width:85.0pt;border:solid windowtext 1.0pt;
+                                        </td>
+                                    </tr>
+                                    <tr style='height:0.5cm'>
+                                        <td width=113 colspan=2 valign=top style='width:85.0pt;border:solid windowtext 1.0pt;
               border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="service_3" class=MsoNormal align=right style='margin-top:0cm;margin-right:2pt;
+                                            <p id="service_3" class=MsoNormal align=right style='margin-top:0cm;margin-right:2pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=172 colspan=4 style='width:129.05pt;border-top:none;border-left:
+                                        </td>
+                                        <td width=172 colspan=4 style='width:129.05pt;border-top:none;border-left:
               none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p id="service_4" class=MsoNormal align=right style='margin-top:0cm;margin-right:12pt;
+                                            <p id="service_4" class=MsoNormal align=right style='margin-top:0cm;margin-right:12pt;
               margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:right;
               line-height:normal'><span style='font-size:10.0pt'></span></p>
-                                            </td>
-                                            <td width=206 colspan=3 valign=top style='width:154.35pt;border-top:none;
+                                        </td>
+                                        <td width=206 colspan=3 valign=top style='width:154.35pt;border-top:none;
               border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
               padding:0cm 5.4pt 0cm 5.4pt;height:0.5cm'>
-                                                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+                                            <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
               normal'><span style='font-size:10.0pt'>&nbsp;</span></p>
-                                            </td>
-                                        </tr>
-                                        <tr height=0>
-                                            <td width=106 style='border:none'></td>
-                                            <td width=8 style='border:none'></td>
-                                            <td width=66 style='border:none'></td>
-                                            <td width=29 style='border:none'></td>
-                                            <td width=44 style='border:none'></td>
-                                            <td width=34 style='border:none'></td>
-                                            <td width=1 style='border:none'></td>
-                                            <td width=54 style='border:none'></td>
-                                            <td width=151 style='border:none'></td>
-                                            <td width=197 style='border:none'></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                @*endtable*@
-
+                                        </td>
+                                    </tr>
+                                    <tr height=0>
+                                        <td width=106 style='border:none'></td>
+                                        <td width=8 style='border:none'></td>
+                                        <td width=66 style='border:none'></td>
+                                        <td width=29 style='border:none'></td>
+                                        <td width=44 style='border:none'></td>
+                                        <td width=34 style='border:none'></td>
+                                        <td width=1 style='border:none'></td>
+                                        <td width=54 style='border:none'></td>
+                                        <td width=151 style='border:none'></td>
+                                        <td width=197 style='border:none'></td>
+                                    </tr>
+                                </table>
                             </div>
+                            @*endtable*@
+
+
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -956,10 +914,11 @@
             }
 
         })
-        var cat1 = $("#CatBox1").val();
-        var cat2 = $("#CatBox2").val();
+        var cat1 = $("#CatBox1").data('check');
+        var cat2 = $("#CatBox2").data('check');
+        var cat3 = $("#CatBox3").data('check');
 
-        if (cat1 == "false" && cat2 == "false") {
+        if (cat1 == "false" && cat2 == "false" && cat3 == "false") {
             $("#valiCat").css('visibility', 'visible')
             check = false
         }
@@ -969,78 +928,72 @@
             Swal.fire("Error!", "Vui lòng nhập đầy đủ thông tin!", "error");
         }
         else {
-              $.ajax({
-              type: "post",
-              url: '@Url.Action("Print","WayBill")',
+            @*$.ajax({
+                type: "post",
+                url: '@Url.Action("Print","WayBill")',
                 data: $("#kt_form_2").serialize(),
                 datatype: 'json',
-                 success: function (data) {
-                  console.log(data)
+                success: function (data) {
+                    console.log(data)
 
 
 
-                  $("#cus_name").children().text(data.customer_name);
-                  $("#cus_inf").children('#cus_comp').text(data.customer_comp);
-                  $("#cus_inf").children('#cus_add').text(data.customer_address);
-                  $("#cus_phone").children().text(data.customer_phone);
-                  $("#bill_content").children().text(data.bill_content);
-                  $("#bill_HD").children().text(data.contract_numb);
-                  $("#pro_weight").children().text(data.pro_wei);
-                  $("#pro_length").children().text(data.pro_leng);
-                  $("#pro_width").children().text(data.pro_wid);
-                  $("#pro_height").children().text(data.pro_hei);
-                  $("#pro_package").children().text(data.package_numb);
+                    $("#cus_name").children().text(data.customer_name);
+                    $("#cus_inf").children('#cus_comp').text(data.customer_comp);
+                    $("#cus_inf").children('#cus_add').text(data.customer_address);
+                    $("#cus_phone").children().text(data.customer_phone);
+                    $("#bill_content").children().text(data.bill_content);
+                    $("#bill_HD").children().text(data.contract_numb);
+                    $("#pro_weight").children().text(data.pro_wei);
+                    $("#pro_length").children().text(data.pro_leng);
+                    $("#pro_width").children().text(data.pro_wid);
+                    $("#pro_height").children().text(data.pro_hei);
+                    $("#pro_package").children().text(data.package_numb);
 
-                  if (data.cate1) {
-                      $("#pro_cat1").children().text("V");
-                  }
-                  if (data.cate2) {
-                      $("#pro_cat2").children().text("V");
-                  }
-                  if (data.service1) {
-                      $("#service_1").children().text("V");
-                  }
-                  if (data.service2) {
-                      $("#service_2").children().text("V");
-                  }
-                  if (data.service3) {
-                      $("#service_3").children().text("V");
-                  }
-                  if (data.service4) {
-                      $("#service_4").children().text("V");
-                  }
-
-                  if (data.trans != null) {
-                      $("#trans_" + data.trans).children().text("V");
-                  }
-                  if (data.payment != null) {
-                      $("#pays_" + data.payment).children().text("V");
-                  }
-                  if (data.cantship != null) {
-                      $("#cantship_" + data.cantship).children().text("V");
-                  }
-                  if (data.cantship != null) {
-                      $("#cantship_" + data.cantship).children().text("V");
-                  }
-                  var datadate = data.date;
-                  if (data.date != null || data.date != "") {
-
-                      var datetime = data.date.split(" ");
-                      var date = datetime[0].split(".");
-                      var time = datetime[1].split(":");
-
-                      $("#timedate").children("#timehour").text(time[0]);
-                      $("#timedate").children("#timeminu").text(time[1]);
-                      $("#timedate").children("#dateday").text(date[0]);
-                      $("#timedate").children("#datemonth").text(date[1]);
-                      $("#timedate").children("#dateyear").text(date[2].slice(-2));
-                  }
+                    if (data.cate1) {
+                        $("#pro_cat1").children().text("V");
+                    }
+                    if (data.cate2) {
+                        $("#pro_cat2").children().text("V");
+                    }
 
 
-                     printDiv();
-                     location.reload(true);
+                    if (data.trans != null) {
+                        $("#service_" + data.trans).children().text("V");
+                    }
+
+                    if (data.trans != null) {
+                        $("#trans_" + data.trans).children().text("V");
+                    }
+                    if (data.payment != null) {
+                        $("#pays_" + data.payment).children().text("V");
+                    }
+
+                    if (data.cantship != null) {
+                        $("#cantship_" + data.cantship).children().text("V");
+                    }
+                    var datadate = data.date;
+                    if (data.date != null || data.date != "") {
+
+                        var datetime = data.date.split(" ");
+                        var date = datetime[0].split(".");
+                        var time = datetime[1].split(":");
+
+                        $("#timedate").children("#timehour").text(time[0]);
+                        $("#timedate").children("#timeminu").text(time[1]);
+                        $("#timedate").children("#dateday").text(date[0]);
+                        $("#timedate").children("#datemonth").text(date[1]);
+                        $("#timedate").children("#dateyear").text(date[2].slice(-2));
+                    }
+
+
+                    //printDiv();
+                    //location.reload(true);
                 }
-          })
+            });*@
+
+
+            create()
         }
 
 
@@ -1049,21 +1002,29 @@
 
 
     });
-     function a() {
+    function create() {
+        $.ajax({
+             type: "post",
+             url: '@Url.Action("Create","WayBill")',
+             data: $("#kt_form_2").serialize(),
+             datatype: 'json',
+             success: function (data) {
+                 if (data.message == "Success") {
+                     Swal.fire("Thành công!", "Thêm thành công phiếu gửi!!", "success");
+                 }
+                 else {
+                     Swal.fire("Lỗi!", data.message, "error");
+                 }
 
-             $.ajax({
-              type: "post",
-              url: '@Url.Action("Create","WayBill")',
-                data: $("#kt_form_2").serialize(),
-                datatype: 'json',
-              success: function (data) {
-                  console.log(data)
-
-                }
-          })
+             }
+         });
+    }
 
 
-        }
+
+
+
+
 
 </script>
 <script src="~/assets/js/PropCheckBox.js"></script>
