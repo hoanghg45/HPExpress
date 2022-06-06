@@ -11,7 +11,7 @@ namespace HPExpress.Context
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Bill
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,7 +19,7 @@ namespace HPExpress.Context
         {
             this.ProductCategorys = new HashSet<ProductCategory>();
         }
-    
+
         public string BillID { get; set; }
         public Nullable<int> UserID { get; set; }
         public Nullable<int> ServiceID { get; set; }
@@ -31,9 +31,13 @@ namespace HPExpress.Context
         public Nullable<double> ProductWeight { get; set; }
         public string CustomerInf { get; set; }
         public string Note { get; set; }
-        public Nullable<System.DateTime> CreateAT { get; set; }
+        public System.DateTime CreateAT { get; set; }
         public Nullable<int> BillNumber { get; set; }
-    
+        public Nullable<int> Heigh { get; set; }
+        public Nullable<int> Lenght { get; set; }
+        public Nullable<int> Width { get; set; }
+        public Nullable<bool> IsReturn { get; set; }
+
         public virtual Payment Payment { get; set; }
         public virtual Service Service { get; set; }
         public virtual ShippingProvider ShippingProvider { get; set; }
@@ -41,5 +45,7 @@ namespace HPExpress.Context
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductCategory> ProductCategorys { get; set; }
+
+      
     }
 }

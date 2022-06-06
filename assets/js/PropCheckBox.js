@@ -9,7 +9,7 @@ $(document).ready(function () {
 });
 
 function printDiv() {
-    var printContents = document.getElementById("billtable").innerHTML;
+    var printContents = document.getElementById("billform").innerHTML;
     var originalContents = document.body.innerHTML;
 
     document.body.innerHTML = printContents;

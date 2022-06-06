@@ -21,7 +21,11 @@
           <Property Name="ProductWeight" Type="float" />
           <Property Name="CustomerInf" Type="nvarchar" MaxLength="500" />
           <Property Name="Note" Type="nvarchar" MaxLength="200" />
-          <Property Name="CreateAT" Type="datetime" />
+          <Property Name="CreateAT" Type="datetime" Nullable="false" />
+          <Property Name="Heigh" Type="int" />
+          <Property Name="Lenght" Type="int" />
+          <Property Name="Width" Type="int" />
+          <Property Name="IsReturn" Type="bit" />
         </EntityType>
         <EntityType Name="CatInBill">
           <Key>
@@ -76,6 +80,16 @@
           <Property Name="ProviderPhone" Type="nchar" MaxLength="10" />
           <Property Name="CreateAt" Type="datetime" />
           <Property Name="UpdateAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Transpots">
           <Key>
@@ -202,6 +216,7 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShippingProviders" EntityType="Self.ShippingProviders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transpots" EntityType="Self.Transpots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Bills_Payments" Association="Self.FK_Bills_Payments">
@@ -256,7 +271,7 @@
           <Property Name="ProductWeight" Type="Double" />
           <Property Name="CustomerInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CreateAT" Type="DateTime" Precision="3" />
+          <Property Name="CreateAT" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="Payment" Relationship="Self.FK_Bills_Payments" FromRole="Bills" ToRole="Payments" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Bills_Services" FromRole="Bills" ToRole="Services" />
           <NavigationProperty Name="ShippingProvider" Relationship="Self.FK_Bills_ShippingProviders" FromRole="Bills" ToRole="ShippingProviders" />
@@ -264,6 +279,10 @@
           <NavigationProperty Name="User" Relationship="Self.FK_Bills_Users" FromRole="Bills" ToRole="Users" />
           <NavigationProperty Name="ProductCategorys" Relationship="Self.CatInBill" FromRole="Bills" ToRole="ProductCategorys" />
           <Property Name="BillNumber" Type="Int32" />
+          <Property Name="Heigh" Type="Int32" />
+          <Property Name="Lenght" Type="Int32" />
+          <Property Name="Width" Type="Int32" />
+          <Property Name="IsReturn" Type="Boolean" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -453,7 +472,18 @@
             <End Role="Bills" EntitySet="Bills" />
             <End Role="ProductCategorys" EntitySet="ProductCategorys" />
           </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="BillManagerDBModel.sysdiagram" />
         </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -463,6 +493,10 @@
           <EntitySetMapping Name="Bills">
             <EntityTypeMapping TypeName="BillManagerDBModel.Bill">
               <MappingFragment StoreEntitySet="Bills">
+                <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Lenght" ColumnName="Lenght" />
+                <ScalarProperty Name="Heigh" ColumnName="Heigh" />
                 <ScalarProperty Name="BillNumber" ColumnName="BillNumber" />
                 <ScalarProperty Name="BillID" ColumnName="BillID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -561,6 +595,17 @@
               <ScalarProperty Name="CatID" ColumnName="CatID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BillManagerDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

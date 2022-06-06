@@ -264,17 +264,22 @@
                         </table>
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                             <div class="d-flex flex-wrp py-2 mr-3" id="billpagi">
-                               
+
 
                             </div>
                             <div class="d-flex align-items-center py-3" id="billnote">
-                           
-                                
+
+
                             </div>
                         </div>
                     </div>
                     <!--end: Datatable-->
                 </div>
+                @*billtable*@
+                <div  id="billform" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+                   
+                </div>
+                @*endtable*@
             </div>
             <!--end::Card-->
         </div>
@@ -284,6 +289,7 @@
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->
+<script src="~/assets/js/PropCheckBox.js"></script>
 <script src="~/assets/js/BillTable.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -300,7 +306,7 @@
             showtable(id);
         });
 
-
+        
      
     });
    

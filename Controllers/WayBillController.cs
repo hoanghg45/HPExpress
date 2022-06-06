@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Globalization;
+using System.Data.Entity.SqlServer;
 
 namespace HPExpress.Controllers
 {
@@ -16,12 +18,13 @@ namespace HPExpress.Controllers
         [HttpPost]
         public JsonResult data(int id = 0, int? page = 0)
         {
-
+          
 
             //_context.Configuration.ProxyCreationEnabled = false;
             var table = from obj in _context.Bills
                         join se in _context.Transpots on obj.TransID equals se.TransID
                         join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
+                        
                         select new
                         {
                             Id = obj.BillID.Trim(),
@@ -65,7 +68,7 @@ namespace HPExpress.Controllers
             int numSize = (int)Math.Ceiling(totalNumsize);
             ViewBag.numSize = numSize;
             table = table.OrderByDescending(x => x.Dateship).Skip(start).Take(pageSize);
-
+            
             
 
 
@@ -80,6 +83,7 @@ namespace HPExpress.Controllers
         }
          , JsonRequestBehavior.AllowGet
          );
+            
         }
 
         // GET: WayBill
@@ -132,7 +136,7 @@ namespace HPExpress.Controllers
                 Bill bill = new Bill();
                 bill.BillID = collection["barcode"].Trim();
                 bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
-                string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["customer_phone"];
+                string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
                 bill.CustomerInf = cus_inf.Trim();
                 List<ProductCategory> catlst = new List<ProductCategory>();
                 if (collection["CatBox1"] != null)
@@ -159,8 +163,11 @@ namespace HPExpress.Controllers
                 }
 
                 else { bill.BillNumber = billnum ; }
+                String date = collection["date"].Replace('.', '/');
                 
-                bill.CreateAT = DateTime.Parse(collection["date"]);
+                DateTime tempDate = DateTime.ParseExact(date,"dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+
+                bill.CreateAT = tempDate;
                 bill.PaymentID = Int32.Parse(collection["paymentRadios"]);
                 
                 bill.TransID = Int32.Parse(collection["transRadios"]);
@@ -225,6 +232,59 @@ namespace HPExpress.Controllers
                 return Json(collection, JsonRequestBehavior.AllowGet);
             }
         }
+        //printByID
+        [HttpPost]
+        public JsonResult PrintByID(string id)
+        {
+            try
+            {
+                
+                var bill = _context.Bills.Where(b => b.BillID.Trim().Equals(id)).FirstOrDefault();
+
+                
+                
+                
+                var cus_inf = bill.CustomerInf.Split('|');
+                string cat1 = bill.ProductCategorys.Any(b => b.CatID == 1)?"1":null;
+                string cat2 = bill.ProductCategorys.Any(b => b.CatID == 2) ? "2" : null;
+                
+
+
+
+                // TODO: Add insert logic here
+                NetpostViewModels models = new NetpostViewModels(
+                cus_inf[1],
+                cus_inf[0],
+                cus_inf[2],
+                cus_inf[3],
+                bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
+                bill.BillNumber.ToString(),
+                bill.ProductPakage.ToString(),
+                cat1,
+                cat2,
+                bill.ProductWeight.ToString(),
+                bill.Lenght is null ? null : bill.Lenght.ToString() ,
+                bill.Width is null ? null : bill.Width.ToString(),
+                bill.Heigh is null ? null : bill.Heigh.ToString(),
+                bill.TransID.ToString(),
+                bill.PaymentID.ToString(),
+                bill.IsReturn is null ? null :bill.IsReturn.ToString(),
+                bill.ServiceID is null ? null : bill.IsReturn.ToString(),
+
+                bill.BillContent
+
+
+                    );
+                return Json(models, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch(Exception e)
+            {
+                return Json(new  { message= e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         // GET: WayBill/Edit/5
         public ActionResult Edit(int id)

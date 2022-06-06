@@ -196,6 +196,9 @@
     <Compile Include="Context\ShippingProvider.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Context\sysdiagram.cs">
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Context\Transpot.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>

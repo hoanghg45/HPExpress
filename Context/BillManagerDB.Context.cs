@@ -33,5 +33,6 @@ namespace HPExpress.Context
         public virtual DbSet<ShippingProvider> ShippingProviders { get; set; }
         public virtual DbSet<Transpot> Transpots { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }
