@@ -215,7 +215,7 @@
                     <!--begin::Search Form-->
                     <div class="mb-7">
                         <div class="row align-items-center">
-                            <div class="col-lg-9 col-xl-8">
+                            <div class="col-lg-12 col-xl-10">
                                 <div class="row align-items-center">
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
@@ -225,7 +225,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">ĐVVC:</label>
                                             <select class="form-control" id="kt_datatable_search_status">
@@ -240,19 +240,21 @@
                                     </div>
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">Type:</label>
-                                            <select class="form-control" id="kt_datatable_search_type">
-                                                <option value="">All</option>
-                                                <option value="1">Online</option>
-                                                <option value="2">Retail</option>
-                                                <option value="3">Direct</option>
-                                            </select>
+                                            <div class='input-group' id='kt_daterangepicker_2'>
+                                                <input type='text' class="form-control" readonly placeholder="Tìm kiểm theo ngày" />
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="la la-calendar-check-o"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                               
                             </div>
                         </div>
                     </div>
@@ -276,8 +278,8 @@
                     <!--end: Datatable-->
                 </div>
                 @*billtable*@
-                <div  id="billform" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-                   
+                <div hidden id="billform" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+
                 </div>
                 @*endtable*@
             </div>
@@ -289,27 +291,58 @@
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->
+<script src="~/assets/js/DateFormat.js"></script>
 <script src="~/assets/js/PropCheckBox.js"></script>
 <script src="~/assets/js/BillTable.js"></script>
+<script src="~/assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         showtable()
-
+        
         $("#searchInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#datatable tr ").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
+            empty()
         });
         $('#kt_datatable_search_status').on('change', function () {
             var id = $(this).val()
-            showtable(id);
+            if ($('#kt_daterangepicker_2 input').val() == "") {
+                showtable(id);
+            }
+            else {
+                var date = $('#kt_daterangepicker_2 input').val()
+                showtable(id, date)
+            }
+          
+        });
+        $('.applyBtn').on('click', function () {
+            var date = $('.drp-selected').text()
+            if ($('#kt_datatable_search_status').val() == "") {
+                showtable(0, date)
+            } else {
+                var id = $('#kt_datatable_search_status').val()
+                showtable(id, date)
+            }
+          
+            
         });
 
-        
-     
+        function empty() {
+            var tr = $('#datatable tr').css('display')
+            $('#empty').remove()
+            if (tr == 'none') {
+                var a = '<div id="empty" class="alert alert-danger" role = "alert">  Không có dữ liêu với truy vấn này </div>'
+                $('#datatable ').append(a)
+            }
+
+
+
+        }
+
     });
-   
+
 </script>
 
 @*<script src="~/assets/js/pages/crud/ktdatatable/base/data-json.js"></script>*@

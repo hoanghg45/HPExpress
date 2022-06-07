@@ -15,9 +15,12 @@ var KTBootstrapDaterangepicker = function () {
         $('#kt_daterangepicker_2').daterangepicker({
             buttonClasses: ' btn',
             applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary'
-        }, function(start, end, label) {
-            $('#kt_daterangepicker_2 .form-control').val( start.format('YYYY-MM-DD') + ' / ' + end.format('YYYY-MM-DD'));
+            cancelClass: 'btn-secondary',
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        }, function (start, end, label) {
+             $('#kt_daterangepicker_2 .form-control').val(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
         });
 
          $('#kt_daterangepicker_2_modal').daterangepicker({

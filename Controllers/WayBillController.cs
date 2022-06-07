@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Globalization;
 using System.Data.Entity.SqlServer;
+using HPExpress.Extension;
 
 namespace HPExpress.Controllers
 {
@@ -16,9 +17,10 @@ namespace HPExpress.Controllers
     {
         BillManagerDBEntities _context = new BillManagerDBEntities();
         [HttpPost]
-        public JsonResult data(int id = 0, int? page = 0)
+        public JsonResult data(int id = 0, int? page = 0, string date = "")
         {
-          
+            DateTime dateFrom = DateTime.Now;
+            DateTime dateTo = DateTime.Now;
 
             //_context.Configuration.ProxyCreationEnabled = false;
             var table = from obj in _context.Bills
@@ -35,28 +37,20 @@ namespace HPExpress.Controllers
                             Billnum = obj.BillNumber,
                             Package = obj.ProductPakage,
                             Weight = obj.ProductWeight,
-                            Dateship = obj.CreateAT.ToString(),
+                            Dateship = obj.CreateAT,
                             Category = (obj.ProductCategorys.Select(c => c.CatName).ToList())
                         };
-            if (id != 0)
+
+            if (date != "") {
+                String[] dateSplit = date.Split('-');
+                 dateFrom = DateTime.ParseExact(dateSplit[0].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                 dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            if (id != 0 || date != "")
             {
-                table = from obj in _context.Bills
-                        join se in _context.Transpots on obj.TransID equals se.TransID
-                        join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
-                        where obj.ProviderID == id
-                        select new
-                        {
-                            Id = obj.BillID.Trim(),
-                            Cusinf = obj.CustomerInf.Trim(),
-                            Content = obj.BillContent,
-                            Provider = pro.ProviderID,
-                            Trans = se.TransName,
-                            Billnum = obj.BillNumber,
-                            Package = obj.ProductPakage,
-                            Weight = obj.ProductWeight,
-                            Dateship = obj.CreateAT.ToString(),
-                            Category = (obj.ProductCategorys.Select(c => c.CatName).ToList())
-                        };
+                
+                table = table.WhereIf(id != 0, t => t.Provider == id)
+                              .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo);
             }
             int pageSize = 3;
             page = (page > 0) ? page : 1;

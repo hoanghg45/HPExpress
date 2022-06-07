@@ -52,6 +52,9 @@
       <HintPath>packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NinjaNye.SearchExtensions, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NinjaNye.SearchExtensions.3.0.1\lib\net45\NinjaNye.SearchExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -209,6 +212,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\WayBillController.cs" />
+    <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Extension\PaginationExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -252,6 +256,7 @@
     <Content Include="assets\css\themes\layout\header\menu\dark.css" />
     <Content Include="assets\css\themes\layout\header\menu\light.css" />
     <Content Include="assets\js\BillTable.js" />
+    <Content Include="assets\js\DateFormat.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-visibility.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\footer-callback.js" />
