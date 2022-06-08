@@ -17,10 +17,17 @@ var KTBootstrapDaterangepicker = function () {
             applyClass: 'btn-primary',
             cancelClass: 'btn-secondary',
             locale: {
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                cancelLabel: 'Clear'
             }
-        }, function (start, end, label) {
-             $('#kt_daterangepicker_2 .form-control').val(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+        });
+        $('.applyBtn').on('click', function () {
+
+            var date = $('.drp-selected').text()
+            $('#kt_daterangepicker_2 .form-control').val(date)
+        });
+        $('.cancelBtn').on('click', function () {
+            $('#kt_daterangepicker_2 .form-control').val('');
         });
 
          $('#kt_daterangepicker_2_modal').daterangepicker({

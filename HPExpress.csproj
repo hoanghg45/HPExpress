@@ -255,6 +255,7 @@
     <Content Include="assets\css\themes\layout\header\base\light.css" />
     <Content Include="assets\css\themes\layout\header\menu\dark.css" />
     <Content Include="assets\css\themes\layout\header\menu\light.css" />
+    <Content Include="assets\js\BillSearch.js" />
     <Content Include="assets\js\BillTable.js" />
     <Content Include="assets\js\DateFormat.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Globalization;
 using System.Data.Entity.SqlServer;
 using HPExpress.Extension;
+using NinjaNye.SearchExtensions;
 
 namespace HPExpress.Controllers
 {
@@ -17,7 +18,7 @@ namespace HPExpress.Controllers
     {
         BillManagerDBEntities _context = new BillManagerDBEntities();
         [HttpPost]
-        public JsonResult data(int id = 0, int? page = 0, string date = "")
+        public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="")
         {
             DateTime dateFrom = DateTime.Now;
             DateTime dateTo = DateTime.Now;
@@ -32,26 +33,46 @@ namespace HPExpress.Controllers
                             Id = obj.BillID.Trim(),
                             Cusinf = obj.CustomerInf.Trim(),
                             Content = obj.BillContent,
-                            Provider = pro.ProviderID,
+                            ProviderID = pro.ProviderID,
+                            ProviderName = pro.ProviderName,
                             Trans = se.TransName,
                             Billnum = obj.BillNumber,
                             Package = obj.ProductPakage,
                             Weight = obj.ProductWeight,
                             Dateship = obj.CreateAT,
-                            Category = (obj.ProductCategorys.Select(c => c.CatName).ToList())
+                            Category =  obj.ProductCategorys.Select(c => c.CatName).ToList()
                         };
 
             if (date != "") {
                 String[] dateSplit = date.Split('-');
                  dateFrom = DateTime.ParseExact(dateSplit[0].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                  dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                dateTo = dateTo.AddHours(23).AddMinutes(59);
             }
             if (id != 0 || date != "")
             {
                 
-                table = table.WhereIf(id != 0, t => t.Provider == id)
+                table = table.WhereIf(id != 0, t => t.ProviderID == id)
                               .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo);
             }
+            if(search != "")
+            {
+                
+                search = search.Trim();
+                table = table.Search(t => t.Id,
+                 t => t.ProviderName,
+                 t => t.Cusinf,
+                 t => t.Content,
+                   t => t.Trans,
+                   t => t.Billnum.ToString(),
+                   t => t.Weight.ToString(),
+                   t => t.Category.FirstOrDefault(c => c.Contains(search))
+
+                                    ).Containing(search);
+
+
+            }
+           
             int pageSize = 3;
             page = (page > 0) ? page : 1;
             int start = (int)(page - 1) * pageSize;

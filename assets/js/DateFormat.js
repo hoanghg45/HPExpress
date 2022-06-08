@@ -1,5 +1,4 @@
-﻿$(document).ready(function () {
-
+﻿
     function jsonTodDate(jsonDate) {
         const backToDate = new Date(parseInt(jsonDate));
         return backToDate;
@@ -16,4 +15,4 @@
             date.getFullYear(),
         ].join('/');
     }
-});
+

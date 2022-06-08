@@ -1,5 +1,5 @@
 ﻿
-function showtable(idpr, datetime, page) {
+function showtable(idpr, datetime,search, page) {
     
     var id = idpr
     $.ajax({
@@ -8,29 +8,12 @@ function showtable(idpr, datetime, page) {
         data: {
             id: id,
             page: page,
-            date: datetime
+            date: datetime,
+            search: search
         },
         datatype: 'json',
         success: function (data) {
-
-            function jsonTodDate(jsonDate) {
-                const backToDate = new Date(parseInt(jsonDate));
-                return backToDate;
-            }
-            function padTo2Digits(num) {
-                return num.toString().padStart(2, '0');
-            }
-
-            function formatDate(jsonDate) {
-                var date = jsonTodDate(jsonDate)
-                return [
-                    padTo2Digits(date.getDate()),
-                    padTo2Digits(date.getMonth() + 1),
-                    date.getFullYear(),
-                ].join('/');
-            }
-            console.log(data)
-
+         
             $("#billtable").empty();
 
 
@@ -57,43 +40,44 @@ function showtable(idpr, datetime, page) {
             table += '</thead>'
 
             table += '<tbody id="datatable">'
-
             
-
+           
+            
             $.each(data.data, function (i, d, p) {
                 table += '<tr>'
-                table += '<th >' + d.Id + '</th>'
-                table += '<th>' + formatDate(d.Dateship.substr(6)) + '</th>'
-                var cus_inf = d.Cusinf.split('|')
-                table += '<th>' + cus_inf[0] + '</th>'
-                table += '<th>' + cus_inf[1] + '</th>'
-                table += '<th>' + cus_inf[2] + '</th>'
-                table += '<th>' + d.Content + '</th>'
-                table += '<th>' + d.Trans + '</th>'
-                var prov = {
-                    1: {
-                        'title': 'NetPost',
-                        'class': ' label-light-danger'
-                    },
-                    2: {
-                        'title': 'ViettelPost',
-                        'class': ' label-light-warning'
-                    },
-                    3: {
-                        'title': 'Tasetco',
-                        'class': ' label-light-success'
-                    },
+                
+                    table += '<th >' + d.Id + '</th>'
+                    table += '<th>' + formatDate(d.Dateship.substr(6)) + '</th>'
+                    var cus_inf = d.Cusinf.split('|')
+                    table += '<th>' + cus_inf[0] + '</th>'
+                    table += '<th>' + cus_inf[1] + '</th>'
+                    table += '<th>' + cus_inf[2] + '</th>'
+                    table += '<th>' + d.Content + '</th>'
+                    table += '<th>' + d.Trans + '</th>'
+                    var prov = {
+                        1: {
+                            'title': 'NetPost',
+                            'class': ' label-light-danger'
+                        },
+                        2: {
+                            'title': 'ViettelPost',
+                            'class': ' label-light-warning'
+                        },
+                        3: {
+                            'title': 'Tasetco',
+                            'class': ' label-light-success'
+                        },
 
-                };
-                table += '<th>' + '<span class="label label-inline ' + prov[d.Provider].class + ' font-weight-bold">' + prov[d.Provider].title + '</span >' + '</th>'
-                table += '<th>' + d.Billnum + '</th>'
-                var cat = d.Category.join(', ')
-                table += '<th>' + cat + '</th>'
-                table += '<th>' + d.Package + '</th>'
-                table += '<th>' + d.Weight + 'kg </th>'
-                table += '<td> ';
+                    };
+                    table += '<th>' + '<span class="label label-inline ' + prov[d.ProviderID].class + ' font-weight-bold">' + prov[d.ProviderID].title + '</span >' + '</th>'
+                    table += '<th>' + d.Billnum + '</th>'
+                    
+                    table += '<th>' + d.Category + '</th>'
+                    table += '<th>' + d.Package + '</th>'
+                    table += '<th>' + d.Weight + 'kg </th>'
+                    table += '<td> ';
 
-                table += '\
+                    table += '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
                                 <span class="svg-icon svg-icon-md">\
@@ -143,17 +127,24 @@ function showtable(idpr, datetime, page) {
                                 </ul>\
                             </div>\
                         </div>\
+                       </tr>\
                        \
                     ';
-                table += '</td>';
-                table += '</tr>';
-            });
-            table += '</tr>'
+                    table += '</td>';
+                    table += '</tr>';
+                });
+            
+
+            
+            
 
             table += '</tbody>'
-
+           
 
             $('#billtable').append(table);
+            if (data.total < 1) {
+                $('#datatable ').append('<div id="empty" class="alert alert-danger" role = "alert">  Không có dữ liêu với truy vấn này! </div>');
+            }
             $('#billpagi').empty();
             var size = data.size;
             var total = data.total;
@@ -185,14 +176,14 @@ function showtable(idpr, datetime, page) {
             $('#billnote').append(billnote)
             ///Funtion chức năng
             
-            $("#billpagi a").click(function (event) {
+            
 
+            $("#billpagi a").click(function (event) {
+                var value = $('#searchInput').val().toLowerCase();
                 var page = $(this).data('page');
                 var filter = $("#kt_datatable_search_status").val()
                 var datetime = $("#kt_daterangepicker_2 input").val()
-                console.log(page)
-                console.log(filter)
-                console.log(datetime)
+                
 
                 //if (filter != "" && datetime != "") {
                 //    showtable(filter, page);
@@ -203,7 +194,7 @@ function showtable(idpr, datetime, page) {
                 //else {
                 //    showtable("", page);
                 //}
-                showtable(filter, datetime, page)
+                showtable(filter, datetime, value, page)
             });
 
             $('.printBtn').click(function (event) {
