@@ -184,6 +184,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BillManagerDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Context\Department.cs">
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Context\Payment.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
@@ -212,6 +215,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\WayBillController.cs" />
+    <Compile Include="CustomRoleProvider.cs" />
+    <Compile Include="CustomRoleProviderBase.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Extension\PaginationExtension.cs" />
     <Compile Include="Global.asax.cs">
@@ -221,6 +226,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NetpostViewModels.cs" />
+    <Compile Include="Models\ViettelPostViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -396,9 +402,12 @@
     <Content Include="assets\js\pages\features\miscellaneous\sweetalert2.js" />
     <Content Include="assets\js\pages\features\miscellaneous\toastr.js" />
     <Content Include="assets\js\pages\features\miscellaneous\treeview.js" />
+    <Content Include="assets\js\JSBarcode.min.js" />
     <Content Include="assets\js\pages\my-script.js" />
     <Content Include="assets\js\pages\widgets.js" />
     <Content Include="assets\js\PropCheckBox.js" />
+    <Content Include="assets\js\qrcode.js" />
+    <Content Include="assets\js\qrcode.min.js" />
     <Content Include="assets\js\scripts.bundle.js" />
     <Content Include="assets\media\bg\bg-1.jpg" />
     <Content Include="assets\media\bg\bg-10.jpg" />
@@ -411,6 +420,7 @@
     <Content Include="assets\media\bg\bg-8.jpg" />
     <Content Include="assets\media\bg\bg-9.jpg" />
     <Content Include="assets\media\bg\bg-invoice-5.jpg" />
+    <Content Include="assets\media\bg\bg-login.jpg" />
     <Content Include="assets\media\bg\demo-7.jpg" />
     <Content Include="assets\media\bg\home-2-bg.svg" />
     <Content Include="assets\media\bg\sc-home1-bg.png" />
@@ -2257,6 +2267,7 @@
     <Content Include="Views\WayBill\NetpostView.cshtml" />
     <Content Include="Views\WayBill\Index.cshtml" />
     <Content Include="Views\WayBill\ViettelPostView.cshtml" />
+    <Content Include="Views\WayBill\TasetcoView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

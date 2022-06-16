@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 // Class Definition
 var KTLogin = function() {
@@ -47,36 +47,59 @@ var KTLogin = function() {
 					bootstrap: new FormValidation.plugins.Bootstrap()
 				}
 			}
-		);
-
+        );
+        
         $('#kt_login_signin_submit').on('click', function (e) {
             e.preventDefault();
 
             validation.validate().then(function(status) {
 		        if (status == 'Valid') {
+
+                    $.ajax({
+                        type: "post",
+                        url: HOST_URL + 'api/data',
+                        data: {
+                          
+                        },
+                        datatype: 'json',
+                        success: function (data) {
+
+                        }
+                    });
+
+
+
+
                     swal.fire({
-		                text: "All is cool! Now you submit this form",
-		                icon: "success",
-		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
+                        text: "All is cool! Now you submit this form",
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        heightAuto: false,
                         customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
-						KTUtil.scrollTop();
-					});
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                        
+                        }).then(function () {
+
+                            KTUtil.scrollTop();
+                        });
+                    
+                   
 				} else {
-					swal.fire({
-		                text: "Sorry, looks like there are some errors detected, please try again.",
-		                icon: "error",
-		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
+                    
+                    swal.fire({
+                        text: "Sorry, looks like there are some errors detected, please try again.",
+                        icon: "error",
+                        heightAuto: false,
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
                         customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
-						KTUtil.scrollTop();
-					});
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
 				}
 		    });
         });
@@ -163,7 +186,8 @@ var KTLogin = function() {
                     swal.fire({
 		                text: "All is cool! Now you submit this form",
 		                icon: "success",
-		                buttonsStyling: false,
+                        buttonsStyling: false,
+                        heightAuto: false,
 		                confirmButtonText: "Ok, got it!",
                         customClass: {
     						confirmButton: "btn font-weight-bold btn-light-primary"
@@ -175,7 +199,8 @@ var KTLogin = function() {
 					swal.fire({
 		                text: "Sorry, looks like there are some errors detected, please try again.",
 		                icon: "error",
-		                buttonsStyling: false,
+                        buttonsStyling: false,
+                        heightAuto: false,
 		                confirmButtonText: "Ok, got it!",
                         customClass: {
     						confirmButton: "btn font-weight-bold btn-light-primary"
@@ -233,7 +258,8 @@ var KTLogin = function() {
 					swal.fire({
 		                text: "Sorry, looks like there are some errors detected, please try again.",
 		                icon: "error",
-		                buttonsStyling: false,
+                        buttonsStyling: false,
+                        heightAuto: false,
 		                confirmButtonText: "Ok, got it!",
                         customClass: {
     						confirmButton: "btn font-weight-bold btn-light-primary"

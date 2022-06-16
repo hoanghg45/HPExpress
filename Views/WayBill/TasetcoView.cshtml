@@ -1,6 +1,6 @@
 ﻿@{
-    
-    ViewBag.Title = "NetpostView";
+
+    ViewBag.Title = "TasetcoView";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,7 +13,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">Mẫu NETPOST</h5>
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Mẫu TASETCO</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -21,10 +21,10 @@
                             <a href="" class="text-muted">Forms</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">Netpost</a>
+                            <a href="" class="text-muted">Tasetco</a>
                         </li>
-                        
-                        
+
+
                     </ul>
                     <!--end::Breadcrumb-->
                 </div>
@@ -122,14 +122,14 @@
                     <div class="card card-custom example example-compact">
                         <div class="card-header">
                             <div class="card-title">
-                                <h2><b><span style="color: #7d2f2f;">NET</span><span style="color:#ea3639;">POST</span></b></h2>
+                                <h2><b><span style="color: #03933e;">TASETCO</span></b></h2>
                             </div>
 
                         </div>
                         <!--begin::Form-->
                         <form class="form" action="/" method="post" id="kt_form_2">
-                            <div class="card-body">
-                                
+                           
+                                <div class="card-body">
                                     <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
                                         <div class="alert-icon">
                                             <i class="flaticon2-bell-5"></i>
@@ -144,7 +144,7 @@
                                         </div>
                                     </div>
                                     @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="prov_id" class="form-control" value="2" />
+                                <input hidden type="text" name="prov_id" class="form-control" value="3" />
                                     <div class="mb-3">
                                         <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
                                         <div class="mb-2">
@@ -212,7 +212,7 @@
                                         <div class="mb-2">
                                             <div class="form-group row">
                                                 <div class="col-lg-6">
-                                                    <label> Công ti nhận:<span class="text-danger">*</span></label>
+                                                    <label> Công ty nhận:<span class="text-danger">*</span></label>
                                                     <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="Công Ty TNHH Canon Việt Nam-Chi Nhánh Quế Võ" />
                                                 </div>
 
@@ -266,14 +266,19 @@
                                                     <label> Loại hàng<span class="text-danger">*</span></label>
                                                     <div class="checkbox-inline">
                                                         <label class="checkbox">
-                                                            <input type="checkbox" data-check="false" id="CatBox1" value="2" name="CatBox1" />
+                                                            <input type="checkbox" data-check="false" id="CatBox1" value="1" name="CatBox1" />
                                                             <span></span>
                                                             Hàng Hóa
                                                         </label>
                                                         <label class="checkbox">
-                                                            <input type="checkbox" data-check="false" id="CatBox2" value="1" name="CatBox2" />
+                                                            <input type="checkbox" data-check="false" id="CatBox2" value="2" name="CatBox2" />
                                                             <span></span>
                                                             Tài liệu
+                                                        </label>
+                                                        <label class="checkbox">
+                                                            <input type="checkbox" data-check="false" id="CatBox3" value="3" name="CatBox3" />
+                                                            <span></span>
+                                                            Hóa chất
                                                         </label>
 
 
@@ -318,48 +323,97 @@
                                         <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>4. Hình thức vận chuyển:</b></h3>
                                         <div class="mb-2">
                                             <div class="form-group row">
-                                                <div class="col-lg-12">
-                                                    <label>Chọn hình thức vận chuyển:<span class="text-danger">*</span></label>
+                                                <div class="col-lg-2">
+                                                    <label>Vận chuyển trong nước:<span class="text-danger">*</span></label>
                                                     <div class="radio-inline">
                                                         <label class="radio">
-                                                            <input type="radio" id="transCPN" checked value="1" name="transRadios" />
+                                                            <input type="radio" checked value="1" name="transRadios" />
                                                             <span></span>
                                                             Chuyển phát nhanh
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" id="transHT" value="2" name="transRadios" />
+                                                            <input type="radio" value="5" name="transRadios" />
                                                             <span></span>
-                                                            Phát theo YC, hỏa tốc
+                                                            Đường bộ
+                                                        </label>
+
+                                                        <label class="radio">
+                                                            <input type="radio" id="transGTC" value="10" name="transRadios" />
+                                                            <span></span>
+                                                            Phát hẹn giờ
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" id="transT" value="8" name="transRadios" />
+                                                            <input type="radio" value="8" name="transRadios" />
                                                             <span></span>
-                                                            Phát theo chủ nhật, Ngày lễ
+                                                            Phát thứ 7, chủ nhật
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" id="transGTC" value="16" name="transRadios" />
+                                                            <input type="radio" value="11" name="transRadios" />
                                                             <span></span>
-                                                            Hàng GTC, hàng Express
+                                                            Giao trước 9:00 am
+                                                        </label>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+
+                                                </div>
+                                                <div class="col-lg-2">
+
+                                                    <div class="radio-inline">
+                                                        <label style="visibility:hidden">Vận chuyển trong nước:<span class="text-danger">*</span></label>
+                                                        <label class="radio">
+                                                            <input type="radio" value="7" name="transRadios" />
+                                                            <span></span>
+                                                            Tiết kiệm
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" id="transTC" value="3" name="transRadios" />
+                                                            <input type="radio" value="13" name="transRadios" />
                                                             <span></span>
-                                                            Tiêu chuẩn/ 30-36h
+                                                            Hồ sơ thầu
+                                                        </label>
+
+                                                        <label class="radio">
+                                                            <input type="radio" value="12" name="transRadios" />
+                                                            <span></span>
+                                                            Giao trước 12:00 am
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" id="transTK" value="4" name="transRadios" />
+                                                            <input type="radio" value="9" name="transRadios" />
                                                             <span></span>
-                                                            Tiết kiệm/ 48h
+                                                            Phát trong ngày
+                                                        </label>
+
+
+                                                        <label class="radio">
+                                                            <input type="radio" value="2" name="transRadios" />
+                                                            <span></span>
+                                                            Hỏa tốc
+                                                        </label>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <label>Vận chuyển quốc tế:<span class="text-danger">*</span></label>
+                                                    <div class="radio-inline">
+                                                        <label class="radio">
+                                                            <input type="radio" value="14" name="transRadios" />
+                                                            <span></span>
+                                                            Express
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" id="transT" value="5" name="transRadios" />
+                                                            <input type="radio" value="15" name="transRadios" />
                                                             <span></span>
-                                                            Chuyển thường/ Đường bộ
+                                                            Economy
                                                         </label>
 
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -372,9 +426,9 @@
                                                     <label>Chọn hình thức thanh toán: <span class="text-danger">*</span></label>
                                                     <div class="radio-inline">
                                                         <label class="radio">
-                                                            <input type="radio" checked value="1" name="paymentRadios" />
+                                                            <input type="radio" checked value="5" name="paymentRadios" />
                                                             <span></span>
-                                                            Thanh toán ngay
+                                                            Đã thanh toán
                                                         </label>
                                                         <label class="radio">
                                                             <input type="radio" value="2" name="paymentRadios" />
@@ -384,13 +438,9 @@
                                                         <label class="radio">
                                                             <input type="radio" value="3" name="paymentRadios" />
                                                             <span></span>
-                                                            Thanh toán đầu nhận
+                                                            Người nhận thanh toán
                                                         </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="4" name="paymentRadios" />
-                                                            <span></span>
-                                                            Thanh toán Đầu nhận - Cuối tháng
-                                                        </label>
+                                                        
 
                                                     </div>
                                                 </div>
@@ -401,8 +451,7 @@
                                     <div class="separator separator-dashed my-10"></div>
 
 
-                                    
-                                    
+                                
 
                                     <div class="mb-3">
                                         <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Dịch vụ gia tăng:</b></h3>
@@ -412,20 +461,16 @@
                                                     <label>Chọn dịch vụ gia tăng: </label>
                                                     <div class="radio-inline">
                                                         <label class="radio">
-                                                            <input type="radio" value="1" name="serviceRadios" />
+                                                            <input type="radio" value="4" name="serviceRadios" />
                                                             <span></span>
-                                                            Báo phát
+                                                            Bảo hiểm
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" value="2" name="serviceRadios" />
+                                                            <input type="radio" value="6" name="serviceRadios" />
                                                             <span></span>
-                                                            Đồng kiểm
+                                                            Đóng gói
                                                         </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="3" name="serviceRadios" />
-                                                            <span></span>
-                                                            Phát tận tay
-                                                        </label>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -445,24 +490,24 @@
 
                                         </div>
                                     </div>
-                                
+                                </div>
 
-                                    @*billtable*@
-                                    <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-                                        
-                                    </div>
-                                    @*endtable*@
+                                @*billtable*@
+                                <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
 
-                             </div>
-                                <div class="card-footer">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <button id="printData" type="button" class="btn btn-primary font-weight-bold mr-2">Save</button>
+                                </div>
+                                @*endtable*@
 
-                                            <button type="reset" class="btn btn-light-primary font-weight-bold">Cancel</button>
-                                        </div>
+                            
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button id="printData" type="button" class="btn btn-primary font-weight-bold mr-2">Save</button>
+
+                                        <button type="reset" class="btn btn-light-primary font-weight-bold">Cancel</button>
                                     </div>
                                 </div>
+                            </div>
                         </form>
                         <!--end::Form-->
                     </div>
@@ -477,7 +522,7 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script type="text/javascript">
 
-    $("#printData").click(function () {
+      $("#printData").click(function () {
 
         var check = true;
         $.each($(":input[data-vali='true']"), function () {
@@ -488,88 +533,90 @@
             }
             else {
                 $(this).removeClass("is-invalid")
-                
+
             }
-            
+
         })
         var cat1 = $("#CatBox1").data('check');
         var cat2 = $("#CatBox2").data('check');
+        var cat3 = $("#CatBox3").data('check');
 
-        if (cat1 == false && cat2 == false) {
+        if (cat1 == "false" && cat2 == "false" && cat3 == "false") {
             $("#valiCat").css('visibility', 'visible')
             check = false
         }
-        
+
         console.log(check)
         if (!check) {
             Swal.fire("Error!", "Vui lòng nhập đầy đủ thông tin!", "error");
         }
         else {
-              @*$.ajax({
-              type: "post",
-              url: '@Url.Action("Print","WayBill")',
+            @*$.ajax({
+                type: "post",
+                url: '@Url.Action("Print","WayBill")',
                 data: $("#kt_form_2").serialize(),
                 datatype: 'json',
-                 success: function (data) {
-                  console.log(data)
+                success: function (data) {
+                    console.log(data)
 
 
 
-                  $("#cus_name").children().text(data.customer_name);
-                  $("#cus_inf").children('#cus_comp').text(data.customer_comp);
-                  $("#cus_inf").children('#cus_add').text(data.customer_address);
-                  $("#cus_phone").children().text(data.customer_phone);
-                  $("#bill_content").children().text(data.bill_content);
-                  $("#bill_HD").children().text(data.contract_numb);
-                  $("#pro_weight").children().text(data.pro_wei);
-                  $("#pro_length").children().text(data.pro_leng);
-                  $("#pro_width").children().text(data.pro_wid);
-                  $("#pro_height").children().text(data.pro_hei);
-                  $("#pro_package").children().text(data.package_numb);
+                    $("#cus_name").children().text(data.customer_name);
+                    $("#cus_inf").children('#cus_comp').text(data.customer_comp);
+                    $("#cus_inf").children('#cus_add').text(data.customer_address);
+                    $("#cus_phone").children().text(data.customer_phone);
+                    $("#bill_content").children().text(data.bill_content);
+                    $("#bill_HD").children().text(data.contract_numb);
+                    $("#pro_weight").children().text(data.pro_wei);
+                    $("#pro_length").children().text(data.pro_leng);
+                    $("#pro_width").children().text(data.pro_wid);
+                    $("#pro_height").children().text(data.pro_hei);
+                    $("#pro_package").children().text(data.package_numb);
 
-                    if (data.cate1 != null ) {
-                    $("#pro_cat1").children().text("V");
+                    if (data.cate1) {
+                        $("#pro_cat1").children().text("V");
+                    }
+                    if (data.cate2) {
+                        $("#pro_cat2").children().text("V");
+                    }
+
+
+                    if (data.trans != null) {
+                        $("#service_" + data.trans).children().text("V");
+                    }
+
+                    if (data.trans != null) {
+                        $("#trans_" + data.trans).children().text("V");
+                    }
+                    if (data.payment != null) {
+                        $("#pays_" + data.payment).children().text("V");
+                    }
+
+                    if (data.cantship != null) {
+                        $("#cantship_" + data.cantship).children().text("V");
+                    }
+                    var datadate = data.date;
+                    if (data.date != null || data.date != "") {
+
+                        var datetime = data.date.split(" ");
+                        var date = datetime[0].split(".");
+                        var time = datetime[1].split(":");
+
+                        $("#timedate").children("#timehour").text(time[0]);
+                        $("#timedate").children("#timeminu").text(time[1]);
+                        $("#timedate").children("#dateday").text(date[0]);
+                        $("#timedate").children("#datemonth").text(date[1]);
+                        $("#timedate").children("#dateyear").text(date[2].slice(-2));
+                    }
+
+
+                    //printDiv();
+                    //location.reload(true);
                 }
-                    if (data.cate2 != null) {
-                    $("#pro_cat2").children().text("V");
-                }
-                    if (data.service != null) {
-                    $("#service_" + data.service).children().text("V");
-                }
-                  
-
-                  if (data.trans != null) {
-                      $("#trans_" + data.trans).children().text("V");
-                  }
-                  if (data.payment != null) {
-                      $("#pays_" + data.payment).children().text("V");
-                  }
-                 
-                  if (data.cantship != null) {
-                      $("#cantship_" + data.cantship).children().text("V");
-                  }
-                  var datadate = data.date;
-                  if (data.date != null || data.date != "") {
-
-                      var datetime = data.date.split(" ");
-                      var date = datetime[0].split(".");
-                      var time = datetime[1].split(":");
-
-                      $("#timedate").children("#timehour").text(time[0]);
-                      $("#timedate").children("#timeminu").text(time[1]);
-                      $("#timedate").children("#dateday").text(date[0]);
-                      $("#timedate").children("#datemonth").text(date[1]);
-                      $("#timedate").children("#dateyear").text(date[2].slice(-2));
-                  }
+            });*@
 
 
-                     printDiv();
-                     location.reload(true);
-                }
-          })*@
-           
-            create();
-            
+            create()
         }
 
 
@@ -578,9 +625,8 @@
 
 
     });
-     function create() {
-
-         $.ajax({
+    function create() {
+        $.ajax({
              type: "post",
              url: '@Url.Action("Create","WayBill")',
              data: $("#kt_form_2").serialize(),
@@ -595,9 +641,7 @@
 
              }
          });
-
-
-        }
+    }
 
 </script>
 <script src="~/assets/js/PropCheckBox.js"></script>

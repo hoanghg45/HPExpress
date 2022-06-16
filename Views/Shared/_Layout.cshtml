@@ -124,7 +124,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                            <li class="menu-item menu-item-active" aria-haspopup="true">
+                            <li class="menu-item" aria-haspopup="true">
                                 <a href="@Url.Action("Index","Home")" class="menu-link">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:~/assets/media/svg/icons/Design/Layers.svg-->
@@ -137,7 +137,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </svg>
                                         <!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Dashboard</span>
+                                    <span class="menu-text">DASHBOARD</span>
                                 </a>
                             </li>
 
@@ -199,19 +199,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </a>
                                                     </li>
                                                     <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/forms/controls/checkbox.html" class="menu-link">
+                                                        <a href="@Url.Action("Create/3","WayBill")" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
                                                             </i>
                                                             <span class="menu-text">TASETCO</span>
                                                         </a>
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="@Url.Action("Index","Waybill")" class="menu-link">
+                                        <li id="waybill" class="menu-item" aria-haspopup="true">
+                                            <a href="/WayBill" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
@@ -1493,7 +1493,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <!--end::Dropdown-->
                             </div>
                             <!--end::Search-->
-                            
                             <!--begin::User-->
                             <div class="topbar-item">
                                 <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
@@ -3110,11 +3109,13 @@ License: You must have a valid license purchased only from themeforest(the above
         <!--end::Content-->
     </div>
     <!--end::Demo Panel-->
-    <script> var HOST_URL = "https://localhost:44375/WayBill/";</script>
+    <script>var HOST_URL = "https://localhost:44375/";</script>
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
+    @*ActiveNav*@
+    <script src="~/assets/js/pages/my-script.js"></script>
     <script src="~/assets/plugins/global/plugins.bundle.js"></script>
     <script src="~/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
     <script src="~/assets/js/scripts.bundle.js"></script>
@@ -3129,6 +3130,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--end::Page Scripts-->
     @*datetimepicker*@
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+
 </body>
 <!--end::Body-->
 </html>

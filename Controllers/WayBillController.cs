@@ -18,6 +18,7 @@ namespace HPExpress.Controllers
     {
         BillManagerDBEntities _context = new BillManagerDBEntities();
         [HttpPost]
+        [Route("data")]
         public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="")
         {
             DateTime dateFrom = DateTime.Now;
@@ -120,8 +121,10 @@ namespace HPExpress.Controllers
         }
 
         // GET: WayBill/Create/{id}
-        public ActionResult Create(int ?id)
+        public ActionResult Create(int id)
         {
+            //ShippingProvider sp = _context.ShippingProviders.Where(p => p.ProviderName == viewName).FirstOrDefault();
+
             switch (id)
             {
                 case 1:
@@ -129,6 +132,8 @@ namespace HPExpress.Controllers
                     
                 case 2:
                     return View("ViettelPostView");
+                case 3:
+                    return View("TasetcoView");
                     
                 default:
                     // code block
@@ -149,7 +154,14 @@ namespace HPExpress.Controllers
             {
                 // TODO: Add insert logic here
                 Bill bill = new Bill();
-                bill.BillID = collection["barcode"].Trim();
+                string id = collection["barcode"].Trim();
+                if (_context.Bills.Any(b => b.BillID == id ))
+                {
+                    return Json(new { message = "Mã trùng với 1 phiếu trước đó, vui lòng kiểm tra và thử lại!" });
+                }
+                else { bill.BillID = collection["barcode"].Trim(); }
+                
+                
                 bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
                 string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
                 bill.CustomerInf = cus_inf.Trim();
@@ -262,35 +274,65 @@ namespace HPExpress.Controllers
                 var cus_inf = bill.CustomerInf.Split('|');
                 string cat1 = bill.ProductCategorys.Any(b => b.CatID == 1)?"1":null;
                 string cat2 = bill.ProductCategorys.Any(b => b.CatID == 2) ? "2" : null;
-                
+                var catlst = bill.ProductCategorys.Select(c => c.CatName).ToList();
+                string cat = String.Join(", ", catlst);
+
+                switch (bill.ProviderID)
+                {
+                    case 1:
+                  var modelNetpost = new NetpostViewModels(
+                  cus_inf[1],
+                  cus_inf[0],
+                  cus_inf[2],
+                  cus_inf[3],
+                  bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
+                  bill.BillNumber.ToString(),
+                  bill.ProductPakage.ToString(),
+                  cat1,
+                  cat2,
+                  bill.ProductWeight.ToString(),
+                  bill.Lenght is null ? null : bill.Lenght.ToString(),
+                  bill.Width is null ? null : bill.Width.ToString(),
+                  bill.Heigh is null ? null : bill.Heigh.ToString(),
+                  bill.TransID.ToString(),
+                  bill.PaymentID.ToString(),
+                  bill.ProviderID.ToString(),
+                  bill.ServiceID is null ? null : bill.ServiceID.ToString(),
+                  bill.BillContent);
+                        return Json(modelNetpost, JsonRequestBehavior.AllowGet);
+                        
+                    case 2:
+                    var modelVietel = new ViettelPostViewModels(
+                    cus_inf[1],
+                    cus_inf[0],
+                    cus_inf[2],
+                    cus_inf[3],
+                    bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
+                    bill.BillNumber.ToString(),
+                    bill.ProductPakage.ToString(),
+                    cat,
+                    bill.ProductWeight.ToString(),
+                    bill.Lenght is null ? null : bill.Lenght.ToString(),
+                    bill.Width is null ? null : bill.Width.ToString(),
+                    bill.Heigh is null ? null : bill.Heigh.ToString(),
+                    bill.Payment.PaymentName.ToString(),
+                    bill.Service.ServiceName is null ? null : bill.Service.ServiceName,
+                    bill.BillContent);
+                        return Json(modelVietel, JsonRequestBehavior.AllowGet);
+                }
+
+
 
 
 
                 // TODO: Add insert logic here
-                NetpostViewModels models = new NetpostViewModels(
-                cus_inf[1],
-                cus_inf[0],
-                cus_inf[2],
-                cus_inf[3],
-                bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
-                bill.BillNumber.ToString(),
-                bill.ProductPakage.ToString(),
-                cat1,
-                cat2,
-                bill.ProductWeight.ToString(),
-                bill.Lenght is null ? null : bill.Lenght.ToString() ,
-                bill.Width is null ? null : bill.Width.ToString(),
-                bill.Heigh is null ? null : bill.Heigh.ToString(),
-                bill.TransID.ToString(),
-                bill.PaymentID.ToString(),
-                bill.IsReturn is null ? null :bill.IsReturn.ToString(),
-                bill.ServiceID is null ? null : bill.IsReturn.ToString(),
-
-                bill.BillContent
 
 
-                    );
-                return Json(models, JsonRequestBehavior.AllowGet);
+
+                return Json(new { message = "Kiểm tra đơn vị vận chuyển!!!" ,status =0 }, JsonRequestBehavior.AllowGet);
+
+
+
 
 
             }

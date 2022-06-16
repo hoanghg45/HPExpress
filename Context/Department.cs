@@ -12,28 +12,19 @@ namespace HPExpress.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Department
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public Department()
         {
-            this.Bills = new HashSet<Bill>();
+            this.Users = new HashSet<User>();
         }
     
-        public int UserID { get; set; }
-        public Nullable<int> RoleID { get; set; }
-        public string UserName { get; set; }
-        public string UserPass { get; set; }
-        public string UserEmail { get; set; }
-        public string UserPhone { get; set; }
-        public Nullable<System.DateTime> CreateAt { get; set; }
-        public Nullable<System.DateTime> UpdateAt { get; set; }
-        public Nullable<int> DepartmentID { get; set; }
-        public string FullName { get; set; }
+        public int DepartmentID { get; set; }
+        public string DepartmentName { get; set; }
+        public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Bill> Bills { get; set; }
-        public virtual Role Role { get; set; }
-        public virtual Department Department { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
