@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(window).ready(function() {
     var current = location.pathname;
     $("div.aside,.aside-left,.aside-fixed,.d-flex,.flex-column,.flex-row-auto li a").each(function () {
         if ($(this).attr('href') === location.pathname) {

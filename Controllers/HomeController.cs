@@ -6,12 +6,15 @@ using System.Web.Mvc;
 using HPExpress.Context;
 
 namespace HPExpress.Controllers
-{   
+{
+    
     public class HomeController : Controller
     {
+        
         public BillManagerDBEntities _db = new BillManagerDBEntities();
 
-        
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public ActionResult Index()
         {
            

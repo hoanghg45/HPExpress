@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 
-namespace HPExpress.Models
+namespace SetPortal.Models
 {
     public class CustomRoleProvider : RoleProvider
     {
@@ -15,7 +15,7 @@ namespace HPExpress.Models
         public override string[] GetRolesForUser(string name)
         {
             // tạo biến getrole, so sánh xem UserID đang đăng nhập có giống với tên trong db ko
-           User account = db.Users.Single(x => x.UserID.Equals(name));
+            User account = db.Users.Single(x => x.UserID.Equals(name));
             if (account != null) // Nếu giống
             {
                 return new String[] { account.Role.RoleName };
@@ -50,7 +50,7 @@ namespace HPExpress.Models
             throw new NotImplementedException();
         }
 
-        
+
 
         public override string[] GetUsersInRole(string roleName)
         {

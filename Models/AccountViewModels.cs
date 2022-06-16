@@ -49,17 +49,16 @@ namespace HPExpress.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "username")]
+        
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+       
     }
 
     public class RegisterViewModel

@@ -12,17 +12,15 @@ namespace HPExpress
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                name: "login",
-                url: "login/{account}",
-                defaults: new { controller = "Account", action = "Login", account = UrlParameter.Optional }
-                ); ;
-
             routes.MapRoute(
                 name: "data",
                 url: "api/data/{id}/{date}/{search}",
                 defaults: new { controller = "WayBill", action = "data", id = UrlParameter.Optional, date = UrlParameter.Optional, search = UrlParameter.Optional }
+                );
+            routes.MapRoute(
+                name: "account",
+                url: "api/GetAccount/{id}",
+                defaults: new { controller = "Account", action = "DetailAccount", id = UrlParameter.Optional }
                 );
 
             routes.MapRoute(

@@ -9,12 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using HPExpress.Models;
+using HPExpress.Context;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace HPExpress.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
+        private BillManagerDBEntities _context = new BillManagerDBEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -66,22 +70,97 @@ namespace HPExpress.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public  JsonResult Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return this.Json(
+                new
+                {
+                   status = "error",
+                   message = "Đã có lỗi xảy ra vui lòng thử lại123"
+                }
+                , JsonRequestBehavior.AllowGet
+                );
             }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-           
-              
-            return View(model);
-            
+            User user = _context.Users.Where(u => u.UserName.Equals(model.UserName) && u.UserPass.Equals(model.Password)).FirstOrDefault();
+            if(user != null)
+            {
+                Session.Add("UserID", user.UserID);
+                Session.Add("UserName", user.FullName);
+               
+
+
+                return this.Json(
+               new
+               {
+                   returnURL = "/Home",
+                   status = "success",
+                   message = "Đăng nhập thành công"
+               }
+               , JsonRequestBehavior.AllowGet
+               );
+            }
+
+            return this.Json(
+            new
+            {
+                status = "error",
+                message = "Tài khoản hoặc mật khẩu không chính xác"
+            }
+            , JsonRequestBehavior.AllowGet
+            );
+
         }
 
+
+        [HttpPost]
+        [Route("account")]
+        public JsonResult DetailAccount(int id)
+        {
+            //var account = from obj in _context.Users
+            //            join ro in _context.Roles on obj.RoleID equals ro.RoleID
+            //            join de in _context.Departments on obj.DepartmentID equals de.DepartmentID
+
+            //            select new
+            //            {
+            //                Id = obj.UserID,
+            //                Name = obj.UserName,
+            //                FullName = obj.FullName,
+
+            //            };
+            User account = new User();
+              account  = _context.Users.FirstOrDefault(p => p.UserID == id);
+            
+            if (account != null)
+            {
+                return this.Json(new
+                {
+                    status = "success",
+                    Id = account.UserID,
+                    Name = account.UserName,
+                    FullName = account.FullName,
+                    Role = account.Role.RoleName,
+                    Department = account.Department.DepartmentName,
+                    Email = account.UserEmail,
+                    Phone = account.UserPhone
+
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return this.Json(new
+                {
+                    status = "error",
+                }, JsonRequestBehavior.AllowGet);
+            }
+            
+
+        }
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

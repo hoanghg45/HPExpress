@@ -54,46 +54,89 @@ var KTLogin = function() {
 
             validation.validate().then(function(status) {
 		        if (status == 'Valid') {
-
+                  
+                    //var formdata = {
+                    //    Username: $("#username").val(),
+                    //    Password: $("#password").val()
+                    //} 
+                    var formdata = 
+                        $('#kt_login_signin_form').serialize()
+                    
+                    console.log(formdata)
                     $.ajax({
                         type: "post",
-                        url: HOST_URL + 'api/data',
-                        data: {
-                          
-                        },
-                        datatype: 'json',
+                        url: HOST_URL + 'account/login',
+                        dataType: "json",
+                        
+                        data: formdata,
+                        
                         success: function (data) {
+                            if (data.status == "success") {
+                                swal.fire({
+                                    title: "Thành công",
+                                    text: data.message,
+                                    icon: "success",
+                                    buttonsStyling: false,
+                                    /*confirmButtonText: "Ok, got it!",*/
+                                    heightAuto: false,
+                                    customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
 
+                                }).then(function () {
+                                    window.location.href = data.returnURL;
+                                    KTUtil.scrollTop();
+                                });
+                            } else {
+                                swal.fire({
+                                    title: "Có lỗi!",
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    /*confirmButtonText: "Ok, got it!",*/
+                                    heightAuto: false,
+                                    customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
+
+                                }).then(function () {
+                                    
+                                    KTUtil.scrollTop();
+                                });
+                            }
+                        },
+                        error: function (errorResult) {
+                            swal.fire({
+                                title: "Có lỗi!",
+                                text: errorResult.responseText,
+                                icon: "error",
+                                heightAuto: false,
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function () {
+                                KTUtil.scrollTop();
+                            });
                         }
                     });
 
 
 
 
-                    swal.fire({
-                        text: "All is cool! Now you submit this form",
-                        icon: "success",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        heightAuto: false,
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                        
-                        }).then(function () {
-
-                            KTUtil.scrollTop();
-                        });
+                  
                     
                    
 				} else {
                     
                     swal.fire({
-                        text: "Sorry, looks like there are some errors detected, please try again.",
+                        title: "Có lỗi!",
+                        text: "Vui lòng điền đẩy đủ thông tin",
                         icon: "error",
                         heightAuto: false,
                         buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "Ok!",
                         customClass: {
                             confirmButton: "btn font-weight-bold btn-light-primary"
                         }
