@@ -1,23 +1,30 @@
-﻿function showInf() {
+﻿jQuery(document).ready( function showInf() {
 
-    var id = '<%= Session["UserID"] %>';
+    var idUser = $('#UserID').val();
+    
     $.ajax({
-        type: "post",
-        url: HOST_URL + 'data/GetAccount',
+        type: "get",
+        url:'/Account/DetailAccount',
         dataType: "json",
 
-        data: id,
+        data: { id:idUser },
 
         success: function (data) {
             
             if (data.status == "success") {
-                data.
+                $("#UserName").text(data.FullName);
+                var ava = data.FullName.indexOf(" ")
+                $("#UserAva").text(data.FullName.charAt(ava+1));
+                $("#popUserName").text(data.FullName);
+                $("#popUserRole").text(data.Role + " - " + data.Department);
+                $("#popUserEmail").text(data.Email);
+                console.log(data.FullName)
             } else {
                 
             }
         },
         error: function (errorResult) {
-           
+            console.log(errorResult.responseText)
         }
     });
-}
+})

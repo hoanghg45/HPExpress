@@ -8,7 +8,9 @@
             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                 <!--begin::Header Nav-->
                 <ul class="menu-nav">
+                    
                     <li class="menu-item menu-item-open menu-item-here menu-item-submenu menu-item-rel menu-item-open menu-item-here menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+                        <input hidden type="number" id="UserID" value="@Session["UserID"]" />
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="menu-text">Pages</span>
                             <i class="menu-arrow"></i>
@@ -704,10 +706,10 @@
             <!--begin::User-->
             <div class="topbar-item">
                 <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
-                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">@Session["UserName"]</span>
+                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Chào,</span>
+                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3" id="UserName"></span>
                     <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
-                        <span class="symbol-label font-size-h5 font-weight-bold">@Session["UserName"].ToString().Substring(0, 1)</span>
+                        <span class="symbol-label font-size-h5 font-weight-bold" id="UserAva"></span>
                     </span>
                 </div>
             </div>
@@ -717,3 +719,4 @@
     </div>
     <!--end::Container-->
 </div>
+@Scripts.Render("~/assets/js/pages/custom/profile/AccInfo.js")

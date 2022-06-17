@@ -12,6 +12,7 @@ using HPExpress.Models;
 using HPExpress.Context;
 using Newtonsoft.Json;
 using System.Text.Json;
+using System.Web.Security;
 
 namespace HPExpress.Controllers
 {
@@ -89,8 +90,9 @@ namespace HPExpress.Controllers
             User user = _context.Users.Where(u => u.UserName.Equals(model.UserName) && u.UserPass.Equals(model.Password)).FirstOrDefault();
             if(user != null)
             {
+                FormsAuthentication.SetAuthCookie(user.UserName, false);
                 Session.Add("UserID", user.UserID);
-                Session.Add("UserName", user.FullName);
+               
                
 
 
@@ -115,10 +117,15 @@ namespace HPExpress.Controllers
             );
 
         }
+        public ActionResult LogOut(int id)
+        {
+              Session.Remove("UserID");
+             return RedirectToAction("Login", "Account");
 
+        }
 
-        [HttpPost]
-        [Route("account")]
+        [HttpGet]
+        
         public JsonResult DetailAccount(int id)
         {
             //var account = from obj in _context.Users
@@ -161,6 +168,8 @@ namespace HPExpress.Controllers
             
 
         }
+
+       
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

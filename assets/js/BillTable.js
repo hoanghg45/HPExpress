@@ -1,15 +1,17 @@
 ﻿
-function showtable(idpr, datetime, search, page) {
-    var proid = ''
+function showtable(idpr, datetime, search, depart, userid,page) {
+    
     var id = idpr
     $.ajax({
-        type: "post",
+        type: "get",
         url: HOST_URL + 'api/data',
         data: {
             id: id,
             page: page,
             date: datetime,
-            search: search
+            search: search,
+            dep: depart,
+            usid: userid
         },
         datatype: 'json',
         success: function (data) {
@@ -183,18 +185,14 @@ function showtable(idpr, datetime, search, page) {
                 var page = $(this).data('page');
                 var filter = $("#kt_datatable_search_status").val()
                 var datetime = $("#kt_daterangepicker_2 input").val()
-                
 
-                //if (filter != "" && datetime != "") {
-                //    showtable(filter, page);
-                //}
-                //if (filter != "" || datetime != "") {
-                //    showtable(filter, page);
-                //}
-                //else {
-                //    showtable("", page);
-                //}
-                showtable(filter, datetime, value, page)
+                var depart = $('#datable_search_department').val()
+                var userid = $('#datable_search_user').val()
+
+                showtable(filter, datetime, value, depart, userid, page)
+
+                
+                
             });
 
             $('.printBtn').click(function (event) {
@@ -288,6 +286,7 @@ function showtable(idpr, datetime, search, page) {
                     }
                 });
             }
+            var a ="hkjhkj@"
             function printViettelPost(idbill) {
                 $.ajax({
                     type: "post",
@@ -373,4 +372,5 @@ function showtable(idpr, datetime, search, page) {
     });
 
 }
+
 

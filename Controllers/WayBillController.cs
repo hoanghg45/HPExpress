@@ -16,11 +16,14 @@ namespace HPExpress.Controllers
 {
     public class WayBillController : Controller
     {
+        
         BillManagerDBEntities _context = new BillManagerDBEntities();
-        [HttpPost]
+      
+        [HttpGet]
         [Route("data")]
-        public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="")
+        public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="",int dep = 0, int usid =0)
         {
+            
             DateTime dateFrom = DateTime.Now;
             DateTime dateTo = DateTime.Now;
 
@@ -28,14 +31,17 @@ namespace HPExpress.Controllers
             var table = from obj in _context.Bills
                         join se in _context.Transpots on obj.TransID equals se.TransID
                         join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
-                        
+                        join us in _context.Users on obj.UserID equals us.UserID
+                        join de in _context.Departments on us.DepartmentID equals de.DepartmentID
                         select new
                         {
                             Id = obj.BillID.Trim(),
                             Cusinf = obj.CustomerInf.Trim(),
+                            UserID = us.UserID,
                             Content = obj.BillContent,
                             ProviderID = pro.ProviderID,
                             ProviderName = pro.ProviderName,
+                            DepartmentID = de.DepartmentID,
                             Trans = se.TransName,
                             Billnum = obj.BillNumber,
                             Package = obj.ProductPakage,
@@ -50,11 +56,13 @@ namespace HPExpress.Controllers
                  dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 dateTo = dateTo.AddHours(23).AddMinutes(59);
             }
-            if (id != 0 || date != "")
+            if (id != 0 || date != "" || usid != 0 || dep != 0)
             {
                 
                 table = table.WhereIf(id != 0, t => t.ProviderID == id)
-                              .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo);
+                              .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo)
+                              .WhereIf(usid != 0,t => t.UserID == usid)
+                              .WhereIf(dep != 0, t => t.DepartmentID == dep);
             }
             if(search != "")
             {
@@ -74,7 +82,7 @@ namespace HPExpress.Controllers
 
             }
            
-            int pageSize = 3;
+            int pageSize = 10;
             page = (page > 0) ? page : 1;
             int start = (int)(page - 1) * pageSize;
 
@@ -102,15 +110,69 @@ namespace HPExpress.Controllers
             
         }
 
+        [HttpGet]
+       
+        public JsonResult filterUser(int id = 0)
+        {
+            var users = from obj in _context.Users
+                      
+
+                       select new
+                       {
+                          UserID = obj.UserID,
+                          UserName = obj.FullName
+                       };
+
+            //_context.Configuration.ProxyCreationEnabled = false;
+            if (id != 0)
+            {
+                 users = from obj in _context.Users
+                        where obj.UserID == id
+
+                        select new
+                        {
+                            UserID = obj.UserID,
+                            UserName = obj.FullName
+                        };
+            }
+                        
+            return this.Json(
+         new
+         {
+             data = users,
+         }
+         , JsonRequestBehavior.AllowGet
+         );
+
+        }
+
         // GET: WayBill
         public ActionResult Index()
         { 
-            List<Bill> lstbills = _context.Bills.ToList();
+            //List<Bill> lstbills = _context.Bills.ToList();
             List<ShippingProvider> catlst = new List<ShippingProvider>();
             catlst = _context.ShippingProviders.ToList();
             ViewBag.ProvList = catlst;
+            List<Department> departlst = new List<Department>();
+            departlst = _context.Departments.ToList();
+            ViewBag.DepartList = departlst;
+            List<User> userlst = new List<User>();
+            int currentUserID = (int)Session["UserID"];
+            User currUser = _context.Users.FirstOrDefault(u => u.UserID == currentUserID);
+            if(currUser.RoleID == 2)
+            {
+                userlst = _context.Users.Where(u => u.DepartmentID == currUser.DepartmentID).ToList();
+            }
+            else
+            {
+                userlst = _context.Users.ToList();
+            }
+           
             
-            return View(lstbills);
+            ViewBag.UserList = userlst;
+            
+            
+            return View(currUser);
         }
        
 
@@ -124,16 +186,17 @@ namespace HPExpress.Controllers
         public ActionResult Create(int id)
         {
             //ShippingProvider sp = _context.ShippingProviders.Where(p => p.ProviderName == viewName).FirstOrDefault();
-
+            var idUser = Session["UserID"];
+            User user = _context.Users.Find(idUser);
             switch (id)
             {
                 case 1:
-                    return View("NetpostView");
+                    return View("NetpostView",user);
                     
                 case 2:
-                    return View("ViettelPostView");
+                    return View("ViettelPostView",user);
                 case 3:
-                    return View("TasetcoView");
+                    return View("TasetcoView", user);
                     
                 default:
                     // code block
@@ -160,8 +223,8 @@ namespace HPExpress.Controllers
                     return Json(new { message = "Mã trùng với 1 phiếu trước đó, vui lòng kiểm tra và thử lại!" });
                 }
                 else { bill.BillID = collection["barcode"].Trim(); }
-                
-                
+
+                bill.UserID = Int32.Parse(collection["user_id"]);
                 bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
                 string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
                 bill.CustomerInf = cus_inf.Trim();

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HPExpress.Context.Bill>
+﻿@model HPExpress.Context.User
 
 
 @{
@@ -213,55 +213,77 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <!--begin: Search Form-->
+                    
                     <!--begin::Search Form-->
-                    <div class="mb-7">
-                        <div class="row align-items-center">
-                            <div class="col-lg-12 col-xl-10">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <input type="text" class="form-control" placeholder="Search..." id="searchInput" />
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">ĐVVC:</label>
-                                            <select class="form-control" id="kt_datatable_search_status">
-                                                <option value="">All</option>
-                                                @foreach (var Prov in ViewBag.ProvList)
-                                                {
-                                                    <option value="@Prov.ProviderID">@Prov.ProviderName</option>
-                                                }
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class='input-group' id='kt_daterangepicker_2'>
-                                                <input type='text' class="form-control" readonly placeholder="Tìm kiểm theo ngày" />
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="la la-calendar-check-o"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-1 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <a id="btn_search" href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
-                                        </div>
+                    <form class="mb-15">
+                        <div class="row mb-6">
+                            <div class="col-lg-4 mb-lg-0 mb-6">
+                                <label>Search:</label>
+                                <div class="input-icon">
+                                    <input type="text" class="form-control" placeholder="Search..." id="searchInput" />
+                                    <span>
+                                        <i class="flaticon2-search-1 text-muted"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-lg-0 mb-6">
+                                <label>Nhà cung cấp:</label>
+                                <select class="form-control" id="kt_datatable_search_status">
+                                    <option value="">All</option>
+                                    @foreach (var Prov in ViewBag.ProvList)
+                                    {
+                                        <option value="@Prov.ProviderID">@Prov.ProviderName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-4 mb-lg-0 mb-6">
+                                <label>Ngày gửi:</label>
+                                <div class='input-group' id='kt_daterangepicker_2'>
+                                    <input type='text' class="form-control" readonly placeholder="Tìm kiểm theo ngày" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="la la-calendar-check-o"></i></span>
                                     </div>
                                 </div>
-
                             </div>
+
                         </div>
-                    </div>
+                        @if (Model.RoleID != 3)
+                        {
+                            <div class="row mb-8">
+                                @if (Model.RoleID != 2)
+                                {
+                                    <div class="col-lg-6 mb-lg-0 mb-6">
+                                        <label>Phòng - Ban:</label>
+                                        <select class="form-control datatable-input" id="datable_search_department">
+                                            <option value="">All</option>
+                                            @foreach (var Dep in ViewBag.DepartList)
+                                            {
+                                                <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                }
+
+
+                                <div class="col-lg-6 mb-lg-0 mb-6">
+                                    <label>Nhân viên:</label>
+                                    <select class="form-control datatable-input" id="datable_search_user">
+
+                                        <option value="">All</option>
+                                        @foreach (var User in ViewBag.UserList)
+                                        {
+                                            <option value="@User.UserID">@User.FullName</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        }
+
+
+                    </form>
+
                     <!--end::Search Form-->
-                    <!--end: Search Form-->
                     <!--begin: Datatable-->
                     <div class="table-responsive-xl">
                         <table class="table" id="billtable">
@@ -293,6 +315,8 @@
     </div>
     @*endtable*@
     <div id="qrcode"></div>
+    <input id="userData" hidden value="@Model.DepartmentID" />
+    <input id="userData2" hidden value="@Model.UserID"  />
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->
@@ -302,13 +326,34 @@
 <script src="~/assets/js/qrcode.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        showtable()
+        var depID = $("#userData").val();
+        var UserID = $("#userData2").val();
+        console.log(depID)
+        console.log(UserID)
+        if (depID == 3) {
+            showtable("", "", "", "", UserID)
+        }
+        
         
         $("#searchInput").on("keyup", function () {
             search()
             
         });
         $('#kt_datatable_search_status').on('change', function () {
+            search()
+
+        });
+        $('#datable_search_department').on('change', function () {
+            
+            search()
+            setUserByDepart($(this).val())
+            
+            
+        });
+        $('#datable_search_user').on('change', function () {
+
+
+            
             search()
 
         });

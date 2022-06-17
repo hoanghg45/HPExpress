@@ -833,7 +833,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
             <h3 class="font-weight-bold m-0">
                 User Profile
-                <small class="text-muted font-size-sm ml-2">12 messages</small>
+                <small hidden class="text-muted font-size-sm ml-2">12 messages</small>
             </h3>
             <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
@@ -849,11 +849,9 @@ License: You must have a valid license purchased only from themeforest(the above
                     <i class="symbol-badge bg-success"></i>
                 </div>
                 <div class="d-flex flex-column">
-                    <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">@Session["User"].</a>
-                    @{
-
-                    }
-                    <div class="text-muted mt-1">Application Developer</div>
+                    <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary" id="popUserName"></a>
+                    
+                    <div class="text-muted mt-1" id="popUserRole">Application Developer</div>
                     <div class="navi mt-2">
                         <a href="#" class="navi-item">
                             <span class="navi-link p-0 pb-2">
@@ -870,10 +868,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!--end::Svg Icon-->
                                     </span>
                                 </span>
-                                <span class="navi-text text-muted text-hover-primary">jm@softplus.com</span>
+                                <span class="navi-text text-muted text-hover-primary" id="popUserEmail">jm@softplus.com</span>
                             </span>
                         </a>
-                        <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                        <a href="@Url.Action("Logout","Account", new { id = @Session["UserID"]})" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
                     </div>
                 </div>
             </div>
@@ -2419,7 +2417,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--end::Page Scripts-->
     @*datetimepicker*@
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-
+    
 </body>
 <!--end::Body-->
 </html>
