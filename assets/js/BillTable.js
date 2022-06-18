@@ -14,6 +14,10 @@ function showtable(idpr, datetime, search, depart, userid,page) {
             usid: userid
         },
         datatype: 'json',
+        
+        complete: function () {
+            $('#loading').hide();
+        },
         success: function (data) {
          
             $("#billtable").empty();
@@ -174,7 +178,7 @@ function showtable(idpr, datetime, search, depart, userid,page) {
             $('#billpagi').append(billpagi);
 
             $('#billnote').empty();
-            /* var billnote = '<span class="text-muted">Hiển thị ' + pageCurrent * size + ' trên ' + total + ' kết quả</span>'*/
+            var billnote = '<span class="text-muted">Hiển thị ' + data.from + '-' + data.to + ' trên ' + total + ' kết quả</span>'
             $('#billnote').append(billnote)
             ///Funtion chức năng
             

@@ -2349,6 +2349,7 @@
     <Content Include="Views\WayBill\ViettelPostView.cshtml" />
     <Content Include="Views\WayBill\TasetcoView.cshtml" />
     <Content Include="Views\Shared\_HeaderNavBar.cshtml" />
+    <Content Include="Views\Account\CreateAcc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

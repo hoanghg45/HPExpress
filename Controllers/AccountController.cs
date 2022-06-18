@@ -92,6 +92,7 @@ namespace HPExpress.Controllers
             {
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 Session.Add("UserID", user.UserID);
+                Session.Add("RoleID", user.RoleID);
                
                
 
@@ -120,6 +121,7 @@ namespace HPExpress.Controllers
         public ActionResult LogOut(int id)
         {
               Session.Remove("UserID");
+              Session.Remove("RoleID");
              return RedirectToAction("Login", "Account");
 
         }
@@ -168,8 +170,34 @@ namespace HPExpress.Controllers
             
 
         }
+        [AllowAnonymous]
+        public ActionResult CreateAcc()
+        {
+            var lstDep = _context.Departments.ToList();
+            ViewBag.lstDep = lstDep;
 
-       
+             var lstRole = _context.Roles.ToList();
+            ViewBag.lstRole = lstRole;
+
+            return View();
+        }
+
+        //
+        // POST: /Account/CreateAcc
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAcc(User model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

@@ -92,8 +92,10 @@ namespace HPExpress.Controllers
             int numSize = (int)Math.Ceiling(totalNumsize);
             ViewBag.numSize = numSize;
             table = table.OrderByDescending(x => x.Dateship).Skip(start).Take(pageSize);
-            
-            
+            var fromto = PaginationExtension.FromTo(totalBill, (int)page, pageSize);
+
+            int from = fromto.Item1;
+            int to = fromto.Item2;
 
 
             return this.Json(
@@ -103,7 +105,10 @@ namespace HPExpress.Controllers
              pageCurrent = page,
              numSize = numSize,
              total = totalBill,
-             size = pageSize
+             size = pageSize,
+             from = from,
+             to = to
+             
         }
          , JsonRequestBehavior.AllowGet
          );
@@ -127,7 +132,7 @@ namespace HPExpress.Controllers
             if (id != 0)
             {
                  users = from obj in _context.Users
-                        where obj.UserID == id
+                        where obj.DepartmentID == id
 
                         select new
                         {
