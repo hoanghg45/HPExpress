@@ -14,7 +14,9 @@ function showtable(idpr, datetime, search, depart, userid,page) {
             usid: userid
         },
         datatype: 'json',
-        
+        beforeSend: function () {
+            $('#loading').show();
+        },
         complete: function () {
             $('#loading').hide();
         },
@@ -148,38 +150,44 @@ function showtable(idpr, datetime, search, depart, userid,page) {
            
 
             $('#billtable').append(table);
-            if (data.total < 1) {
-                $('#datatable ').append('<div id="empty" class="alert alert-danger" role = "alert">  Không có dữ liêu với truy vấn này! </div>');
-            }
-            $('#billpagi').empty();
-            var size = data.size;
-            var total = data.total;
-            var pageCurrent = data.pageCurrent;
-            var numSize = data.numSize;
-            var billpagi = ""
-            if (pageCurrent > 1) {
-                var pagePrevious = pageCurrent - 1;
-                billpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + pagePrevious + ' > <i class="ki ki-bold-arrow-back icon-xs"></i></a > '
-            }
-
-            for (i = 1; i <= numSize; i++) {
-                if (i == pageCurrent) {
-                    billpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                } else {
-                    billpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+            $('#empty').empty()
+            if (data.total < 1) {                
+                $('#empty').append('<div id="empty" class="alert alert-danger" role = "alert"> Không có dữ liêu với truy vấn này! </div>');
+                $('#billtable').empty()
+                $('#billnote').empty()
+                $('#billpagi').empty()
+            } else {
+                $('#billpagi').empty();
+                var size = data.size;
+                var total = data.total;
+                var pageCurrent = data.pageCurrent;
+                var numSize = data.numSize;
+                var billpagi = ""
+                if (pageCurrent > 1) {
+                    var pagePrevious = pageCurrent - 1;
+                    billpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + pagePrevious + ' > <i class="ki ki-bold-arrow-back icon-xs"></i></a > '
                 }
+
+                for (i = 1; i <= numSize; i++) {
+                    if (i == pageCurrent) {
+                        billpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                    } else {
+                        billpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                    }
+                }
+
+                if (pageCurrent > 0 && pageCurrent < numSize) {
+                    var nextPage = pageCurrent + 1;
+                    billpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                }
+
+                $('#billpagi').append(billpagi);
+
+                $('#billnote').empty();
+                var billnote = '<span class="text-muted">Hiển thị ' + data.from + '-' + data.to + ' trên ' + total + ' kết quả</span>'
+                $('#billnote').append(billnote)
             }
-
-            if (pageCurrent > 0 && pageCurrent < numSize) {
-                var nextPage = pageCurrent + 1;
-                billpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
-            }
-
-            $('#billpagi').append(billpagi);
-
-            $('#billnote').empty();
-            var billnote = '<span class="text-muted">Hiển thị ' + data.from + '-' + data.to + ' trên ' + total + ' kết quả</span>'
-            $('#billnote').append(billnote)
+           
             ///Funtion chức năng
             
             
@@ -376,5 +384,18 @@ function showtable(idpr, datetime, search, depart, userid,page) {
     });
 
 }
+function AuthRole(RoleID, UserID, DepID) {
+
+    if (RoleID == 1) {
+        showtable("", "", "", "", "")
+    }
+    if (RoleID == 2) {
+        showtable("", "", "", DepID, "")
+    }
+    if (RoleID == 3) {
+        showtable("", "", "", "", UserID)
+    }
+}
+
 
 

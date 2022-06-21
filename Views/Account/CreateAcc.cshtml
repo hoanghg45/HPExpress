@@ -24,47 +24,7 @@
                 <!--end::Search Form-->
             </div>
             <!--end::Details-->
-            <!--begin::Toolbar-->
-            <div class="d-flex align-items-center">
-                <!--begin::Button-->
-                <a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
-                <!--end::Button-->
-                <!--begin::Dropdown-->
-                <div class="btn-group ml-2">
-                    <button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Submit</button>
-                    <button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                    <div class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
-                        <ul class="navi py-5">
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-writing"></i>
-                                    </span>
-                                    <span class="navi-text">Save &amp; continue</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-medical-records"></i>
-                                    </span>
-                                    <span class="navi-text">Save &amp; add new</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-hourglass-1"></i>
-                                    </span>
-                                    <span class="navi-text">Save &amp; exit</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!--end::Dropdown-->
-            </div>
-            <!--end::Toolbar-->
+            
         </div>
     </div>
     <!--end::Subheader-->
@@ -76,149 +36,204 @@
             <div class="card card-custom card-transparent">
                 <div class="card-body p-0">
                     <!--begin::Wizard-->
-                    <div class="wizard wizard-4" id="kt_wizard" data-wizard-state="step-first" data-wizard-clickable="true">
-                        
-                        <!--begin::Card-->
-                        <div class="card card-custom card-shadowless rounded-top-0">
-                            <!--begin::Body-->
-                            <div class="card-body p-0">
-                                <div class="row justify-content-center py-8 px-8 py-lg-15 px-lg-10">
-                                    <div class="col-xl-12 col-xxl-10">
-                                        <!--begin::Wizard Form-->
-                                        <form class="form" id="kt_form">
-                                            <div class="row justify-content-center">
-                                                <div class="col-xl-9">
-                                                    <!--begin::Wizard Step 1-->
-                                                    <div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
-                                                        <h5 class="text-dark font-weight-bold mb-10">Thông tin tài khoản</h5>
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <div class="image-input image-input-outline" id="kt_user_add_avatar">
-                                                                    <div class="image-input-wrapper" style="background-image: url(assets/media/users/100_6.jpg)"></div>
-                                                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                                                        <i class="fa fa-pen icon-sm text-muted"></i>
-                                                                        <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" />
-                                                                        <input type="hidden" name="profile_avatar_remove" />
-                                                                    </label>
-                                                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Tài khoản</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <input class="form-control form-control-solid form-control-lg" name="username" type="text" value="" />
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Tên nhân viên</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <input class="form-control form-control-solid form-control-lg" name="fullname" type="text" value="" />
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Mật khẩu</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <input class="form-control form-control-solid form-control-lg" name="password" type="password" value="" />
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group--><!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Nhập lại mật khẩu</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <input class="form-control form-control-solid form-control-lg" name="passwordconfirm" type="password" value="" />
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <div class="input-group input-group-solid input-group-lg">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text">
-                                                                            <i class="la la-phone"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="phone" value="5678967456" placeholder="Phone" />
-                                                                </div>
-                                                                <span class="form-text text-muted">Enter valid US phone number(e.g: 5678967456).</span>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <div class="input-group input-group-solid input-group-lg">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text">
-                                                                            <i class="la la-at"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row fv-plugins-icon-container">
-                                                            <label class="col-form-label col-xl-3 col-lg-3">Phòng-ban</label>
-                                                            <div class="col-xl-9 col-lg-9">
-                                                                <select class="form-control form-control-lg form-control-solid" name="Department">
-                                                                    
-                                                                    @foreach (var Dep in ViewBag.lstDep)
-                                                                    {
-                                                                        <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
-                                                                    }
-
-                                                                </select>
-                                                                <div class="fv-plugins-message-container"></div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                        <!--begin::Group-->
-                                                        <div class="form-group row fv-plugins-icon-container">
-                                                            <label class="col-form-label col-xl-3 col-lg-3">Quyền</label>
-                                                            <div class="col-xl-9 col-lg-9">
-                                                                <select class="form-control form-control-lg form-control-solid" name="Role">
-                                                                    
-                                                                    @foreach (var Role in ViewBag.lstRole)
-                                                                    {
-                                                                        <option value="@Role.RoleID">@Role.RoleName</option>
-                                                                    }
-
-
-                                                                </select>
-                                                                <div class="fv-plugins-message-container"></div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-                                                    </div>
-                      
-                                                   
-                                                    <!--end::Wizard Actions-->
-                                                </div>
+                    <!--begin::Card-->
+                    <div class="card card-custom card-shadowless rounded-top-0">
+                        <!--begin::Body-->
+                        <div class="card-body">                
+       
+                                    <!--begin::Wizard Form-->
+                            <form class="form" id="kt_form">
+                                @Html.AntiForgeryToken()         
+                                        <!--begin::Wizard Step 1-->
+                                <div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
+                                    <h5 class="text-dark font-weight-bold mb-10">Thông tin tài khoản</h5>
+                                    <!--begin::Group-->
+                                    @*<div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <div class="image-input image-input-outline" id="kt_user_add_avatar">
+                                                <div class="image-input-wrapper" style="background-image: url(assets/media/users/100_6.jpg)"></div>
+                                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                                    <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" />
+                                                    <input type="hidden" name="profile_avatar_remove" />
+                                                </label>
+                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                </span>
                                             </div>
-                                        </form>
-                                        <!--end::Wizard Form-->
+                                        </div>
+                                    </div>*@
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Tài khoản</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <input class="form-control form-control-solid form-control-lg" name="username" type="text" placeholder="Nhập tài khoản" value="" />
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <!--end::Body-->
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Tên nhân viên</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <input class="form-control form-control-solid form-control-lg" name="fullname" placeholder="Nhập tên nhân viên" type="text" value="" />
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Mật khẩu</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <input class="form-control form-control-solid form-control-lg" placeholder="Nhập mật khẩu" name="UserPass" type="password" value="" />
+                                        </div>
+                                    </div>
+                                    <!--end::Group--><!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Nhập lại mật khẩu</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <input class="form-control form-control-solid form-control-lg" placeholder="Nhập xác nhận mật khẩu" name="confirmPass" type="password" value="" />
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <div class="input-group input-group-solid input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="la la-phone"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="userphone" value="" placeholder="Nhập số điện thoại" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <div class="input-group input-group-solid input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="la la-at"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="UserEmail" placeholder="Nhập Email" value="" />
+
+                                            </div>
+                                            <span class="form-text text-muted">Exp: abc@gmail.com</span>
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <div class="form-group row">
+
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Giới tính</label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <div class="radio-inline input-group-lg">
+                                                <label class="radio">
+                                                    <input type="radio" value="1" checked="checked" name="Gender" />
+                                                    <span></span>
+                                                    Nam
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" value="2" name="Gender" />
+                                                    <span></span>
+                                                    Nữ
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="Gender" />
+                                                    <span></span>
+                                                    Khác
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--begin::Group-->
+                                    @if (Model.RoleID == 1)
+                                    {
+
+                                        <div class="form-group row fv-plugins-icon-container">
+                                            <label class="col-form-label col-xl-3 col-lg-3">Phòng-ban</label>
+                                            <div class="col-xl-9 col-lg-9">
+                                                <select class="form-control form-control-lg form-control-solid" name="DepartmentID">
+
+                                                    @foreach (var Dep in ViewBag.lstDep)
+                                                    {
+                                                        <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                                    }
+
+                                                </select>
+                                                <div class="fv-plugins-message-container"></div>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row fv-plugins-icon-container">
+                                            <label class="col-form-label col-xl-3 col-lg-3">Quyền</label>
+                                            <div class="col-xl-9 col-lg-9">
+                                                <select class="form-control form-control-lg form-control-solid" name="RoleID">
+
+                                                    @foreach (var Role in ViewBag.lstRole)
+                                                    {
+                                                        <option value="@Role.RoleID">@Role.RoleDesc</option>
+                                                    }
+
+
+                                                </select>
+                                                <div class="fv-plugins-message-container"></div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input hidden name="Department" value="@Model.DepartmentID" />
+                                        <input hidden name="Role" value="3" />
+
+                                    }
+                                    <div class="card-footer" style="justify-content:flex-end; display:flex">
+                                        <a href="#" style="margin-right:30px" class="btn btn-default font-weight-bold btn-lg px-3 font-size-base">Trở về danh sách</a>
+                                        <div class="btn-group ">
+                                            <button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Tạo</button>
+                                            <button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                            <div class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
+                                                <ul class="navi py-5">
+
+                                                    <li  class="navi-item">
+                                                        <a id="addnew"  href="javascript:" class="navi-link">
+                                                            <span class="navi-icon">
+                                                                <i class="flaticon2-medical-records"></i>
+                                                            </span>
+                                                            <span class="navi-text">Lưu và tiếp tục tạo mới</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="navi-item">
+                                                        <a href="javascript:" id="exit" class="navi-link">
+                                                            <span class="navi-icon">
+                                                                <i class="flaticon2-hourglass-1"></i>
+                                                            </span>
+                                                            <span class="navi-text">Lưu và trở về danh sách</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>                          
+                            </form>
+                       <!--end::Wizard Form-->                             
                         </div>
-                        <!--end::Card-->
+                        <!--end::Body-->
                     </div>
+                    <!--end::Card-->
                     <!--end::Wizard-->
                 </div>
             </div>
@@ -229,6 +244,10 @@
     <!--end::Entry-->
 </div>
 
-<script src="assets/js/pages/custom/user/add-user.js"></script>
+<script src="~/assets/js/User/addUser.js"></script>
 
+<script type="text/javascript">
+
+
+</script>
 

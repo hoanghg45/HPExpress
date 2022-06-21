@@ -13,6 +13,10 @@ using HPExpress.Context;
 using Newtonsoft.Json;
 using System.Text.Json;
 using System.Web.Security;
+using HPExpress.Security;
+using System.Data.Entity;
+using HPExpress.Extension;
+using NinjaNye.SearchExtensions;
 
 namespace HPExpress.Controllers
 {
@@ -93,7 +97,9 @@ namespace HPExpress.Controllers
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 Session.Add("UserID", user.UserID);
                 Session.Add("RoleID", user.RoleID);
+                user.LastLogin = DateTime.Now;
                
+                _context.SaveChanges();
                
 
 
@@ -126,8 +132,13 @@ namespace HPExpress.Controllers
 
         }
 
+      
+
+
+
+
         [HttpGet]
-        
+        [SessionCheck]
         public JsonResult DetailAccount(int id)
         {
             //var account = from obj in _context.Users
@@ -150,15 +161,18 @@ namespace HPExpress.Controllers
                 {
                     status = "success",
                     Id = account.UserID,
-                    Name = account.UserName,
-                    FullName = account.FullName,
-                    Role = account.Role.RoleName,
+                    Name = account.UserName.Trim(),
+                    FullName = account.FullName.Trim(),
+                    RoleID = account.RoleID,
+                    Role = account.Role.RoleDesc,
                     Department = account.Department.DepartmentName,
-                    Email = account.UserEmail,
-                    Phone = account.UserPhone
+                    DepartmentID = account.DepartmentID,
+                    Email = account.UserEmail.Trim(),
+                    Phone = account.UserPhone,
+                    Gender = account.Gender
 
 
-                }, JsonRequestBehavior.AllowGet);
+                }, JsonRequestBehavior.AllowGet) ;
             }
             else
             {
@@ -170,35 +184,228 @@ namespace HPExpress.Controllers
             
 
         }
+        [SessionCheck]
         [AllowAnonymous]
         public ActionResult CreateAcc()
         {
+           int userID = (int)Session["UserID"];
+            User currUser = _context.Users.FirstOrDefault(u => u.UserID == userID);
             var lstDep = _context.Departments.ToList();
             ViewBag.lstDep = lstDep;
 
              var lstRole = _context.Roles.ToList();
             ViewBag.lstRole = lstRole;
 
-            return View();
+            return View(currUser);
         }
 
         //
         // POST: /Account/CreateAcc
+        [SessionCheck]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAcc(User model)
+        public JsonResult CreateAcc(User model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                
+                model.CreateAt = DateTime.Now;
+                model.Status = 1;
+                _context.Users.Add(model);
+                _context.SaveChanges();
+                return this.Json(new
+                {
+                    status = "success",
+                    returnURL = returnUrl
+                }, JsonRequestBehavior.AllowGet) ;
             }
-
+            else { 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return this.Json(new
+            {
+                status = "error",
+                
+            }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        // POST: /Account/UpdateAcc
+        [SessionCheck]
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public JsonResult UpdateAcc(FormCollection collection, string returnUrl)
+        {
+            if (ModelState.IsValid && collection != null)
+            {
+                int id = Int32.Parse( collection["modal_userID"]);
+                User user = _context.Users.Where(u => u.UserID == id).FirstOrDefault();
+                if(user != null) {
+                   
+                    user.UserName = collection["modal_username"];
+                    user.FullName = collection["modal_fullname"];
+                    string password = collection["modal_UserPass"];
+                    
+                    if(password != "")
+                    {
+                        user.UserPass = password;
+                    }
+                    user.RoleID = Int32.Parse(collection["modal_RoleID"]);
+                    user.DepartmentID = Int32.Parse(collection["modal_DepartmentID"]);
+                    user.Gender = Int32.Parse(collection["modal_Gender"]);
+                    user.UserEmail =collection["modal_UserEmail"];
+                    user.UserPhone =collection["modal_userphone"];
+                    
+                    _context.SaveChanges();
+                    return this.Json(new
+                {
+                    status = "success",
+                    returnURL = returnUrl
+                }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return this.Json(new
+                    {
+                        status = "error",
+
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                // If we got this far, something failed, redisplay form  return this.Json(new
+                return this.Json(new
+                {
+                    status = "error",
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        //List User
+        [SessionCheck]
+        [AllowAnonymous]
+        public  ActionResult ListUser()
+        {
+            int id = (int)Session["UserID"];
+            
+            var lstDep = _context.Departments.ToList();
+            ViewBag.lstDep = lstDep;
+
+            var lstRole = _context.Roles.ToList();
+            ViewBag.lstRole = lstRole;
+            User user =  _context.Users.Where(u => u.UserID == id).FirstOrDefault();
+            return View(user);
+        }
+        public double calLogin(DateTime lastlogin)
+        {
+            DateTime now = DateTime.Now;
+            double result = now.Subtract(lastlogin).TotalDays;
+            if (result < 1)
+            {
+                result = now.Subtract(lastlogin).TotalHours;
+                if (result < 1)
+                {
+                    result = now.Subtract(lastlogin).TotalMinutes;
+                    if (result < 1)
+                    {
+                        result = 0;
+
+                    }
+                }
+                   
+                    
+
+            }
+            return result;
         }
 
-        //
+        //get Users Data
+        [HttpGet]
+        //[SessionCheck]
+        public JsonResult Accounts(string search = "",int depart = 0, int role = 0, int page = 0)
+        {
+
+           
+            
+
+            
+            //_context.Configuration.ProxyCreationEnabled = false;
+            var table = from obj in _context.Users
+                        join ro in _context.Roles on obj.RoleID equals ro.RoleID
+                        join de in _context.Departments on obj.DepartmentID equals de.DepartmentID
+                        select new
+                        {
+                            Id = obj.UserID,
+                            Name = obj.UserName.Trim(),
+                            FullName = obj.FullName.Trim(),
+                            Role = ro.RoleDesc.Trim(),
+                            RoleID = ro.RoleID,
+                            Department = de.DepartmentName.Trim(),
+                            DepartmentID = de.DepartmentID,
+                            Email = obj.UserEmail.Trim(),
+                            Phone = obj.UserPhone,
+                            Gender= obj.Gender,
+                            Status = obj.Status,
+                            LastLogin = obj.LastLogin,
+                            CreateAt = obj.CreateAt
+                        };
+
+
+            if (role != 0 || depart != 0)
+            {
+
+                table = table.WhereIf(role != 0, t => t.RoleID == role)
+                              .WhereIf(depart != 0, t => t.DepartmentID == depart);
+            }
+            if (search != "")
+            {
+
+                search = search.Trim();
+                table = table.Search(t => t.Id.ToString(),
+                 t => t.Name,
+                 t => t.FullName,
+                 t => t.Role,
+                   t => t.Department,
+                   t => t.Email,
+                   t => t.Phone
+                   ).Containing(search);
+
+
+            }
+
+            int pageSize = 10;
+            page = (page > 0) ? page : 1;
+            int start = (int)(page - 1) * pageSize;
+
+            ViewBag.pageCurrent = page;
+            int totalBill = table.Count();
+            float totalNumsize = (totalBill / (float)pageSize);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            table = table.OrderByDescending(x => x.CreateAt).Skip(start).Take(pageSize);
+            var fromto = PaginationExtension.FromTo(totalBill, (int)page, pageSize);
+
+            int from = fromto.Item1;
+            int to = fromto.Item2;
+
+
+            return this.Json(
+         new
+         {
+             data = table,
+             pageCurrent = page,
+             numSize = numSize,
+             total = totalBill,
+             size = pageSize,
+             from = from,
+             to = to
+
+         }
+         , JsonRequestBehavior.AllowGet
+         );
+
+
+        }
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)

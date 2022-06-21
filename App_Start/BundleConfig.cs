@@ -25,6 +25,11 @@ namespace HPExpress
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+
+            "~/Scripts/moment.js",
+
+            "~/Scripts/moment-with-locales.js"));
         }
     }
 }

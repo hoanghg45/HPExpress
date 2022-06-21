@@ -39,7 +39,7 @@
           <Key>
             <PropertyRef Name="DepartmentID" />
           </Key>
-          <Property Name="DepartmentID" Type="int" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nchar" MaxLength="10" />
         </EntityType>
@@ -114,13 +114,15 @@
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleID" Type="int" />
           <Property Name="DepartmentID" Type="int" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="200" />
           <Property Name="UserName" Type="nchar" MaxLength="30" />
           <Property Name="UserPass" Type="nchar" MaxLength="30" />
-          <Property Name="UserEmail" Type="nchar" MaxLength="10" />
+          <Property Name="UserEmail" Type="nchar" MaxLength="50" />
           <Property Name="UserPhone" Type="nchar" MaxLength="10" />
           <Property Name="CreateAt" Type="datetime" />
-          <Property Name="UpdateAt" Type="datetime" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Gender" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="LastLogin" Type="datetime" />
         </EntityType>
         <Association Name="FK_Bills_Payments">
           <End Role="Payments" Type="Self.Payments" Multiplicity="0..1" />
@@ -379,15 +381,17 @@
           <Property Name="RoleID" Type="Int32" />
           <Property Name="UserName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="UserPass" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
-          <Property Name="UserEmail" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="UserPhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="CreateAt" Type="DateTime" Precision="3" />
-          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_Users" FromRole="Users" ToRole="Bills" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
           <Property Name="DepartmentID" Type="Int32" />
           <NavigationProperty Name="Department" Relationship="BillManagerDBModel.FK_Users_Departments" FromRole="User" ToRole="Department" />
           <Property Name="FullName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_Bills_Payments">
           <End Role="Payments" Type="Self.Payment" Multiplicity="0..1" />
@@ -632,6 +636,9 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BillManagerDBModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -641,7 +648,6 @@
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
                 <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
-                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

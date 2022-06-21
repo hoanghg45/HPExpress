@@ -35,15 +35,3 @@ function setUserByDepart(id) {
     });
 
 }
-function AuthRole(RoleID, UserID, DepID) {
-
-    if (RoleID == 1) {
-        showtable("", "", "", "", "")
-    } 
-    if (RoleID == 2) {
-        showtable("", "", "", DepID, "")
-    }
-    if (RoleID == 3) {
-        showtable("", "", "", "", UserID)
-    }
-}

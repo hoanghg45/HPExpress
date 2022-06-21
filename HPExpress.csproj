@@ -307,6 +307,7 @@
     <Compile Include="Models\ViettelPostViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\CustomRoleProvider.cs" />
+    <Compile Include="Security\SessionCheck.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -489,6 +490,10 @@
     <Content Include="assets\js\qrcode.js" />
     <Content Include="assets\js\qrcode.min.js" />
     <Content Include="assets\js\scripts.bundle.js" />
+    <Content Include="assets\js\User\addUser.js" />
+    <Content Include="assets\js\User\searchUser.js" />
+    <Content Include="assets\js\User\tableUsers.js" />
+    <Content Include="assets\js\User\updateUser.js" />
     <Content Include="assets\media\bg\bg-1.jpg" />
     <Content Include="assets\media\bg\bg-10.jpg" />
     <Content Include="assets\media\bg\bg-11.jpg" />
@@ -2310,6 +2315,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2350,6 +2359,9 @@
     <Content Include="Views\WayBill\TasetcoView.cshtml" />
     <Content Include="Views\Shared\_HeaderNavBar.cshtml" />
     <Content Include="Views\Account\CreateAcc.cshtml" />
+    <Content Include="Views\Account\ListUser.cshtml" />
+    <Content Include="Scripts\moment.min.js.map" />
+    <Content Include="Scripts\moment-with-locales.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

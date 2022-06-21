@@ -137,13 +137,7 @@ var KTAddUser = function () {
 							}
 						}
 					},
-					companywebsite: {
-						validators: {
-							notEmpty: {
-								message: 'Website URL is required'
-							}
-						}
-					}
+					
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

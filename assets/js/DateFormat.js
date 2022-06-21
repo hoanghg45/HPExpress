@@ -14,5 +14,15 @@
             padTo2Digits(date.getMonth() + 1),
             date.getFullYear(),
         ].join('/');
-    }
+}
+
+
+function timeCal(lastlogin) {
+    lastlogin = lastlogin.substring(4, 24)
+    
+    moment.locale('vi')
+    var cal = moment(lastlogin).fromNow();
+
+    return cal
+}
 

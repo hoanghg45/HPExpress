@@ -199,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 mb-lg-0 mb-6">
-                                <label>Nhà cung cấp:</label>
+                                <label>Đơn vị vận chuyển: </label>
                                 <select class="form-control" id="kt_datatable_search_status">
                                     <option value="">All</option>
                                     @foreach (var Prov in ViewBag.ProvList)
@@ -257,15 +257,16 @@
 
                     <!--end::Search Form-->
                     <!--begin: Datatable-->
-                    
                     <div class="table-responsive-xl">
                         <div style="display:flex; justify-content:center"> <div id="loading" class="spinner spinner-primary spinner-lg mr-15"></div> </div>
-                        
+
                         <table class="table" id="billtable">
                         </table>
 
                     </div>
+                    <div id="empty" style="display:flex; justify-content:center"> </div>
                     <div class="d-flex justify-content-between align-items-center flex-wrap">
+
                         <div class="d-flex flex-wrp py-2 mr-3" id="billpagi">
 
 
@@ -290,8 +291,7 @@
     </div>
     @*endtable*@
     <div id="qrcode"></div>
-    <input id="userData" hidden value="@Model.DepartmentID" />
-    <input id="userData2" hidden value="@Model.UserID"  />
+    
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->

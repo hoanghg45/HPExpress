@@ -1,0 +1,316 @@
+﻿    @model  HPExpress.Context.User
+
+@{
+    ViewBag.Title = "ListUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Details-->
+            <div class="d-flex align-items-center flex-wrap mr-2">
+                <!--begin::Title-->
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Danh sách tài khoản</h5>
+                <!--end::Title-->
+                <!--begin::Separator-->
+                <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+                <!--end::Separator-->
+
+
+            </div>
+            <!--end::Details-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Button-->
+                <a href="#" class=""></a>
+                <!--end::Button-->
+                <!--begin::Button-->
+                <a href="@Url.Action("CreateAcc","Account")" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">Tạo tài khoản</a>
+                <!--end::Button-->
+
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <!--begin::Header-->
+                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            Quản lý tài khoản
+
+                        </h3>
+                    </div>
+
+                </div>
+
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body">
+                    <!--begin::Search Form-->
+                    <form class="mb-15">
+                        <div class="row mb-6">
+                            <div class="col-lg-4 mb-lg-0 mb-6">
+                                <label>Search:</label>
+                                <div class="input-icon">
+                                    <input type="text" class="form-control" placeholder="Search..." id="searchUser" />
+                                    <span>
+                                        <i class="flaticon2-search-1 text-muted"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            @if (Model.RoleID == 1)
+                            {
+
+                                <div class="col-lg-4 mb-lg-0 mb-6">
+                                    <label>Quyền: </label>
+                                    <select class="form-control" id="datable_search_role">
+                                        <option value="">All</option>
+                                        @foreach (var Rol in ViewBag.lstRole)
+                                        {
+                                            <option value="@Rol.RoleID">@Rol.RoleDesc</option>
+                                        }
+
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 mb-lg-0 mb-6">
+                                    <label>Phòng - ban: </label>
+                                    <select class="form-control" id="datable_search_department">
+                                        <option value="">All</option>
+                                        @foreach (var Dep in ViewBag.lstDep)
+                                        {
+                                            <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+
+
+                        </div>
+
+
+
+                    </form>
+
+                    <!--end::Search Form-->
+                    <!--begin: Datatable-->
+                    <div class="table-responsive-xl">
+                        <div style="display:flex; justify-content:center"> <div id="loading" class="spinner spinner-primary spinner-lg mr-15"></div> </div>
+
+                        <table class="table" id="usertable">
+                        </table>
+
+                    </div>
+                    <div id="empty" style="display:flex; justify-content:center"> </div>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                        <div class="d-flex flex-wrp py-2 mr-3" id="userpagi">
+
+
+                        </div>
+                        <div class="d-flex align-items-center py-3" id="usernote">
+
+
+                        </div>
+                    </div>
+                    <!--end: Datatable-->
+
+                </div>
+                <!--start::Model-->
+
+                <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thông tin tài khoản</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i aria-hidden="true" class="ki ki-close"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modal_form">
+                                    @Html.AntiForgeryToken()
+                                    <div  data-scroll="true" data-height="300">
+                                        <input hidden name="modal_userID" id="modal_userID" value="" />
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Tài khoản</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <input class="form-control form-control-solid form-control-lg" name="modal_username" type="text" placeholder="Nhập tài khoản" id="modal_username" value="" />
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Tên nhân viên</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <input class="form-control form-control-solid form-control-lg" name="modal_fullname" id="modal_fullname" placeholder="Nhập tên nhân viên" type="text" value="" />
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Mật khẩu</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <input class="form-control form-control-solid form-control-lg" placeholder="Nhập mật khẩu" name="modal_UserPass" id="modal_UserPass" type="password" value="" />
+                                                <span style="color:red" class="form-text ">Chỉ nhập khi có sự thay đổi về mật khẩu</span>
+                                            </div>
+                                        </div>
+                                        <!--end::Group--><!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Nhập lại mật khẩu</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <input class="form-control form-control-solid form-control-lg" placeholder="Nhập xác nhận mật khẩu" name="modal_confirmPass" id="modal_confirmPass" type="password" value="" />
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <div class="input-group input-group-solid input-group-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-phone"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="modal_userphone" id="modal_userphone" value="" placeholder="Nhập số điện thoại" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <div class="input-group input-group-solid input-group-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-at"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="modal_UserEmail" id="modal_UserEmail" placeholder="Nhập Email" value="" />
+
+                                                </div>
+                                                <span class="form-text text-muted">Exp: abc@gmail.com</span>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <div class="form-group row">
+
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Giới tính</label>
+                                            <div class="col-lg-9 col-xl-9">
+                                                <div class="radio-inline input-group-lg">
+                                                    <label class="radio">
+                                                        <input type="radio" value="1" checked="checked" name="modal_Gender" />
+                                                        <span></span>
+                                                        Nam
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="2" name="modal_Gender" />
+                                                        <span></span>
+                                                        Nữ
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="modal_Gender" />
+                                                        <span></span>
+                                                        Khác
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--begin::Group-->
+                                        @if (Model.RoleID == 1)
+                                        {
+
+                                            <div class="form-group row fv-plugins-icon-container">
+                                                <label class="col-form-label col-xl-3 col-lg-3">Phòng-ban</label>
+                                                <div class="col-xl-9 col-lg-9">
+                                                    <select class="form-control form-control-lg form-control-solid" name="modal_DepartmentID" id="modal_DepartmentID">
+
+                                                        @foreach (var Dep in ViewBag.lstDep)
+                                                        {
+                                                            <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                                        }
+
+                                                    </select>
+                                                    <div class="fv-plugins-message-container"></div>
+                                                </div>
+                                            </div>
+                                            <!--end::Group-->
+                                            <!--begin::Group-->
+                                            <div class="form-group row fv-plugins-icon-container">
+                                                <label class="col-form-label col-xl-3 col-lg-3">Quyền</label>
+                                                <div class="col-xl-9 col-lg-9">
+                                                    <select class="form-control form-control-lg form-control-solid" name="modal_RoleID" id="modal_RoleID">
+
+                                                        @foreach (var Role in ViewBag.lstRole)
+                                                        {
+                                                            <option value="@Role.RoleID">@Role.RoleDesc</option>
+                                                        }
+
+
+                                                    </select>
+                                                    <div class="fv-plugins-message-container"></div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <input hidden name="Department" value="@Model.DepartmentID" />
+                                            <input hidden name="Role" value="3" />
+
+                                        }
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Thoát</button>
+                                <button type="button" id="btnSave" class="btn btn-primary font-weight-bold">Lưu</button>
+                            </div>
+                        </div>
+                        <!--end::Model-->
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Container-->
+                </div>
+            </div>
+            <!--end::Entry-->
+        </div>
+    </div>
+        <script src="~/assets/js/User/tableUsers.js"></script>
+        <script src="~/assets/js/DateFormat.js"></script>
+        <script src="~/assets/js/User/searchUser.js"></script>
+        <script src="~/assets/js/User/updateUser.js"></script>
+        <script type="text/javascript">
+    $(document).ready(function () {
+        var RoleID = @Model.RoleID;
+        var DepID = @Model.DepartmentID;
+        AuthRoleUser(RoleID, DepID)
+        $("#searchUser").on("keyup", function () {
+            searchUser("", RoleID, DepID)
+
+        });
+        $('#datable_search_role').on('change', function () {
+            searchUser("", RoleID, DepID)
+
+        });
+        $('#datable_search_department').on('change', function () {
+            searchUser("", RoleID, DepID)
+        });
+
+
+    });
+        </script>

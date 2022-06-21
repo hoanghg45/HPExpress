@@ -27,9 +27,11 @@ namespace HPExpress.Context
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }
         public Nullable<System.DateTime> CreateAt { get; set; }
-        public Nullable<System.DateTime> UpdateAt { get; set; }
         public Nullable<int> DepartmentID { get; set; }
         public string FullName { get; set; }
+        public Nullable<int> Gender { get; set; }
+        public Nullable<int> Status { get; set; }
+        public Nullable<System.DateTime> LastLogin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bills { get; set; }
