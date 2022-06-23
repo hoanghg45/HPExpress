@@ -11,9 +11,11 @@ using System.Globalization;
 using System.Data.Entity.SqlServer;
 using HPExpress.Extension;
 using NinjaNye.SearchExtensions;
+using HPExpress.Security;
 
 namespace HPExpress.Controllers
 {
+    [SessionCheck]
     public class WayBillController : Controller
     {
         
@@ -188,27 +190,26 @@ namespace HPExpress.Controllers
         }
 
         // GET: WayBill/Create/{id}
-        public ActionResult Create(int id)
+        public ActionResult Create(string id)
         {
             //ShippingProvider sp = _context.ShippingProviders.Where(p => p.ProviderName == viewName).FirstOrDefault();
             var idUser = Session["UserID"];
             User user = _context.Users.Find(idUser);
             switch (id)
             {
-                case 1:
-                    return View("NetpostView",user);
-                    
-                case 2:
-                    return View("ViettelPostView",user);
-                case 3:
+                case "NetpostView":
+                    return View("NetpostView", user);
+                case "ViettelPostView":
+                    return View("ViettelPostView", user);
+                case "TasetcoView":
                     return View("TasetcoView", user);
-                    
+
                 default:
                     // code block
                     break;
             }
 
-          
+
 
             return View("Error");
         }

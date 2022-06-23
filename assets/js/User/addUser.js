@@ -93,7 +93,7 @@ var Add = function () {
             }
         );
         form.querySelector('[name="UserPass"]').addEventListener('input', function () {
-            fv.revalidateField('confirmPass');
+            validation.revalidateField('confirmPass');
         });
 
         $('#addnew').on('click', function (e) {

@@ -108,4 +108,36 @@ namespace HPExpress.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+    public class ChangePassViewModel
+    {
+
+        [Required]
+        [Display(Name = "oldpass")]
+        public string OldPassword { get; set; }
+        [Required]
+        [Display(Name = "newpass")]
+        public string NewPassword { get; set; }
+    }
+    public class UpdateProfileViewModel
+    {
+        [Required]
+
+        [Display(Name = "fullname")]
+        public string FullName { get; set; }
+
+        [Required]
+       
+        [Display(Name = "useremail")]
+        public string UserEmail { get; set; }
+
+        [Required]
+       
+        [Display(Name = "userphone")]
+        public string UserPhone { get; set; }
+
+        
+        [Display(Name = "Gender")]
+        
+        public int Gender { get; set; }
+    }
 }

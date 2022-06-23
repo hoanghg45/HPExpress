@@ -1,4 +1,4 @@
-﻿function showUserTable(search,depart,role,page) {
+﻿function showUserTable(search,depart,role,stt,page) {
     $.ajax({
         type: "get",
         url: HOST_URL + '/account/Accounts',
@@ -6,6 +6,7 @@
             search: search,
             depart: depart,
             role: role,
+            stt: stt,
             page: page
             
         },
@@ -25,7 +26,7 @@
 
             table += '<tr>'
 
-            table += '<th scope="col">Mã Tài khoản</th>'
+            table += '<th scope="col">#</th>'
             table += '<th scope="col">Tên tài khoản</th>'
             table += '<th scope="col">Tên nhân viên </th>'
             table += '<th scope="col">Quyền tài khoản</th>'
@@ -46,8 +47,8 @@
 
             $.each(data.data, function (i, d, p) {
                 table += '<tr>'
-
-                table += '<th >' + d.Id + '</th>'
+              
+                table += '<th >' + ((10 * (data.pageCurrent-1))+(i+1)) + '</th>'
                 table += '<th >' + d.Name + '</th>'
                 table += '<th >' + d.FullName + '</th>'
                 table += '<th >' + d.Role + '</th>'
@@ -56,17 +57,17 @@
                 table += '<th >' + d.Phone + '</th>'
                 var stt = {
                     1: {
-                        'title': 'Unactive',
+                        'title': 'Hạn chế',
                         'class': ' label-light-danger'
                     },
                     2: {
-                        'title': 'Actived',
+                        'title': 'Kích hoạt',
                         'class': ' label-light-success'
                     },
 
 
                 };
-                table += '<th>' + '<span class="label label-inline ' + stt[d.Status].class + ' font-weight-bold">' + stt[d.Status].title + '</span >' + '</th>';
+                table += '<th>' + '<a href="javascrip:;" class="status" data-userID=' + d.Id + ' >'+ '<span class="label label-inline ' + stt[d.Status].class + ' font-weight-bold">' + stt[d.Status].title + '</span >'+ '</a>' + '</th>';
                 if (d.LastLogin != null) {
                     var lastLogin = new Date(parseInt(d.LastLogin.substr(6)))
                     table += '<th >' + timeCal(lastLogin + "") + '</th>'
@@ -104,7 +105,7 @@
 	                                        </a>\
 	                                    </li>\
                                          <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
+	                                        <a href="#" data-userID='+ d.Id + ' data-RoleID=' + d.RoleID + ' data-DepartmentID=' + d.DepartmentID +' class="navi-link btnDel">\
 	                                            <span class="navi-icon"><i class="la la-trash"></i></span>\
 	                                            <span class="navi-text">Xóa</span>\
 	                                        </a>\
@@ -170,7 +171,7 @@
                 var id = $(this).data('userid')
                 $.ajax({
                     type: "get",
-                    url: HOST_URL + '/Account/DetailAccount',
+                    url: HOST_URL + 'Account/DetailAccount',
                     data: {
                         id: id
                     },
@@ -198,10 +199,131 @@
                 })
                 
             })
+            $(".btnDel").click(function (e) {
+                e.preventDefault()
+                var id = $(this).data('userid')
+                var RoleID = $("#scrUpdate").data('roleid')
+                var DepID = $("#scrUpdate").data('depid')
+                var page = $("#userpagi a.active").data('page')
+                Swal.fire({
+                    title: "Bạn có chắc muốn xóa?",
+                    text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Có, xóa!",
+                    cancelButtonText: "Không!",
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: HOST_URL + 'Account/DeleteAccount',
+                            data: {
+                                id: id
+                            },
+                            datatype: 'json',
+
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    Swal.fire(
+                                        "Đã xóa!",
+                                        "Dữ liệu đã xóa thành công!",
+                                        "success"
+                                    ).then(function () {
+                                        
+                                        searchUser(page, RoleID, DepID)
+                                        KTUtil.scrollTop();
+
+                                    })
+                                }
+                            },
+                            error: function (errorResult) {
+                                console.log(errorResult.responseText)
+                            }
+                        })
+
+                        
+                        // result.dismiss can be "cancel", "overlay",
+                        // "close", and "timer"
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire(
+                            "Đã hủy",
+                            "Dữ liệu vẫn an toàn!",
+                            "error"
+                        )
+                    }
+                });
+            });
+
+            $(".status").click(function (e) {
+
+                var id = $(this).data('userid');
+
+                e.preventDefault()
+                var id = $(this).data('userid')
+                var RoleID = $("#scrUpdate").data('roleid')
+                var DepID = $("#scrUpdate").data('depid')
+                var page = $("#userpagi a.active").data('page')
+                Swal.fire({
+                    title: "Bạn có chắc muốn thay đổi trạng thái?",
+                    text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Có!",
+                    cancelButtonText: "Không!",
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: HOST_URL + 'Account/updateStatus',
+                            data: {
+                                id: id
+                            },
+                            datatype: 'json',
+
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    Swal.fire(
+                                        "Đã thay đổi!",
+                                        "Trạng thái đã thay đổi thành công!",
+                                        "success"
+                                    ).then(function () {
+
+                                        searchUser(page, RoleID, DepID)
+                                        KTUtil.scrollTop();
+
+                                    })
+                                }
+                            },
+                            error: function (errorResult) {
+                                console.log(errorResult.responseText)
+                            }
+                        })
+
+
+                        // result.dismiss can be "cancel", "overlay",
+                        // "close", and "timer"
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire(
+                            "Đã hủy",
+                            "Dữ liệu vẫn an toàn!",
+                            "error"
+                        )
+                    }
+                });
 
 
 
-            $("#usernote a").click(function (event) {
+                
+
+
+
+            });
+
+
+
+            $("#userpagi a").click(function (event) {
                 
                 var page = $(this).data('page');
                 
@@ -209,10 +331,10 @@
 
                 var depart = $('#datable_search_department').val()
                 var role = $('#datable_search_role').val()
-
+                var stt = $('#datable_search_status').val()
                 
 
-                showUserTable(search,depart,role,page)
+                showUserTable(search,depart,role,stt,page)
 
 
 
@@ -230,10 +352,10 @@
 function AuthRoleUser(RoleID, DepID) {
 
     if (RoleID == 1) {
-        showUserTable("", "", "", "")
+        showUserTable("", "", "","", "")
     }
     if (RoleID == 2) {
-        showUserTable("", DepID, "", "")
+        showUserTable("", DepID,"","", "")
     }
    
 }

@@ -43,9 +43,10 @@ var Update = function () {
                     },
                     modal_confirmPass: {
                         validators: {
+
                             identical: {
                                 compare: function () {
-                                    return form.querySelector('[name="UserPass"]').value;
+                                    return form.querySelector('[name="modal_UserPass"]').value;
                                 },
                                 message: 'Không trùng khớp với mật khẩu',
                             },
@@ -91,7 +92,7 @@ var Update = function () {
             }
         );
         form.querySelector('[name="modal_UserPass"]').addEventListener('input', function () {
-            fv.revalidateField('modal_confirmPass');
+            validation.revalidateField('modal_confirmPass');
         });
     
       
@@ -112,7 +113,7 @@ var Update = function () {
                     //} 
                     var formdata =
                         $('#modal_form').serialize() + '&returnUrl=' + returnUrl
-
+                    
                     console.log(formdata)
                     $.ajax({
                         type: "post",
@@ -125,7 +126,7 @@ var Update = function () {
                             if (data.status == "success") {
                                 swal.fire({
                                     title: "Thành công",
-                                    text: data.message,
+                                    text: "Thay đổi dữ liệu thành công!",
                                     icon: "success",
                                     buttonsStyling: false,
                                     /*confirmButtonText: "Ok, got it!",*/
@@ -135,7 +136,12 @@ var Update = function () {
                                     }
 
                                 }).then(function () {
-                                    window.location.href = data.returnURL;
+                                    $('#Modal').modal('toggle');
+                                    var RoleID = $("#scrUpdate").data('roleid')
+                                    var DepID = $("#scrUpdate").data('depid')
+                                    var page = $("#userpagi a.active").data('page')
+                                    searchUser(page, RoleID, DepID)
+
                                     KTUtil.scrollTop();
                                 });
                             } else {
@@ -151,8 +157,7 @@ var Update = function () {
                                     }
 
                                 }).then(function () {
-
-                                    KTUtil.scrollTop();
+                                    
                                 });
                             }
                         },
@@ -206,6 +211,7 @@ var Update = function () {
         }
     };
 }();
+
 
 // Class Initialization
 jQuery(document).ready(function () {

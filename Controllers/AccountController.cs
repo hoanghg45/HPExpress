@@ -17,12 +17,13 @@ using HPExpress.Security;
 using System.Data.Entity;
 using HPExpress.Extension;
 using NinjaNye.SearchExtensions;
+using System.Data.Entity.Validation;
 
 namespace HPExpress.Controllers
 {
     //[Authorize]
     public class AccountController : Controller
-    {
+    {   private readonly int costHash = 12;
         private BillManagerDBEntities _context = new BillManagerDBEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -83,7 +84,7 @@ namespace HPExpress.Controllers
                 new
                 {
                    status = "error",
-                   message = "Đã có lỗi xảy ra vui lòng thử lại123"
+                   message = "Đã có lỗi xảy ra vui lòng thử lại"
                 }
                 , JsonRequestBehavior.AllowGet
                 );
@@ -91,37 +92,72 @@ namespace HPExpress.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            User user = _context.Users.Where(u => u.UserName.Equals(model.UserName) && u.UserPass.Equals(model.Password)).FirstOrDefault();
-            if(user != null)
-            {
-                FormsAuthentication.SetAuthCookie(user.UserName, false);
-                Session.Add("UserID", user.UserID);
-                Session.Add("RoleID", user.RoleID);
-                user.LastLogin = DateTime.Now;
-               
-                _context.SaveChanges();
-               
+            
+            try {
+                User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(model.UserName));
 
+                bool isValid = BCrypt.Net.BCrypt.Verify(model.Password, user.UserPass.Trim());
+                if (user != null && isValid)
+                {
+                    
+                    if (user.Status != 1)
+                    {
+                        FormsAuthentication.SetAuthCookie(user.UserName, false);
+                        Session.Add("UserID", user.UserID);
+                        Session.Add("RoleID", user.RoleID);
+                        user.LastLogin = DateTime.Now;
+
+                        _context.SaveChanges();
+
+
+
+                        return this.Json(
+                       new
+                       {
+                           returnURL = "/Home",
+                           status = "success",
+                           message = "Đăng nhập thành công"
+                       }
+                       , JsonRequestBehavior.AllowGet
+                       );
+                    }
+                    else
+                    {
+                        return this.Json(
+                       new
+                       {
+
+                           status = "error",
+                           message = "Tài khoản của bạn đã bị hạn chế bởi quản trị viên, vui lòng liên hệ và đăng nhập lại!"
+                       }
+                       , JsonRequestBehavior.AllowGet
+                       );
+                    }
+
+                }
 
                 return this.Json(
+                new
+                {
+                    status = "error",
+                    message = "Tài khoản hoặc mật khẩu không chính xác"
+                }
+                , JsonRequestBehavior.AllowGet
+                );
+            }
+            catch(DbEntityValidationException e)
+            {
+                Console.WriteLine(e);
+            }
+            return this.Json(
                new
                {
-                   returnURL = "/Home",
-                   status = "success",
-                   message = "Đăng nhập thành công"
+                   status = "error",
+                   message = "Đã gặp sự cố hệ thống, vui lòng thử lại"
                }
                , JsonRequestBehavior.AllowGet
                );
-            }
 
-            return this.Json(
-            new
-            {
-                status = "error",
-                message = "Tài khoản hoặc mật khẩu không chính xác"
-            }
-            , JsonRequestBehavior.AllowGet
-            );
 
         }
         public ActionResult LogOut(int id)
@@ -168,7 +204,7 @@ namespace HPExpress.Controllers
                     Department = account.Department.DepartmentName,
                     DepartmentID = account.DepartmentID,
                     Email = account.UserEmail.Trim(),
-                    Phone = account.UserPhone,
+                    Phone = account.UserPhone.Trim(),
                     Gender = account.Gender
 
 
@@ -193,7 +229,11 @@ namespace HPExpress.Controllers
             var lstDep = _context.Departments.ToList();
             ViewBag.lstDep = lstDep;
 
-             var lstRole = _context.Roles.ToList();
+            var lstRole = _context.Roles.ToList();
+            if (_context.Users.Count(u => u.RoleID == 1) > 0)
+            {
+                lstRole.RemoveAt(0);
+            }
             ViewBag.lstRole = lstRole;
 
             return View(currUser);
@@ -207,26 +247,41 @@ namespace HPExpress.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult CreateAcc(User model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            try
             {
-                model.CreateAt = DateTime.Now;
-                model.Status = 1;
-                _context.Users.Add(model);
-                _context.SaveChanges();
-                return this.Json(new
+                if (ModelState.IsValid)
                 {
-                    status = "success",
-                    returnURL = returnUrl
-                }, JsonRequestBehavior.AllowGet) ;
+                    
+                    model.CreateAt = DateTime.Now;
+                    model.Status = 2;
+                    model.UserPass = BCrypt.Net.BCrypt.HashPassword(model.UserPass, costHash);
+                    _context.Users.Add(model);
+                    _context.SaveChanges();
+                    return this.Json(new
+                    {
+                        status = "success",
+                        returnURL = returnUrl
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    // If we got this far, something failed, redisplay form
+                    return this.Json(new
+                    {
+                        status = "error",
+
+                    }, JsonRequestBehavior.AllowGet);
+                }
             }
-            else { 
-            // If we got this far, something failed, redisplay form
+            catch(DbEntityValidationException e)
+            {
+                Console.WriteLine(e);
+            }
             return this.Json(new
             {
                 status = "error",
-                
+
             }, JsonRequestBehavior.AllowGet);
-            }
         }
         // POST: /Account/UpdateAcc
         [SessionCheck]
@@ -247,10 +302,17 @@ namespace HPExpress.Controllers
                     
                     if(password != "")
                     {
-                        user.UserPass = password;
+                        user.UserPass =BCrypt.Net.BCrypt.HashPassword(password, costHash); 
                     }
-                    user.RoleID = Int32.Parse(collection["modal_RoleID"]);
-                    user.DepartmentID = Int32.Parse(collection["modal_DepartmentID"]);
+                    if(collection["modal_RoleID"] != null)
+                    {
+                        user.RoleID = Int32.Parse(collection["modal_RoleID"]);
+                    }
+                    if (collection["modal_DepartmentID"] != null)
+                    {
+                        user.DepartmentID = Int32.Parse(collection["modal_DepartmentID"]);
+                    }
+                    
                     user.Gender = Int32.Parse(collection["modal_Gender"]);
                     user.UserEmail =collection["modal_UserEmail"];
                     user.UserPhone =collection["modal_userphone"];
@@ -281,6 +343,72 @@ namespace HPExpress.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+        [SessionCheck]
+        [HttpPost]
+        [AllowAnonymous]
+        
+        public JsonResult updateStatus(int id=0)
+        {
+            if (ModelState.IsValid && id != 0)
+            {
+                
+                User user = _context.Users.FirstOrDefault(u => u.UserID == id);
+                if (user.Status == 1)
+                {
+                    user.Status = 2;
+                }
+                else
+                {
+                    user.Status = 1;
+                }
+                _context.SaveChanges();
+                return this.Json(new
+                {
+                    status = "success",
+
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                // If we got this far, something failed, redisplay form  return this.Json(new
+                return this.Json(new
+                {
+                    status = "error",
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [SessionCheck]
+        [HttpPost]
+        [AllowAnonymous]
+        
+        public JsonResult DeleteAccount(int id=0)
+        {
+            if (ModelState.IsValid && id != 0)
+            {
+                User user = _context.Users.FirstOrDefault(u => u.UserID == id);
+                _context.Users.Remove(user);
+                     _context.SaveChanges();
+                    return this.Json(new
+                    {
+                        status = "success",
+                       
+                    }, JsonRequestBehavior.AllowGet);
+                
+            }
+            else
+            {
+                // If we got this far, something failed, redisplay form  return this.Json(new
+                return this.Json(new
+                {
+                    status = "error",
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
         //List User
         [SessionCheck]
         [AllowAnonymous]
@@ -292,37 +420,46 @@ namespace HPExpress.Controllers
             ViewBag.lstDep = lstDep;
 
             var lstRole = _context.Roles.ToList();
+
             ViewBag.lstRole = lstRole;
+
             User user =  _context.Users.Where(u => u.UserID == id).FirstOrDefault();
             return View(user);
         }
-        public double calLogin(DateTime lastlogin)
+
+        [HttpGet]
+        //[SessionCheck]
+        public JsonResult filterRoleByDepart(int id)
         {
-            DateTime now = DateTime.Now;
-            double result = now.Subtract(lastlogin).TotalDays;
-            if (result < 1)
+            var roles = _context.Roles.Select(x =>new { x.RoleID , x.RoleDesc }).ToList();
+           
+            //_context.Configuration.ProxyCreationEnabled = false;
+
+            int countAdmin = _context.Users.Count(u => u.RoleID == 1);
+            int countManager = _context.Users.Count(u=> u.RoleID == 2 && u.DepartmentID == id);
+
+            if(countAdmin > 0)
             {
-                result = now.Subtract(lastlogin).TotalHours;
-                if (result < 1)
-                {
-                    result = now.Subtract(lastlogin).TotalMinutes;
-                    if (result < 1)
-                    {
-                        result = 0;
-
-                    }
-                }
-                   
-                    
-
+                roles.RemoveAt(0);
             }
-            return result;
-        }
+            if (countManager>0)
+            {
+                roles.RemoveAt(1);
+            }
+            return this.Json(
+         new
+         {
+             data = roles,
+         }
+         , JsonRequestBehavior.AllowGet
+         );
 
+
+        }
         //get Users Data
         [HttpGet]
         //[SessionCheck]
-        public JsonResult Accounts(string search = "",int depart = 0, int role = 0, int page = 0)
+        public JsonResult Accounts(string search = "",int depart = 0, int role = 0,int stt=0, int page = 0)
         {
 
            
@@ -351,11 +488,12 @@ namespace HPExpress.Controllers
                         };
 
 
-            if (role != 0 || depart != 0)
+            if (role != 0 || depart != 0 || stt !=0)
             {
 
                 table = table.WhereIf(role != 0, t => t.RoleID == role)
-                              .WhereIf(depart != 0, t => t.DepartmentID == depart);
+                              .WhereIf(depart != 0, t => t.DepartmentID == depart)
+                              .WhereIf(stt != 0, t => t.Status == stt);
             }
             if (search != "")
             {
@@ -405,6 +543,91 @@ namespace HPExpress.Controllers
          );
 
 
+        }
+        [SessionCheck]
+        [AllowAnonymous]
+        public ActionResult userProfile()
+        {
+            int id = (int)Session["UserID"];
+
+            
+            User user = _context.Users.Where(u => u.UserID == id).FirstOrDefault();
+            return View(user);
+        }
+        [SessionCheck]
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public JsonResult UpdateProfile(FormCollection collection, string returnUrl)
+        {
+            if (ModelState.IsValid && collection != null)
+            {
+                int id = Int32.Parse(collection["userid"]);
+                User user = _context.Users.Where(u => u.UserID == id).FirstOrDefault();
+                if (user != null)
+                {
+                    if (Int32.Parse(collection["type"]) == 0)
+                    {
+                        user.UserName = collection["username"];
+                        user.FullName = collection["fullname"];
+                        user.Gender = Int32.Parse(collection["Gender"]);
+                        user.UserEmail = collection["useremail"];
+                        user.UserPhone = collection["userphone"];
+                        _context.SaveChanges();
+                        return this.Json(new
+                        {
+                            status = "success",
+                            returnURL = returnUrl
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        string oldpass = collection["oldpass"];
+                        bool isvalid = BCrypt.Net.BCrypt.Verify(oldpass,user.UserPass.Trim());
+                        if (isvalid)
+                        {
+                            string newpass = BCrypt.Net.BCrypt.HashPassword(collection["newpass"]);
+                            user.UserPass = newpass;
+                            _context.SaveChanges();
+                            return this.Json(new
+                            {
+                                status = "success",
+                                returnURL = returnUrl
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return this.Json(new
+                            {
+                                status = "error",
+                                message = "Mật khẩu hiện tại không chính xác, vui lòng nhập lại!"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                     
+                        
+                    }
+                    
+
+                   
+                }
+                else
+                {
+                    return this.Json(new
+                    {
+                        status = "error",
+
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                // If we got this far, something failed, redisplay form  return this.Json(new
+                return this.Json(new
+                {
+                    status = "error",
+
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
         // GET: /Account/VerifyCode
         [AllowAnonymous]

@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
+      <HintPath>packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -493,6 +496,7 @@
     <Content Include="assets\js\User\addUser.js" />
     <Content Include="assets\js\User\searchUser.js" />
     <Content Include="assets\js\User\tableUsers.js" />
+    <Content Include="assets\js\User\updateProfile.js" />
     <Content Include="assets\js\User\updateUser.js" />
     <Content Include="assets\media\bg\bg-1.jpg" />
     <Content Include="assets\media\bg\bg-10.jpg" />
@@ -2253,6 +2257,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="LICENSE.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="assets\plugins\global\fonts\%40fortawesome\fa-brands-400.eot" />
@@ -2314,6 +2319,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\maxlength-contenteditable.js" />
+    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -2362,6 +2369,7 @@
     <Content Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
+    <Content Include="Views\Account\userProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

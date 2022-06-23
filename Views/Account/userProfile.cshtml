@@ -1,0 +1,223 @@
+﻿@model HPExpress.Context.User
+
+@{
+    ViewBag.Title = "userProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Details-->
+            <div class="d-flex align-items-center flex-wrap mr-2">
+                <!--begin::Title-->
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Thông tin tài khoản</h5>
+                <!--end::Title-->
+                <!--begin::Separator-->
+                <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+                <!--end::Separator-->
+
+
+            </div>
+            <!--end::Details-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Button-->
+                <a href="#" class=""></a>
+                <!--end::Button-->
+                <!--begin::Button-->
+               
+                <!--end::Button-->
+
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="card card-custom gutter-b">
+                <div class="card-header card-header-tabs-line">
+                    <div class="card-toolbar">
+                        <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                    <span class="nav-icon"><i class="flaticon2-sheet"></i></span>
+                                    <span class="nav-text">Thay đổi thông tin</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                    <span class="nav-icon"><i class="flaticon2-protected"></i></span>
+                                    <span class="nav-text">Thay đổi mật khẩu</span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                    <div class="card-toolbar">
+                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel" aria-labelledby="kt_tab_pane_1_4">
+
+                            <form id="profile_form" class="form">
+                                <!--begin::Body-->
+                                @Html.AntiForgeryToken()
+                                <input hidden name="userid" value="@Model.UserID" />
+                                <input hidden name="type" value="0" />
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Tên tài khoản</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input class="form-control form-control-lg form-control-solid" readonly placeholder="Nhập tài khoản" value="@Model.UserName.Trim()" name="username" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Phòng - ban</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input class="form-control form-control-lg form-control-solid" readonly placeholder="Nhập tài khoản" value="@Model.Department.DepartmentName.Trim()" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Quyền tài khoản</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input class="form-control form-control-lg form-control-solid" readonly placeholder="Nhập tài khoản" value="@Model.Role.RoleDesc.Trim()" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Tên nhân viên</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input class="form-control form-control-lg form-control-solid" type="text" placeholder="Nhập tên nhân viên" name="fullname" value="@Model.FullName.Trim()">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="input-group input-group-lg input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="la la-phone"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-lg form-control-solid" name="userphone" value="@Model.UserPhone.Trim()" placeholder="Nhập số điện thoại">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="input-group input-group-lg input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="la la-at"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-lg form-control-solid" value="@Model.UserEmail.Trim()" name="useremail" placeholder="Nhập Email">
+
+                                        </div>
+                                        <span class="form-text text-muted">Exp: abc@gmail.com</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Giới tính</label>
+                                    <div class="col-lg-9 col-xl-9">
+                                        <div class="radio-inline input-group-lg">
+                                            <label class="radio">
+                                                <input type="radio" value="1" name="Gender" />
+                                                <span></span>
+                                                Nam
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" value="2" name="Gender" />
+                                                <span></span>
+                                                Nữ
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="Gender" />
+                                                <span></span>
+                                                Khác
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" id="0" class="btn btn-primary font-weight-bold mr-2 btnUpdatePro">Submit</button>
+                                    <button type="submit" class="btn btn-light-primary font-weight-bold">Cancel</button>
+                                </div>
+                            </form>
+                            
+                            <!--end::Form-->
+
+                        </div>
+                        <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
+                            <form id="pass_form" class="form">
+                                @Html.AntiForgeryToken()
+                                <input hidden name="userid" value="@Model.UserID" />
+                                <input hidden name="type" value="1" />
+                                <!--begin::Alert-->
+                                <div class="alert alert-custom alert-light-danger fade show mb-10" role="alert">
+
+                                    <div class="alert-text font-weight-bold">
+                                        Kiểm tra cẩn thận thông tin mật khẩu vì đây là dữ liệu quan trọng !
+                                    </div>
+                                    <div class="alert-close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">
+                                                <i class="ki ki-close"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--end::Alert-->
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-alert">Mật khẩu hiện tại</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input type="password" class="form-control form-control-lg form-control-solid mb-2" name="oldpass" value="" placeholder="Nhập mật khẩu hiện tại">
+                                        <a href="#" class="text-sm font-weight-bold">Bạn quên mật khẩu? Hãy liên hệ với quản trị viên để thay mật khẩu mới</a>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-alert">Mật khẩu mới</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input type="password" class="form-control form-control-lg form-control-solid" name="newpass" id="newpass" value="" placeholder="Nhập mật khẩu mới">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-alert">Xác nhận mật khẩu</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input type="password" class="form-control form-control-lg form-control-solid" name="confirmpasss" value="" placeholder="Nhập xác nhận mật khẩu">
+                                    </div>
+
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" id="1" class="btn btn-primary font-weight-bold mr-2 btnUpdatePro">Submit</button>
+                                    <button type="reset" class="btn btn-light-primary font-weight-bold">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/User/updateUser.js"></script>
+<script src="~/assets/js/User/updateProfile.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gender = @Model.Gender;
+        var $radios = $('input:radio[name=Gender]');
+        if ($radios.is(':checked') === false) {
+            $radios.filter('[value=' + gender + ']').prop('checked', true);
+        }
+  })
+</script>

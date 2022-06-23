@@ -8,6 +8,7 @@
 <script src="~/assets/js/DateFormat.js"></script>
 <script src="~/assets/js/PropCheckBox.js"></script>
 <script src="~/assets/js/BillTable.js"></script>
+
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
@@ -286,7 +287,7 @@
     </div>
     <!--end::Entry-->
     @*billtable*@
-    <div id="billform" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+    <div id="billform" hidden style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
 
     </div>
     @*endtable*@
@@ -295,6 +296,8 @@
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->
+<script src="~/Scripts/maxlength-contenteditable.js"></script>
+<script src="~/Scripts/script.js"></script>
 <script src="~/assets/js/BillSearch.js"></script>
 <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
 <script src="~/assets/js/JSBarcode.min.js"></script>

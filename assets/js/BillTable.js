@@ -53,8 +53,8 @@ function showtable(idpr, datetime, search, depart, userid,page) {
             
             $.each(data.data, function (i, d, p) {
                 table += '<tr>'
-                
-                    table += '<th >' + d.Id + '</th>'
+
+                table += '<th id="' + d.Id +'">'+ d.Id+'</th>'
                     table += '<th>' + formatDate(d.Dateship.substr(6)) + '</th>'
                     var cus_inf = d.Cusinf.split('|')
                     table += '<th>' + cus_inf[0] + '</th>'
@@ -109,9 +109,9 @@ function showtable(idpr, datetime, search, depart, userid,page) {
                                         </a>\
                                     </li>\
                                     <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-copy"></i></span>\
-                                            <span class="navi-text">Copy</span>\
+                                        <a href="javascript:;"  data-id=' + d.Id + ' class="navi-link btnChangeID">\
+                                            <span class="navi-icon"><i class="la la-pen"></i></span>\
+                                            <span class="navi-text">Sửa mã đơn</span>\
                                         </a>\
                                     </li>\
                                     <li class="navi-item">\
@@ -225,6 +225,18 @@ function showtable(idpr, datetime, search, depart, userid,page) {
               
             });
 
+
+            $('.btnChangeID').click(function (event) {
+
+                var idbill = $(this).data('id')
+                var th = $("th#" + idbill + "")
+                th.empty()
+                var editable = '<div style = "display:flex;justify-content:left" > <div class="txtbillid content-editable-element" contenteditable="true" data-max-length="10" data-billid=' + idbill + '  style="margin-right:10px" >' + idbill + '</div><a class="btnsavebillid"  href="javascript:;"> <i class="fas fa-save text-success icon-md"></i></a></div>'
+                th.append(editable)
+
+
+            });
+
             function printNetPost(idbill) {
                 $.ajax({
                     type: "post",
@@ -291,8 +303,8 @@ function showtable(idpr, datetime, search, depart, userid,page) {
                             $("#timedate").children("#dateyear").text(date[2].slice(-2));
                         }
                         printDiv()
-
                         
+                        location.reload();
 
 
                     }
@@ -356,7 +368,7 @@ function showtable(idpr, datetime, search, depart, userid,page) {
                         
 
                         printDiv()
-
+                        location.reload();
 
 
                     }
