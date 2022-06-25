@@ -32,11 +32,11 @@ namespace HPExpress.Context
         public string CustomerInf { get; set; }
         public string Note { get; set; }
         public System.DateTime CreateAT { get; set; }
-        public Nullable<int> BillNumber { get; set; }
         public Nullable<int> Heigh { get; set; }
         public Nullable<int> Lenght { get; set; }
         public Nullable<int> Width { get; set; }
         public Nullable<bool> IsReturn { get; set; }
+        public Nullable<int> Status { get; set; }
     
         public virtual Payment Payment { get; set; }
         public virtual Service Service { get; set; }
@@ -45,5 +45,6 @@ namespace HPExpress.Context
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductCategory> ProductCategorys { get; set; }
+        public virtual BillStatus BillStatus { get; set; }
     }
 }

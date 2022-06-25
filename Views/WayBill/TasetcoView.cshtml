@@ -55,377 +55,375 @@
                         </div>
                         <!--begin::Form-->
                         <form class="form" action="/" method="post" id="kt_form_2">
-                           
-                                <div class="card-body">
-                                    <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
-                                        <div class="alert-icon">
-                                            <i class="flaticon2-bell-5"></i>
-                                        </div>
-                                        <div class="alert-text font-weight-bold">Oh snap! Change a few things up and try submitting again.</div>
-                                        <div class="alert-close">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span>
-                                                    <i class="ki ki-close"></i>
-                                                </span>
-                                            </button>
-                                        </div>
+                            <input hidden name="user_id" value="@Model.UserID" />
+                            <input hidden type="text" name="bill_status" class="form-control" value="1" />
+                            <div class="card-body">
+                                <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
+                                    <div class="alert-icon">
+                                        <i class="flaticon2-bell-5"></i>
                                     </div>
-                                    @Html.AntiForgeryToken()
+                                    <div class="alert-text font-weight-bold">Oh snap! Change a few things up and try submitting again.</div>
+                                    <div class="alert-close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span>
+                                                <i class="ki ki-close"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                @Html.AntiForgeryToken()
                                 <input hidden type="text" name="prov_id" class="form-control" value="3" />
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label> Mã vạch:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="barcode" name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
-                                                </div>
-
-
-                                                <div class="col-lg-6">
-                                                    <label> Ngày gửi:<span class="text-danger">*</span></label>
-                                                    <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
-                                                        <input data-vali="true" type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Mã vạch:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="barcode" name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
                                             </div>
 
 
-
-                                        </div>
-                                    </div>
-                                    <div class="separator separator-dashed my-10"></div>
-
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>1. Thông tin người gửi:</b></h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label> Mã khách hàng:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="70187" />
-                                                </div>
-
-
-                                                <div class="col-lg-6">
-                                                    <label> Người gửi:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label> Địa chỉ:<span class="text-danger">*</span></label>
-                                                    <textarea data-vali="true" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
-                                                </div>
-
-
-                                                <div class="col-lg-6">
-                                                    <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="123456789" />
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                    </div>
-                                    <div class="separator separator-dashed my-10"></div>
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>2. Thông tin người nhận:</b></h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label> Công ty nhận:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="Công Ty TNHH Canon Việt Nam-Chi Nhánh Quế Võ" />
-                                                </div>
-
-
-                                                <div class="col-lg-6">
-                                                    <label> Người nhận:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="MS.Hoa" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label> Địa chỉ:<span class="text-danger">*</span></label>
-                                                    <textarea data-vali="true" id="customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
-                                                </div>
-
-
-                                                <div class="col-lg-6">
-                                                    <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="cus_phone" class="form-control" placeholder="" value="123456789" />
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                    </div>
-                                    <div class="separator separator-dashed my-10"></div>
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">
-                                            <b>3. Nội dung BPBK</b>
-                                            <i data-toggle="tooltip" data-width="auto" class="mb-3__help" title="If different than the corresponding address"></i>
-                                        </h3>
-                                        <div class="mb-2">
-
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label>Nội dung <span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="content" name="content" class="form-control" placeholder="Nhập nội dung" value="" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label>Số HĐ<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="number" id="contract_numb" name="contract_numb" class="form-control" placeholder="Nhập số HĐ" value="" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label>Số kiện <span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="number" id="package_numb" name="package_numb" class="form-control" placeholder="Nhập số kiện" value="" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label> Loại hàng<span class="text-danger">*</span></label>
-                                                    <div class="checkbox-inline">
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" data-check="false" id="CatBox1" value="1" name="CatBox1" />
-                                                            <span></span>
-                                                            Hàng Hóa
-                                                        </label>
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" data-check="false" id="CatBox2" value="2" name="CatBox2" />
-                                                            <span></span>
-                                                            Tài liệu
-                                                        </label>
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" data-check="false" id="CatBox3" value="3" name="CatBox3" />
-                                                            <span></span>
-                                                            Hóa chất
-                                                        </label>
-
-
-                                                    </div>
-                                                    <span id="valiCat" style="visibility:hidden" class="text-danger">Vui lòng chọn</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label>Trọng lượng<span class="text-danger">*</span></label>
-                                                    <div class="input-group">
-                                                        <input data-vali="true" id="pro_wei" name="pro_wei" type="number" class="form-control" placeholder="Nhập trọng lượng" />
-
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">kg</span>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label>Kích thước:</label>
-                                                    <div class="input-group">
-                                                        <input type="text" id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
-                                                        <input type="text" id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
-                                                        <input type="text" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">m</span>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="separator separator-dashed my-10"></div>
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>4. Hình thức vận chuyển:</b></h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-2">
-                                                    <label>Vận chuyển trong nước:<span class="text-danger">*</span></label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" checked value="1" name="transRadios" />
-                                                            <span></span>
-                                                            Chuyển phát nhanh
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="5" name="transRadios" />
-                                                            <span></span>
-                                                            Đường bộ
-                                                        </label>
-
-                                                        <label class="radio">
-                                                            <input type="radio" id="transGTC" value="10" name="transRadios" />
-                                                            <span></span>
-                                                            Phát hẹn giờ
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="8" name="transRadios" />
-                                                            <span></span>
-                                                            Phát thứ 7, chủ nhật
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="11" name="transRadios" />
-                                                            <span></span>
-                                                            Giao trước 9:00 am
-                                                        </label>
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-1">
-
-                                                </div>
-                                                <div class="col-lg-2">
-
-                                                    <div class="radio-inline">
-                                                        <label style="visibility:hidden">Vận chuyển trong nước:<span class="text-danger">*</span></label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="7" name="transRadios" />
-                                                            <span></span>
-                                                            Tiết kiệm
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="13" name="transRadios" />
-                                                            <span></span>
-                                                            Hồ sơ thầu
-                                                        </label>
-
-                                                        <label class="radio">
-                                                            <input type="radio" value="12" name="transRadios" />
-                                                            <span></span>
-                                                            Giao trước 12:00 am
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="9" name="transRadios" />
-                                                            <span></span>
-                                                            Phát trong ngày
-                                                        </label>
-
-
-                                                        <label class="radio">
-                                                            <input type="radio" value="2" name="transRadios" />
-                                                            <span></span>
-                                                            Hỏa tốc
-                                                        </label>
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-1">
-
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <label>Vận chuyển quốc tế:<span class="text-danger">*</span></label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" value="14" name="transRadios" />
-                                                            <span></span>
-                                                            Express
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="15" name="transRadios" />
-                                                            <span></span>
-                                                            Economy
-                                                        </label>
-
+                                            <div class="col-lg-6">
+                                                <label> Ngày gửi:<span class="text-danger">*</span></label>
+                                                <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
+                                                    <input data-vali="true" type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" />
+                                                    <div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
+                                                        <span class="input-group-text">
+                                                            <i class="ki ki-calendar"></i>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
+
                                     </div>
-                                    <div class="separator separator-dashed my-10"></div>
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>5. Hình thức thanh toán:</b></h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-12">
-                                                    <label>Chọn hình thức thanh toán: <span class="text-danger">*</span></label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" checked value="5" name="paymentRadios" />
-                                                            <span></span>
-                                                            Đã thanh toán
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="2" name="paymentRadios" />
-                                                            <span></span>
-                                                            Thanh toán cuối tháng
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="3" name="paymentRadios" />
-                                                            <span></span>
-                                                            Người nhận thanh toán
-                                                        </label>
-                                                        
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>1. Thông tin người gửi:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Mã khách hàng:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="70187" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người gửi:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea data-vali="true" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="123456789" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>2. Thông tin người nhận:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Công ty nhận:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="Công Ty TNHH Canon Việt Nam-Chi Nhánh Quế Võ" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người nhận:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="MS.Hoa" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea data-vali="true" id="customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="cus_phone" class="form-control" placeholder="" value="123456789" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">
+                                        <b>3. Nội dung BPBK</b>
+                                        <i data-toggle="tooltip" data-width="auto" class="mb-3__help" title="If different than the corresponding address"></i>
+                                    </h3>
+                                    <div class="mb-2">
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Nội dung <span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="content" name="content" class="form-control" placeholder="Nhập nội dung" value="" />
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>Số kiện <span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="number" id="package_numb" name="package_numb" class="form-control" placeholder="Nhập số kiện" value="" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label> Loại hàng<span class="text-danger">*</span></label>
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" data-check="false" id="CatBox1" value="1" name="CatBox1" />
+                                                        <span></span>
+                                                        Hàng Hóa
+                                                    </label>
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" data-check="false" id="CatBox2" value="2" name="CatBox2" />
+                                                        <span></span>
+                                                        Tài liệu
+                                                    </label>
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" data-check="false" id="CatBox3" value="3" name="CatBox3" />
+                                                        <span></span>
+                                                        Hóa chất
+                                                    </label>
+
+
+                                                </div>
+                                                <span id="valiCat" style="visibility:hidden" class="text-danger">Vui lòng chọn</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>Trọng lượng<span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input data-vali="true" id="pro_wei" name="pro_wei" type="number" class="form-control" placeholder="Nhập trọng lượng" />
+
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">kg</span>
 
                                                     </div>
-                                                </div>
 
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Kích thước:</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
+                                                    <input type="text" id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
+                                                    <input type="text" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">m</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>4. Hình thức vận chuyển:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-2">
+                                                <label>Vận chuyển trong nước:<span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" checked value="1" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển phát nhanh
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="5" name="transRadios" />
+                                                        <span></span>
+                                                        Đường bộ
+                                                    </label>
+
+                                                    <label class="radio">
+                                                        <input type="radio" id="transGTC" value="10" name="transRadios" />
+                                                        <span></span>
+                                                        Phát hẹn giờ
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="8" name="transRadios" />
+                                                        <span></span>
+                                                        Phát thứ 7, chủ nhật
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="11" name="transRadios" />
+                                                        <span></span>
+                                                        Giao trước 9:00 am
+                                                    </label>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+
+                                            </div>
+                                            <div class="col-lg-2">
+
+                                                <div class="radio-inline">
+                                                    <label style="visibility:hidden">Vận chuyển trong nước:<span class="text-danger">*</span></label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="7" name="transRadios" />
+                                                        <span></span>
+                                                        Tiết kiệm
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="13" name="transRadios" />
+                                                        <span></span>
+                                                        Hồ sơ thầu
+                                                    </label>
+
+                                                    <label class="radio">
+                                                        <input type="radio" value="12" name="transRadios" />
+                                                        <span></span>
+                                                        Giao trước 12:00 am
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="9" name="transRadios" />
+                                                        <span></span>
+                                                        Phát trong ngày
+                                                    </label>
+
+
+                                                    <label class="radio">
+                                                        <input type="radio" value="2" name="transRadios" />
+                                                        <span></span>
+                                                        Hỏa tốc
+                                                    </label>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <label>Vận chuyển quốc tế:<span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" value="14" name="transRadios" />
+                                                        <span></span>
+                                                        Express
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="15" name="transRadios" />
+                                                        <span></span>
+                                                        Economy
+                                                    </label>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="separator separator-dashed my-10"></div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>5. Hình thức thanh toán:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức thanh toán: <span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" checked value="5" name="paymentRadios" />
+                                                        <span></span>
+                                                        Đã thanh toán
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="2" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán cuối tháng
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="3" name="paymentRadios" />
+                                                        <span></span>
+                                                        Người nhận thanh toán
+                                                    </label>
 
 
-                                
-
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Dịch vụ gia tăng:</b></h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-12">
-                                                    <label>Chọn dịch vụ gia tăng: </label>
-                                                    <div class="radio-inline">
-                                                        <label class="radio">
-                                                            <input type="radio" value="4" name="serviceRadios" />
-                                                            <span></span>
-                                                            Bảo hiểm
-                                                        </label>
-                                                        <label class="radio">
-                                                            <input type="radio" value="6" name="serviceRadios" />
-                                                            <span></span>
-                                                            Đóng gói
-                                                        </label>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="separator separator-dashed my-10"></div>
-                                    <div class="mb-3">
-                                        <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>7. Ghi chú thêm:</b></h3>
-                                        <div class="mb-2">
-                                            <div class="form-group row">
-                                                <div class="col-lg-12">
-                                                    <label for="exampleTextarea">Ghi chú <span class="text-danger">*</span></label>
-                                                    <textarea name="note" style="resize: none;" class="form-control" id="exampleTextarea" rows="3" placeholder="Nhập ghi chú"></textarea>
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
                                 </div>
+                                <div class="separator separator-dashed my-10"></div>
 
-                                @*billtable*@
-                                <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
 
+
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Dịch vụ gia tăng:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn dịch vụ gia tăng: </label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" value="4" name="serviceRadios" />
+                                                        <span></span>
+                                                        Bảo hiểm
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="6" name="serviceRadios" />
+                                                        <span></span>
+                                                        Đóng gói
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                                @*endtable*@
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>7. Ghi chú thêm:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label for="exampleTextarea">Ghi chú <span class="text-danger">*</span></label>
+                                                <textarea name="note" style="resize: none;" class="form-control" id="exampleTextarea" rows="3" placeholder="Nhập ghi chú"></textarea>
+                                            </div>
+                                        </div>
 
-                            
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*billtable*@
+                            <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+
+                            </div>
+                            @*endtable*@
+
+
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-lg-12">

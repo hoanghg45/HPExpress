@@ -95,8 +95,12 @@ namespace HPExpress.Controllers
             
             try {
                 User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(model.UserName));
-
-                bool isValid = BCrypt.Net.BCrypt.Verify(model.Password, user.UserPass.Trim());
+                bool isValid = false;
+                if (user != null)
+                {
+                    isValid = BCrypt.Net.BCrypt.Verify(model.Password, user.UserPass.Trim());
+                }
+               
                 if (user != null && isValid)
                 {
                     

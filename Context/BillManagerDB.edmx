@@ -15,7 +15,6 @@
           <Property Name="PaymentID" Type="int" />
           <Property Name="ProviderID" Type="int" />
           <Property Name="TransID" Type="int" />
-          <Property Name="BillNumber" Type="int" />
           <Property Name="BillContent" Type="nvarchar" MaxLength="200" />
           <Property Name="ProductPakage" Type="int" />
           <Property Name="ProductWeight" Type="float" />
@@ -26,6 +25,15 @@
           <Property Name="Lenght" Type="int" />
           <Property Name="Width" Type="int" />
           <Property Name="IsReturn" Type="bit" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="BillStatuses">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CatInBill">
           <Key>
@@ -124,6 +132,18 @@
           <Property Name="Status" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Bills_BillStatus">
+          <End Role="BillStatuses" Type="Self.BillStatuses" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BillStatuses">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bills_Payments">
           <End Role="Payments" Type="Self.Payments" Multiplicity="0..1" />
           <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
@@ -234,6 +254,7 @@
         </Association>
         <EntityContainer Name="BillManagerDBModelStoreContainer">
           <EntitySet Name="Bills" EntityType="Self.Bills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillStatuses" EntityType="Self.BillStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatInBill" EntityType="Self.CatInBill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
@@ -244,6 +265,10 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transpots" EntityType="Self.Transpots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bills_BillStatus" Association="Self.FK_Bills_BillStatus">
+            <End Role="BillStatuses" EntitySet="BillStatuses" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
           <AssociationSet Name="FK_Bills_Payments" Association="Self.FK_Bills_Payments">
             <End Role="Payments" EntitySet="Payments" />
             <End Role="Bills" EntitySet="Bills" />
@@ -307,11 +332,12 @@
           <NavigationProperty Name="Transpot" Relationship="Self.FK_Bills_Transpots" FromRole="Bills" ToRole="Transpots" />
           <NavigationProperty Name="User" Relationship="Self.FK_Bills_Users" FromRole="Bills" ToRole="Users" />
           <NavigationProperty Name="ProductCategorys" Relationship="Self.CatInBill" FromRole="Bills" ToRole="ProductCategorys" />
-          <Property Name="BillNumber" Type="Int32" />
           <Property Name="Heigh" Type="Int32" />
           <Property Name="Lenght" Type="Int32" />
           <Property Name="Width" Type="Int32" />
           <Property Name="IsReturn" Type="Boolean" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="BillStatus" Relationship="BillManagerDBModel.FK_Bills_BillStatus" FromRole="Bill" ToRole="BillStatus" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -512,6 +538,11 @@
             <End Role="Department" EntitySet="Departments" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="BillStatuses" EntityType="BillManagerDBModel.BillStatus" />
+          <AssociationSet Name="FK_Bills_BillStatus" Association="BillManagerDBModel.FK_Bills_BillStatus">
+            <End Role="BillStatus" EntitySet="BillStatuses" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sysdiagram">
           <Key>
@@ -544,6 +575,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="BillStatus">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="BillManagerDBModel.FK_Bills_BillStatus" FromRole="BillStatus" ToRole="Bill" />
+        </EntityType>
+        <Association Name="FK_Bills_BillStatus">
+          <End Type="BillManagerDBModel.BillStatus" Role="BillStatus" Multiplicity="0..1" />
+          <End Type="BillManagerDBModel.Bill" Role="Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BillStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -553,11 +605,11 @@
           <EntitySetMapping Name="Bills">
             <EntityTypeMapping TypeName="BillManagerDBModel.Bill">
               <MappingFragment StoreEntitySet="Bills">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
                 <ScalarProperty Name="Width" ColumnName="Width" />
                 <ScalarProperty Name="Lenght" ColumnName="Lenght" />
                 <ScalarProperty Name="Heigh" ColumnName="Heigh" />
-                <ScalarProperty Name="BillNumber" ColumnName="BillNumber" />
                 <ScalarProperty Name="BillID" ColumnName="BillID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
@@ -676,6 +728,15 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillStatuses">
+            <EntityTypeMapping TypeName="BillManagerDBModel.BillStatus">
+              <MappingFragment StoreEntitySet="BillStatuses">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

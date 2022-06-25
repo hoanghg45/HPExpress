@@ -265,6 +265,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BillManagerDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Context\BillStatus.cs">
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Context\Department.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
@@ -344,8 +347,10 @@
     <Content Include="assets\css\themes\layout\header\base\light.css" />
     <Content Include="assets\css\themes\layout\header\menu\dark.css" />
     <Content Include="assets\css\themes\layout\header\menu\light.css" />
+    <Content Include="assets\js\AddBill\Netpost.js" />
     <Content Include="assets\js\BillSearch.js" />
     <Content Include="assets\js\BillTable.js" />
+    <Content Include="assets\js\changeBillID.js" />
     <Content Include="assets\js\DateFormat.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-visibility.js" />
@@ -2319,8 +2324,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\maxlength-contenteditable.js" />
-    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

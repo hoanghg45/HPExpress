@@ -66,21 +66,21 @@
                             <li class="navi-separator mb-3 opacity-70"></li>
 
                             <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="@Url.Action("Create/1","WayBill")" class="navi-link">
+                                <a href="@Url.Action("Create/NetpostView","WayBill")" class="navi-link">
                                     <span class="navi-text">
                                         <span class="label label-xl label-inline label-light-danger">NETPOST</span>
                                     </span>
                                 </a>
                             </li>
                             <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="@Url.Action("Create/2","WayBill")" class="navi-link">
+                                <a href="@Url.Action("Create/ViettelPostView","WayBill")" class="navi-link">
                                     <span class="navi-text">
                                         <span class="label label-xl label-inline label-light-warning">VIETTELPOST</span>
                                     </span>
                                 </a>
                             </li>
                             <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="@Url.Action("Create/3","WayBill")" class="navi-link">
+                                <a href="@Url.Action("Create/TasetcoView","WayBill")" class="navi-link">
                                     <span class="navi-text">
                                         <span class="label label-xl label-inline label-light-success">TASETCO</span>
                                     </span>
@@ -202,7 +202,7 @@
                             <div class="col-lg-4 mb-lg-0 mb-6">
                                 <label>Đơn vị vận chuyển: </label>
                                 <select class="form-control" id="kt_datatable_search_status">
-                                    <option value="">All</option>
+                                    <option value="">Tất cả</option>
                                     @foreach (var Prov in ViewBag.ProvList)
                                     {
                                         <option value="@Prov.ProviderID">@Prov.ProviderName</option>
@@ -222,35 +222,59 @@
                         </div>
                         @if (Model.RoleID != 3)
                         {
-                            <div class="row mb-8">
-                                @if (Model.RoleID != 2)
+                    <div class="row mb-8">
+                        @if (Model.RoleID != 2)
+                        {
+                            <div class="col-lg-4 mb-lg-0 mb-6">
+                                <label>Phòng - Ban:</label>
+                                <select class="form-control datatable-input" id="datable_search_department">
+                                    <option value="">Tất cả</option>
+                                    @foreach (var Dep in ViewBag.DepartList)
+                                    {
+                                        <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+
+
+                        <div class="col-lg-4 mb-lg-0 mb-6">
+                            <label>Nhân viên:</label>
+                            <select class="form-control datatable-input" id="datable_search_user">
+
+                                <option value="">Tất cả</option>
+                                @foreach (var User in ViewBag.UserList)
                                 {
-                                    <div class="col-lg-6 mb-lg-0 mb-6">
-                                        <label>Phòng - Ban:</label>
-                                        <select class="form-control datatable-input" id="datable_search_department">
-                                            <option value="">All</option>
-                                            @foreach (var Dep in ViewBag.DepartList)
-                                            {
-                                                <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
-                                            }
-                                        </select>
-                                    </div>
+                                    if (Model.UserID == User.UserID)
+                                    {
+                                        <option value="@User.UserID">Tôi</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@User.UserID">@User.FullName</option>
+                                    }
+
                                 }
 
+                            </select>
+                        </div>
+                        <div class="col-lg-4 mb-lg-0 mb-6">
+                            <label>Trạng thái:</label>
+                            <select class="form-control datatable-input" id="datable_search_stt">
 
-                                <div class="col-lg-6 mb-lg-0 mb-6">
-                                    <label>Nhân viên:</label>
-                                    <select class="form-control datatable-input" id="datable_search_user">
+                                <option value="">Tất cả</option>
+                                @foreach (var stt in ViewBag.statuslst)
+                                {
+                                    
+                                        <option value="@stt.StatusID">@stt.StatusName</option>
+                                   
+                                      
 
-                                        <option value="">All</option>
-                                        @foreach (var User in ViewBag.UserList)
-                                        {
-                                            <option value="@User.UserID">@User.FullName</option>
-                                        }
+                                }
 
-                                    </select>
-                                </div>
-                            </div>
+                            </select>
+                        </div>
+                    </div>
                         }
 
 
@@ -296,13 +320,13 @@
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->
-<script src="~/Scripts/maxlength-contenteditable.js"></script>
-<script src="~/Scripts/script.js"></script>
-<script src="~/assets/js/BillSearch.js"></script>
+<script src="~/assets/js/changeBillID.js"></script>
+<script src="~/assets/js/BillSearch.js" id="scrUserInf" data-roleid=@Model.RoleID data-depid=@Model.DepartmentID></script>
 <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
 <script src="~/assets/js/JSBarcode.min.js"></script>
 <script src="~/assets/js/qrcode.js"></script>
 <script src="~/assets/js/pages/my-script.js"></script>
+<script src="~/assets/js/BillTable.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var RoleID = @Model.RoleID;
@@ -314,16 +338,16 @@
 
 
         $("#searchInput").on("keyup", function () {
-            search("", RoleID, DepID, UserID)
+            billsearch("", RoleID, DepID, UserID)
 
         });
         $('#kt_datatable_search_status').on('change', function () {
-            search("", RoleID, DepID, UserID)
+            billsearch("", RoleID, DepID, UserID)
 
         });
         $('#datable_search_department').on('change', function () {
 
-            search("", RoleID, DepID, UserID)
+            billsearchForDep("", RoleID, DepID, UserID)
             setUserByDepart($(this).val())
 
 
@@ -332,7 +356,14 @@
 
 
 
-            search("", RoleID, DepID, UserID)
+            billsearch("", RoleID, DepID, UserID)
+
+        });
+        $('#datable_search_stt').on('change', function () {
+
+
+
+            billsearch("", RoleID, DepID, UserID)
 
         });
         $('.applyBtn').on('click', function () {
@@ -340,11 +371,12 @@
             var date = $('.drp-selected').text()
             var value = $('#searchInput').val().toLowerCase();
             var id = $('#kt_datatable_search_status').val()
-            showtable(id, date, value)
+            /* showtable(id, date, value)*/
+            billsearch("", RoleID, DepID, UserID)
 
         });
         $('.cancelBtn').on('click', function () {
-            search("", RoleID, DepID, UserID)
+            billsearch("", RoleID, DepID, UserID)
         });
 
         //$('#btn_search').on('click', function () {

@@ -1,4 +1,4 @@
-$(window).ready(function() {
+﻿$(window).ready(function() {
     var current = location.pathname;
     $("div.aside,.aside-left,.aside-fixed,.d-flex,.flex-column,.flex-row-auto li a").each(function () {
         if ($(this).attr('href') === location.pathname) {
@@ -8,7 +8,7 @@ $(window).ready(function() {
     $(".menu-item-active").parents('.menu-submenu').removeAttr('style');
     $(".menu-item-active").parents('.menu-item-submenu').addClass('menu-item-open');
 })
-/*set select Nh�n vi�n theo select ph�ng*/ 
+/*set select Nhân viên theo select phòng*/ 
 function setUserByDepart(id) {
     $.ajax({
         type: "get",
@@ -23,10 +23,16 @@ function setUserByDepart(id) {
             $("#datable_search_user").empty();
 
 
-            var option = '<option value="">All</option>'
+            var option = '<option value="">Tất cả</option>'
             $.each(data.data, function (i, d, p) {
-
-                option += '<option value="' + d.UserID + '">' + d.UserName + '</option>'
+                var id = $('#UserID').val()
+                if (id == d.UserID) {
+                    option += '<option value="' + d.UserID + '"> Tôi </option>'
+                }
+                else {
+                    option += '<option value="' + d.UserID + '">' + d.UserName + '</option>'
+                }
+               
 
             });
 
@@ -36,7 +42,7 @@ function setUserByDepart(id) {
     });
 
 }
-/*set select Role theo select ph�ng*/
+/*set select Role theo select phòng*/
 function setRoleByDepart(id) {
     $.ajax({
         type: "get",

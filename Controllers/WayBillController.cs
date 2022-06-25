@@ -15,7 +15,7 @@ using HPExpress.Security;
 
 namespace HPExpress.Controllers
 {
-    [SessionCheck]
+    //[SessionCheck]
     public class WayBillController : Controller
     {
         
@@ -23,7 +23,7 @@ namespace HPExpress.Controllers
       
         [HttpGet]
         [Route("data")]
-        public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="",int dep = 0, int usid =0)
+        public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="",int dep = 0, int usid =0,int stt =0)
         {
             
             DateTime dateFrom = DateTime.Now;
@@ -35,6 +35,7 @@ namespace HPExpress.Controllers
                         join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
                         join us in _context.Users on obj.UserID equals us.UserID
                         join de in _context.Departments on us.DepartmentID equals de.DepartmentID
+                        join s in _context.BillStatuses on obj.Status equals s.StatusID
                         select new
                         {
                             Id = obj.BillID.Trim(),
@@ -45,7 +46,7 @@ namespace HPExpress.Controllers
                             ProviderName = pro.ProviderName,
                             DepartmentID = de.DepartmentID,
                             Trans = se.TransName,
-                            Billnum = obj.BillNumber,
+                             StatusID = s.StatusID,
                             Package = obj.ProductPakage,
                             Weight = obj.ProductWeight,
                             Dateship = obj.CreateAT,
@@ -58,13 +59,14 @@ namespace HPExpress.Controllers
                  dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 dateTo = dateTo.AddHours(23).AddMinutes(59);
             }
-            if (id != 0 || date != "" || usid != 0 || dep != 0)
+            if (id != 0 || date != "" || usid != 0 || dep != 0 ||stt != 0)
             {
                 
                 table = table.WhereIf(id != 0, t => t.ProviderID == id)
                               .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo)
                               .WhereIf(usid != 0,t => t.UserID == usid)
-                              .WhereIf(dep != 0, t => t.DepartmentID == dep);
+                              .WhereIf(dep != 0, t => t.DepartmentID == dep)
+                              .WhereIf(stt != 0, t => t.StatusID == stt);
             }
             if(search != "")
             {
@@ -75,7 +77,7 @@ namespace HPExpress.Controllers
                  t => t.Cusinf,
                  t => t.Content,
                    t => t.Trans,
-                   t => t.Billnum.ToString(),
+                   
                    t => t.Weight.ToString(),
                    t => t.Category.FirstOrDefault(c => c.Contains(search))
 
@@ -117,6 +119,88 @@ namespace HPExpress.Controllers
             
         }
 
+        [HttpPost]
+
+        public JsonResult changeBillID(string oldId, string newID)
+        {
+            Bill oldbill = _context.Bills.FirstOrDefault(b => b.BillID == oldId);
+            if(oldbill != null)
+            {
+
+                bool isvalid = _context.Bills.Any(b => b.BillID == newID);
+                if (!isvalid)
+                {
+                    Bill newbill = new Bill()
+                        { BillID = newID,
+                           BillContent = oldbill.BillContent,
+                           
+                           CreateAT = oldbill.CreateAT,
+                           CustomerInf = oldbill.CustomerInf,
+                           
+                           Heigh = oldbill.Heigh,
+                           Lenght = oldbill.Lenght,
+                           Width = oldbill.Lenght,
+                           PaymentID = oldbill.PaymentID,
+                           UserID = oldbill.UserID,
+                           Note = oldbill.Note,
+                           ServiceID = oldbill.ServiceID,
+                           ProductPakage = oldbill.ProductPakage,
+                           ProviderID = oldbill.ProviderID,
+                           TransID = oldbill.TransID,
+                           ProductWeight = oldbill.ProductWeight,
+                           };
+
+                    newbill.ProductCategorys = oldbill.ProductCategorys;
+                    var temp = newbill.ProductCategorys.ToList();
+                    newbill.ProductCategorys = temp;
+                    _context.Bills.Add(newbill);
+                    _context.Bills.Remove(oldbill);
+                    _context.SaveChanges();
+                    return this.Json(
+                new
+                {
+                    status = "success",
+                    message = "Đổi mã đơn thành công!"
+                }
+                , JsonRequestBehavior.AllowGet
+                );
+                }
+                else
+                {
+                    return this.Json(
+                new
+                {
+                    status = "error",
+                    message = "Mã đơn đã bị trùng vui lòng nhập lại!"
+                }
+                , JsonRequestBehavior.AllowGet
+                );
+                }
+
+
+
+
+
+
+               
+            }
+            else
+            {
+                return this.Json(
+         new
+         {
+             status = "error",
+             message = "Lỗi gòi!"
+         }
+         , JsonRequestBehavior.AllowGet
+         );
+            }
+
+
+
+            
+
+        }
         [HttpGet]
        
         public JsonResult filterUser(int id = 0)
@@ -174,11 +258,13 @@ namespace HPExpress.Controllers
             {
                 userlst = _context.Users.ToList();
             }
-           
+            
             
             ViewBag.UserList = userlst;
-            
-            
+            List<BillStatus> statuslst = new List<BillStatus>();
+            statuslst = _context.BillStatuses.ToList();
+            ViewBag.statuslst = statuslst;
+
             return View(currUser);
         }
        
@@ -252,13 +338,10 @@ namespace HPExpress.Controllers
                 }
                 bill.ProductCategorys = catlst;
                 bill.ProductPakage = Int32.Parse(collection["package_numb"]);
-                int billnum = Int32.Parse(collection["contract_numb"]);
-                if (_context.Bills.Any(b => b.BillNumber == billnum))
-                {
-                    return Json(new { message = "Số HĐ đã trùng với 1 phiếu trước đó, vui lòng kiểm tra và thử lại" });
-                }
+                bill.Status = Int32.Parse(collection["bill_status"]);
 
-                else { bill.BillNumber = billnum ; }
+
+
                 String date = collection["date"].Replace('.', '/');
                 
                 DateTime tempDate = DateTime.ParseExact(date,"dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
@@ -302,7 +385,7 @@ namespace HPExpress.Controllers
                 collection["customer_add"],
                 collection["customer_phone"],
                 collection["date"],
-                collection["contract_numb"],
+                
                 collection["package_numb"],
                 collection["CatBox1"],
                 collection["CatBox2"],
@@ -355,7 +438,7 @@ namespace HPExpress.Controllers
                   cus_inf[2],
                   cus_inf[3],
                   bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
-                  bill.BillNumber.ToString(),
+                 
                   bill.ProductPakage.ToString(),
                   cat1,
                   cat2,
@@ -377,7 +460,6 @@ namespace HPExpress.Controllers
                     cus_inf[2],
                     cus_inf[3],
                     bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
-                    bill.BillNumber.ToString(),
                     bill.ProductPakage.ToString(),
                     cat,
                     bill.ProductWeight.ToString(),

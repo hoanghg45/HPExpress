@@ -35,5 +35,6 @@ namespace HPExpress.Context
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<BillStatus> BillStatuses { get; set; }
     }
 }

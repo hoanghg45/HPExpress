@@ -14,7 +14,7 @@ namespace HPExpress.Models
         public string customer_address { get; set; }
         public string customer_phone { get; set; }  
         public string date { get; set; }
-        public string contract_numb { get; set; }
+       
         public string package_numb { get; set; }
         public string cate1 { get; set; }
         public string cate2 { get; set; }
@@ -29,14 +29,13 @@ namespace HPExpress.Models
         
         public string bill_content { get; set; }
 
-        public NetpostViewModels(string customer_comp, string customer_name, string customer_address, string customer_phone, string date, string contract_numb, string package_numb, string cate1, string cate2, string pro_wei, string pro_leng, string pro_wid, string pro_hei, string trans, string payment, string provider_id, string service, string bill_content)
+        public NetpostViewModels(string customer_comp, string customer_name, string customer_address, string customer_phone, string date, string package_numb, string cate1, string cate2, string pro_wei, string pro_leng, string pro_wid, string pro_hei, string trans, string payment, string provider_id, string service, string bill_content)
         {
             this.customer_comp = customer_comp;
             this.customer_name = customer_name;
             this.customer_address = customer_address;
             this.customer_phone = customer_phone;
             this.date = date;
-            this.contract_numb = contract_numb;
             this.package_numb = package_numb;
             this.cate1 = cate1;
             this.cate2 = cate2;

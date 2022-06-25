@@ -55,7 +55,7 @@
 
                         </div>
                         <!--begin::Form-->
-                        <form class="form" action="/" method="post" id="kt_form_2">
+                        <form class="form" action="/" method="post" id="netpost_form">
                             <div class="card-body">
                                 <input hidden name="user_id" value="@Model.UserID" />
                                     <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
@@ -73,13 +73,14 @@
                                     </div>
                                     @Html.AntiForgeryToken()
                                     <input hidden type="text" name="prov_id" class="form-control" value="1" />
+                                    <input hidden type="text" name="bill_status" class="form-control" value="1" />
                                     <div class="mb-3">
                                         <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
                                         <div class="mb-2">
                                             <div class="form-group row">
                                                 <div class="col-lg-6">
                                                     <label> Mã vạch:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="barcode" name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
+                                                    <input data-vali="true" type="number" maxlength="10" id="barcode"  name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
                                                 </div>
 
 
@@ -108,13 +109,13 @@
                                             <div class="form-group row">
                                                 <div class="col-lg-6">
                                                     <label> Mã khách hàng:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="70187" />
+                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" readonly placeholder="" value="70187" />
                                                 </div>
 
 
                                                 <div class="col-lg-6">
                                                     <label> Người gửi:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
+                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control"  placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -176,14 +177,11 @@
                                         <div class="mb-2">
 
                                             <div class="form-group row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <label>Nội dung <span class="text-danger">*</span></label>
                                                     <input data-vali="true" type="text" id="content" name="content" class="form-control" placeholder="Nhập nội dung" value="" />
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <label>Số HĐ<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="number" id="contract_numb" name="contract_numb" class="form-control" placeholder="Nhập số HĐ" value="" />
-                                                </div>
+                                             
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-lg-6">
