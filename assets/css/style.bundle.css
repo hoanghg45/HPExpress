@@ -2948,7 +2948,7 @@ textarea.form-control.is-valid {
 
 .form-check-input.is-valid~.form-check-label,
 .was-validated .form-check-input:valid~.form-check-label {
-    color: #1bc5bd
+    /*color: #1bc5bd*/
 }
 
 .form-check-input.is-valid~.valid-feedback,
@@ -3067,7 +3067,7 @@ textarea.form-control.is-invalid {
 
 .form-check-input.is-invalid~.form-check-label,
 .was-validated .form-check-input:invalid~.form-check-label {
-    color: #f64e60
+    /*color: #f64e60*/
 }
 
 .form-check-input.is-invalid~.invalid-feedback,

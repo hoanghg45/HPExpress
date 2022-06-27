@@ -327,7 +327,99 @@
 <script src="~/assets/js/qrcode.js"></script>
 <script src="~/assets/js/pages/my-script.js"></script>
 <script src="~/assets/js/BillTable.js"></script>
+<script src="~/Scripts/jquery.scannerdetection.js"></script>
 <script type="text/javascript">
+    $(document).scannerDetection({
+        timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+        startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
+        endChar: [13], // be sure the scan is complete if key 13 (enter) is detected
+        avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
+        onComplete: function (barcode, qty) {
+            validScan = true; $('.txtbillid').val(barcode);
+            id = $('.txtbillid').parent().parent().attr('id')
+             savebill(id)
+        } // main callback function
+
+
+    });
+    function savebill(id) {
+
+        var check = true
+        var value = $('input[name=' + id + ']').val()
+        var span = $('#vali_' + id + '')
+        span.text('')
+        if (value.length < 8 || value.length > 10) {
+            span.text('Mã phải có độ dài từ 8 - 10 ký tự!')
+            check = false
+        }
+        if (check) {
+            Swal.fire({
+                title: "Bạn có chắc muốn thay đổi?",
+                text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Có!",
+                cancelButtonText: "Không!",
+                reverseButtons: true
+            }).then(function (result) {
+                var page = $("#billpagi a.active").data('page')
+                var RoleID = $("#scrUserInf").data('roleid')
+                var DepID = $("#scrUserInf").data('depid')
+                var UserID = $("#UserID").val()
+                if (result.value) {
+                    $.ajax({
+                        type: "post",
+                        url: HOST_URL + 'Waybill/changeBillID',
+                        data: {
+                            oldid: id,
+                            newid: value
+                        },
+                        datatype: 'json',
+
+                        success: function (data) {
+                            if (data.status == "success") {
+                                Swal.fire(
+                                    "Thay đổi thành công!",
+                                    data.message,
+                                    "success"
+                                ).then(function () {
+
+                                    billsearch(page, RoleID, DepID, UserID)
+
+
+                                })
+                            } else {
+                                Swal.fire(
+                                    "Đã có lỗi!",
+                                    data.message,
+                                    "error"
+                                )
+                            }
+                        },
+                        error: function (errorResult) {
+                            console.log(errorResult.responseText)
+                        }
+                    })
+
+
+                    // result.dismiss can be "cancel", "overlay",
+                    // "close", and "timer"
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire(
+                        "Đã hủy",
+                        "Dữ liệu vẫn an toàn!",
+                        "error"
+                    ).then(function () {
+
+                        billsearch(page, RoleID, DepID, UserID)
+
+
+                    })
+                }
+            });
+        }
+
+    }
     $(document).ready(function () {
         var RoleID = @Model.RoleID;
         var UserID = @Model.UserID;
@@ -353,8 +445,6 @@
 
         });
         $('#datable_search_user').on('change', function () {
-
-
 
             billsearch("", RoleID, DepID, UserID)
 
@@ -390,7 +480,7 @@
         //    QR_CODE.makeCode("123456");
         //});
     });
-
+   
 </script>
 
 @*<script src="~/assets/js/pages/crud/ktdatatable/base/data-json.js"></script>*@

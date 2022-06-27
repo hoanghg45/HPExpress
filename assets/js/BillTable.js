@@ -291,99 +291,114 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
               
             });
 
+            function savebill(id) {
+                
+                var check = true
+                var value = $('input[name=' + id + ']').val()
+                var span = $('#vali_' + id + '')
+                span.text('')
+                if (value.length < 8 || value.length > 10) {
+                    span.text('Mã phải có độ dài từ 8 - 10 ký tự!')
+                    check = false
+                }
+                if (check) {
+                    Swal.fire({
+                        title: "Bạn có chắc muốn thay đổi?",
+                        text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Có!",
+                        cancelButtonText: "Không!",
+                        reverseButtons: true
+                    }).then(function (result) {
+                        var page = $("#billpagi a.active").data('page')
+                        var RoleID = $("#scrUserInf").data('roleid')
+                        var DepID = $("#scrUserInf").data('depid')
+                        var UserID = $("#UserID").val()
+                        if (result.value) {
+                            $.ajax({
+                                type: "post",
+                                url: HOST_URL + 'Waybill/changeBillID',
+                                data: {
+                                    oldid: id,
+                                    newid: value
+                                },
+                                datatype: 'json',
+
+                                success: function (data) {
+                                    if (data.status == "success") {
+                                        Swal.fire(
+                                            "Thay đổi thành công!",
+                                            data.message,
+                                            "success"
+                                        ).then(function () {
+
+                                            billsearch(page, RoleID, DepID, UserID)
+
+
+                                        })
+                                    } else {
+                                        Swal.fire(
+                                            "Đã có lỗi!",
+                                            data.message,
+                                            "error"
+                                        )
+                                    }
+                                },
+                                error: function (errorResult) {
+                                    console.log(errorResult.responseText)
+                                }
+                            })
+
+
+                            // result.dismiss can be "cancel", "overlay",
+                            // "close", and "timer"
+                        } else if (result.dismiss === "cancel") {
+                            Swal.fire(
+                                "Đã hủy",
+                                "Dữ liệu vẫn an toàn!",
+                                "error"
+                            ).then(function () {
+
+                                billsearch(page, RoleID, DepID, UserID)
+
+
+                            })
+                        }
+                    });
+                }
+
+            }
+            /////
+            
             ///Đổi mã vận đơn
-            $('.btnChangeID').click(function (event) {
+            $('.btnChangeID').click(function () {
 
                 var idbill = $(this).data('id')
                 idbill = $.trim(idbill);
-               
-               
+
+                var thopen = $('th[data-check="true"]')
+                if (thopen != null) {
+                    thopen.empty()
+                    
+                        thopen.append(thopen.attr('id'))
+                    thopen.removeAttr('data-check')
+                
+                }
                 var th = $("th#" + idbill + "")
+                
                 th.empty()
-                var editable = '<form id="' + idbill + '"> <div style = "display:flex;justify-content:left" > <input class="txtbillid" required minlength="8" maxlength="10" name= "' + idbill + '" style="margin-right:10px;width: 90px" value="' + idbill + '" ><a class="btnsavebillid"  href="javascript:;"> <i class="fas fa-save text-success icon-md"></i></a></div></form> <span style="font-size: 11px;" id="vali_' + idbill + '" class="text-danger"></span>'
+                var editable = '<div id="' + idbill + '"> <div style = "display:flex;justify-content:left" > <input  class="txtbillid" required oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "10" name= "' + idbill + '" style="margin-right:10px;width: 90px" value="' + idbill + '" ><a class="btnsavebillid"  href="javascript:;"> <i class="fas fa-save text-success icon-md"></i></a></div></div> <span style="font-size: 11px;" id="vali_' + idbill + '" class="text-danger"></span>'
                 th.append(editable)
-               
+                th.attr('data-check', 'true');
                 $('.btnsavebillid').click(function () {
-                    var id = $(this).parent().parent().attr('id')
-                    console.log(id)
-                    var check = true
-                    var value = $('input[name=' + id + ']').val()
-                    var span = $('#vali_' + id + '')
-                    span.text('')
-                    if (value.length < 8 || value.length > 10) {
-                        span.text('Mã phải có độ dài từ 8 - 10 ký tự!')
-                        check = false
-                    }
-                    if (check) {
-                        Swal.fire({
-                            title: "Bạn có chắc muốn thay đổi?",
-                            text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonText: "Có!",
-                            cancelButtonText: "Không!",
-                            reverseButtons: true
-                        }).then(function (result) {
-                            var page = $("#billpagi a.active").data('page')
-                            var RoleID = $("#scrUserInf").data('roleid')
-                            var DepID = $("#scrUserInf").data('depid')
-                            var UserID = $("#UserID").val()
-                            if (result.value) {
-                                $.ajax({
-                                    type: "post",
-                                    url: HOST_URL + 'Waybill/changeBillID',
-                                    data: {
-                                        oldid: id,
-                                        newid: value
-                                    },
-                                    datatype: 'json',
-
-                                    success: function (data) {
-                                        if (data.status == "success") {
-                                            Swal.fire(
-                                                "Thay đổi thành công!",
-                                                data.message,
-                                                "success"
-                                            ).then(function () {
-
-                                                billsearch(page, RoleID, DepID, UserID)
-                                               
-
-                                            })
-                                        } else {
-                                            Swal.fire(
-                                                "Đã có lỗi!",
-                                                data.message,
-                                                "error"
-                                            )
-                                        }
-                                    },
-                                    error: function (errorResult) {
-                                        console.log(errorResult.responseText)
-                                    }
-                                })
-
-
-                                // result.dismiss can be "cancel", "overlay",
-                                // "close", and "timer"
-                            } else if (result.dismiss === "cancel") {
-                                Swal.fire(
-                                    "Đã hủy",
-                                    "Dữ liệu vẫn an toàn!",
-                                    "error"
-                                ).then(function () {
-
-                                    billsearch(page, RoleID, DepID, UserID)
-                                    
-
-                                })
-                            }
-                        });
-                    }
-
+                    id = $(this).parent().parent().attr('id')
+                        savebill(id)
                 })
+               
             });
-           
+
+         
 
             function printNetPost(idbill) {
                 $.ajax({

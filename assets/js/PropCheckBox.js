@@ -17,5 +17,5 @@ function printDiv() {
     window.print();
 
     document.body.innerHTML = originalContents;
-    /*location.reload(true)*/
+    
 }

@@ -28,7 +28,7 @@ namespace HPExpress.Controllers
             
             DateTime dateFrom = DateTime.Now;
             DateTime dateTo = DateTime.Now;
-
+            var count = _context.Bills.Count();
             //_context.Configuration.ProxyCreationEnabled = false;
             var table = from obj in _context.Bills
                         join se in _context.Transpots on obj.TransID equals se.TransID
@@ -148,7 +148,8 @@ namespace HPExpress.Controllers
                            ProviderID = oldbill.ProviderID,
                            TransID = oldbill.TransID,
                            ProductWeight = oldbill.ProductWeight,
-                           };
+                           Status = oldbill.Status
+                    };
 
                     newbill.ProductCategorys = oldbill.ProductCategorys;
                     var temp = newbill.ProductCategorys.ToList();
@@ -303,7 +304,7 @@ namespace HPExpress.Controllers
         // POST: WayBill/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(FormCollection collection)
+        public JsonResult Create(FormCollection collection, string returnUrl)
         {
             try
             {
@@ -315,27 +316,36 @@ namespace HPExpress.Controllers
                     return Json(new { message = "Mã trùng với 1 phiếu trước đó, vui lòng kiểm tra và thử lại!" });
                 }
                 else { bill.BillID = collection["barcode"].Trim(); }
-
+                
+                
                 bill.UserID = Int32.Parse(collection["user_id"]);
                 bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
                 string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
                 bill.CustomerInf = cus_inf.Trim();
+                string cates = collection["CatBox"];
+                string[] cate = cates.Split(',');
                 List<ProductCategory> catlst = new List<ProductCategory>();
-                if (collection["CatBox1"] != null)
+                foreach(var a in cate)
                 {
-                    int cate1 = Int16.Parse(collection["CatBox1"]);
-                    catlst.Add(_context.ProductCategorys.Where(a => a.CatID == cate1).FirstOrDefault());
+                    int cat = Int16.Parse(a);
+                    if (cat == 1)
+                    {
+                       
+                        catlst.Add(_context.ProductCategorys.Where(c => c.CatID == cat).FirstOrDefault());
+                    }
+                   if (cat == 2)
+                    {
+                       
+                        catlst.Add(_context.ProductCategorys.Where(c => c.CatID == cat).FirstOrDefault());
+                    }
+                   if (cat == 3)
+                    {
+                       
+                        catlst.Add(_context.ProductCategorys.Where(c => c.CatID == cat).FirstOrDefault());
+                    }
+                  
                 }
-                if (collection["CatBox2"] != null)
-                {
-                    int cate2 = Int16.Parse(collection["CatBox2"]);
-                    catlst.Add(_context.ProductCategorys.Where(a => a.CatID == cate2).FirstOrDefault());
-                }
-                if (collection["CatBox3"] != null)
-                {
-                    int cate3 = Int16.Parse(collection["CatBox3"]);
-                    catlst.Add(_context.ProductCategorys.Where(a => a.CatID == cate3).FirstOrDefault());
-                }
+             
                 bill.ProductCategorys = catlst;
                 bill.ProductPakage = Int32.Parse(collection["package_numb"]);
                 bill.Status = Int32.Parse(collection["bill_status"]);
@@ -363,7 +373,9 @@ namespace HPExpress.Controllers
 
                 _context.Bills.Add(bill);
                 _context.SaveChanges();
-                return Json(new { message = "Success" });
+                return Json(new { status = "success",
+                    returnURL = returnUrl
+                });
             }
             catch(Exception e)
             {

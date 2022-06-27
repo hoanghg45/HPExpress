@@ -33,28 +33,25 @@ var Netpost = function () {
                             }
                         }
                     },
-                    customer_comp: {
+                    comp_phone: {
                         validators: {
                             notEmpty: {
-                                message: 'Vui lòng nhập tên công ty b'
+                                message: 'Vui lòng nhập số điện thoại '
                             },
                             
                         }
                     },
                     customer_name: {
                         validators: {
-                            identical: {
-                                compare: function () {
-                                    return form.querySelector('[name="UserPass"]').value;
-                                },
-                                message: 'Không trùng khớp với mật khẩu',
-                            },
-                        },
+                            notEmpty: {
+                                message: 'Vui lòng nhập tên người nhận'
+                            }
+                        }
                     },
-                    userphone: {
+                    cus_phone: {
                         validators: {
                             notEmpty: {
-                                message: 'Vui lòng nhập số điện thoại'
+                                message: 'Vui lòng nhập số điện thoại người nhận'
                             },
                             phone: {
                                 message: 'Số điện thoại không hợp lệ',
@@ -62,17 +59,51 @@ var Netpost = function () {
                             },
                         }
                     },
-                    UserEmail: {
+                    customer_add: {
                         validators: {
                             notEmpty: {
-                                message: 'Vui lòng nhập Email',
+                                message: 'Vui lòng nhập địa chỉ người nhận',
 
                             },
-                            emailAddress: {
-                                message: 'Vui lòng nhập đúng định dạng Email',
-                            },
+                         
                         }
                     },
+                    content: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Vui lòng nhập nội dung phiếu gửi',
+
+                            },
+                         
+                        }
+                    },
+                    package_numb: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Vui lòng nhập số kiện',
+
+                            },
+                         
+                        }
+                    },
+                    'CatBox': {
+                        validators: {
+                            choice: {
+                                min: 1,
+                                
+                                message: 'Vui lòng chọn loại hàng hóa',
+                            },
+                        },
+                    },
+                    pro_wei: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Vui lòng nhập trọng lượng',
+
+                            },
+                        },
+                    },
+
 
 
                 },
@@ -90,58 +121,57 @@ var Netpost = function () {
                 }
             }
         );
-        form.querySelector('[name="UserPass"]').addEventListener('input', function () {
-            validation.revalidateField('confirmPass');
-        });
+        
 
-        $('#addnew').on('click', function (e) {
+        $('#save').on('click', function (e) {
             e.preventDefault();
-            var returnUrl = HOST_URL + "Account/CreateAcc"
-            addUser(returnUrl)
+            var returnUrl = HOST_URL + "WayBill"
+            addNetPost(returnUrl)
         });
         $('#exit').on('click', function (e) {
             e.preventDefault();
-            var returnUrl = HOST_URL + "Account/ListUser"
-            addUser(returnUrl)
+            var returnUrl = HOST_URL + "WayBill"
+            window.location.href = returnUrl;
         });
 
 
 
-        function addUser(returnUrl) {
+        function addNetPost(returnUrl) {
             validation.validate().then(function (status) {
                 if (status == 'Valid') {
-
-                    //var formdata = {
-                    //    Username: $("#username").val(),
-                    //    Password: $("#password").val()
-                    //} 
-                    var formdata =
-                        $('#kt_form').serialize() + '&returnUrl=' + returnUrl
-
+                var formdata =
+                        $("#netpost_form").serialize() + '&returnUrl=' + returnUrl
                     console.log(formdata)
                     $.ajax({
                         type: "post",
-                        url: HOST_URL + 'account/createacc',
-                        dataType: "json",
-
+                        url: HOST_URL + "Waybill/Create",
                         data: formdata,
-
+                        datatype: 'json',
+                         
                         success: function (data) {
                             if (data.status == "success") {
                                 swal.fire({
                                     title: "Thành công",
                                     text: data.message,
                                     icon: "success",
+                                    showCancelButton: true,   
+                                    
                                     buttonsStyling: false,
-                                    /*confirmButtonText: "Ok, got it!",*/
+                                    confirmButtonText: "Tiếp tục tạo!",
+                                    cancelButtonText: "Trở trang danh sách!",
                                     heightAuto: false,
                                     customClass: {
                                         confirmButton: "btn font-weight-bold btn-light-primary"
                                     }
 
-                                }).then(function () {
-                                    window.location.href = data.returnURL;
-                                    KTUtil.scrollTop();
+                                }).then(function (result) {
+                                    if (!result.value) {
+                                        window.location.href = data.returnURL;
+                                    }
+                                    else {
+                                        location.reload(true)
+                                        KTUtil.scrollTop();
+                                    }                                  
                                 });
                             } else {
                                 swal.fire({
