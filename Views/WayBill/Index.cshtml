@@ -220,65 +220,67 @@
                             </div>
 
                         </div>
-                        @if (Model.RoleID != 3)
-                        {
-                    <div class="row mb-8">
-                        @if (Model.RoleID != 2)
-                        {
+
+                        <div class="row mb-8">
+
+
+                            @if (Model.RoleID != 2 && Model.RoleID != 3)
+                            {
+                                <div class="col-lg-4 mb-lg-0 mb-6">
+                                    <label>Phòng - Ban:</label>
+                                    <select class="form-control datatable-input" id="datable_search_department">
+                                        <option value="">Tất cả</option>
+                                        @foreach (var Dep in ViewBag.DepartList)
+                                        {
+                                            <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            @if (Model.RoleID != 3)
+                            {
+
+
+                                <div class="col-lg-4 mb-lg-0 mb-6">
+                                    <label>Nhân viên:</label>
+                                    <select class="form-control datatable-input" id="datable_search_user">
+
+                                        <option value="">Tất cả</option>
+                                        @foreach (var User in ViewBag.UserList)
+                                        {
+                                            if (Model.UserID == User.UserID)
+                                            {
+                                                <option value="@User.UserID">Tôi</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@User.UserID">@User.FullName</option>
+                                            }
+
+                                        }
+
+                                    </select>
+                                </div>
+
+
+
+                            }
                             <div class="col-lg-4 mb-lg-0 mb-6">
-                                <label>Phòng - Ban:</label>
-                                <select class="form-control datatable-input" id="datable_search_department">
+                                <label>Trạng thái:</label>
+                                <select class="form-control datatable-input" id="datable_search_stt">
+
                                     <option value="">Tất cả</option>
-                                    @foreach (var Dep in ViewBag.DepartList)
+                                    @foreach (var stt in ViewBag.statuslst)
                                     {
-                                        <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
+                                        <option value="@stt.StatusID">@stt.StatusName</option>
+
                                     }
+
                                 </select>
                             </div>
-                        }
-
-
-                        <div class="col-lg-4 mb-lg-0 mb-6">
-                            <label>Nhân viên:</label>
-                            <select class="form-control datatable-input" id="datable_search_user">
-
-                                <option value="">Tất cả</option>
-                                @foreach (var User in ViewBag.UserList)
-                                {
-                                    if (Model.UserID == User.UserID)
-                                    {
-                                        <option value="@User.UserID">Tôi</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@User.UserID">@User.FullName</option>
-                                    }
-
-                                }
-
-                            </select>
                         </div>
-                        <div class="col-lg-4 mb-lg-0 mb-6">
-                            <label>Trạng thái:</label>
-                            <select class="form-control datatable-input" id="datable_search_stt">
 
-                                <option value="">Tất cả</option>
-                                @foreach (var stt in ViewBag.statuslst)
-                                {
-                                    
-                                        <option value="@stt.StatusID">@stt.StatusName</option>
-                                   
-                                      
-
-                                }
-
-                            </select>
-                        </div>
-                    </div>
-                        }
-
-
-                    </form>
+                        </form>
 
                     <!--end::Search Form-->
                     <!--begin: Datatable-->
@@ -335,9 +337,14 @@
         endChar: [13], // be sure the scan is complete if key 13 (enter) is detected
         avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
         onComplete: function (barcode, qty) {
-            validScan = true; $('.txtbillid').val(barcode);
-            id = $('.txtbillid').parent().parent().attr('id')
-             savebill(id)
+            validScan = true;
+            if ($('.txtbillid') != null) {
+                $('.txtbillid').val(barcode);
+                id = $('.txtbillid').parent().parent().attr('id')
+                savebill(id)
+            }
+
+         
         } // main callback function
 
 

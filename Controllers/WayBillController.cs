@@ -15,7 +15,7 @@ using HPExpress.Security;
 
 namespace HPExpress.Controllers
 {
-    //[SessionCheck]
+    [SessionCheck]
     public class WayBillController : Controller
     {
         
@@ -239,6 +239,7 @@ namespace HPExpress.Controllers
         }
 
         // GET: WayBill
+        [Route("BillList")]
         public ActionResult Index()
         { 
             //List<Bill> lstbills = _context.Bills.ToList();
@@ -288,8 +289,8 @@ namespace HPExpress.Controllers
                     return View("NetpostView", user);
                 case "ViettelPostView":
                     return View("ViettelPostView", user);
-                case "TasetcoView":
-                    return View("TasetcoView", user);
+                    //case "TasetcoView":
+                    //    return View("TasetcoView", user);
 
                 default:
                     // code block
@@ -352,7 +353,7 @@ namespace HPExpress.Controllers
 
 
 
-                String date = collection["date"].Replace('.', '/');
+                String date = collection["date"];
                 
                 DateTime tempDate = DateTime.ParseExact(date,"dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
 

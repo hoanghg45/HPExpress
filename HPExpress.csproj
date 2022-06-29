@@ -348,6 +348,7 @@
     <Content Include="assets\css\themes\layout\header\menu\dark.css" />
     <Content Include="assets\css\themes\layout\header\menu\light.css" />
     <Content Include="assets\js\AddBill\Netpost.js" />
+    <Content Include="assets\js\AddBill\Viettelpost.js" />
     <Content Include="assets\js\BillSearch.js" />
     <Content Include="assets\js\BillTable.js" />
     <Content Include="assets\js\changeBillID.js" />
@@ -573,7 +574,10 @@
     <Content Include="assets\media\error\bg4.jpg" />
     <Content Include="assets\media\error\bg5.jpg" />
     <Content Include="assets\media\error\bg6.jpg" />
+    <Content Include="assets\media\logos\bg-login.jpg" />
     <Content Include="assets\media\logos\favicon.ico" />
+    <Content Include="assets\media\logos\HPexpresslogo.png" />
+    <Content Include="assets\media\logos\HPexpresslogobanner.png" />
     <Content Include="assets\media\logos\logo-1.png" />
     <Content Include="assets\media\logos\logo-4.png" />
     <Content Include="assets\media\logos\logo-dark.png" />
@@ -2024,6 +2028,8 @@
     <Content Include="assets\media\users\300_9.jpg" />
     <Content Include="assets\media\users\blank.png" />
     <Content Include="assets\media\users\default.jpg" />
+    <Content Include="assets\media\users\HPexpressava.jpg" />
+    <Content Include="assets\media\users\HPexpresslogo.jpg" />
     <Content Include="assets\media\users\user1.jpg" />
     <Content Include="assets\media\users\user2.jpg" />
     <Content Include="assets\media\users\user3.jpg" />
@@ -2314,6 +2320,7 @@
     <Content Include="Context\BillManagerDB.edmx.diagram">
       <DependentUpon>BillManagerDB.edmx</DependentUpon>
     </Content>
+    <Content Include="assets\media\logos\Viasfora.vsix" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -18,7 +18,12 @@ namespace HPExpress
                 defaults: new { controller = "WayBill", action = "data", id = UrlParameter.Optional, date = UrlParameter.Optional, search = UrlParameter.Optional }
                 
                 );
-           
+            routes.MapRoute(
+                 name: "BillList",
+                 url: "{controller}/BillList",
+                 defaults: new { controller = "WayBill", action = "Index" }
+
+                 );
 
             routes.MapRoute(
                 name: "Default",

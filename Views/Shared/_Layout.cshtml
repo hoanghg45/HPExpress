@@ -38,7 +38,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="~/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="~/assets/media/logos/favicon.ico" />
+    <link rel="shortcut icon" @*href="~/assets/media/logos/favicon.ico"*@ />
     <!-- Google font apis -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -97,8 +97,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!--begin::Brand-->
                 <div class="brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
-                    <a href="@Url.Action("Index","Home")" class="brand-logo">
-                        <img alt="Logo" src="~/assets/media/logos/logo-light.png" />
+                    <a href="@Url.Action("Index","Home")" class="brand-logo" style="width: 150px;height: 50px;">
+                        <img alt="Logo" src="~/assets/media/logos/HPexpresslogobanner.png" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -211,21 +211,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </li>
                                         <li id="waybill" class="menu-item" aria-haspopup="true">
-                                            <a href="/WayBill" class="menu-link">
+                                            <a href="/WayBill/BillList" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
                                                 <span class="menu-text">DANH SÁCH PHIẾU</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="features/bootstrap/button-group.html" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Button Group</span>
-                                            </a>
-                                        </li>
+                                      
                                     </ul>
                                 </div>
                             </li>
@@ -277,345 +270,8 @@ License: You must have a valid license purchased only from themeforest(the above
                             </li>
                             }
 
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:~/assets/media/svg/icons/Layout/Layout-horizontal.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
-                                                <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-text">Datatables.net</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                            <span class="menu-link">
-                                                <span class="menu-text">Datatables.net</span>
-                                            </span>
-                                        </li>
-                                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Basic</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/basic/basic.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Basic Tables</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/basic/scrollable.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Scrollable Tables</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/basic/headers.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Complex Headers</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/basic/paginations.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Pagination Options</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Advanced</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/advanced/column-rendering.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Column Rendering</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/advanced/multiple-controls.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Multiple Controls</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/advanced/column-visibility.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Column Visibility</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/advanced/row-callback.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Row Callback</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/advanced/row-grouping.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Row Grouping</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/advanced/footer-callback.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Footer Callback</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Data sources</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/data-sources/html.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">HTML</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/data-sources/javascript.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Javascript</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/data-sources/ajax-client-side.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Ajax Client-side</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/data-sources/ajax-server-side.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Ajax Server-side</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Search Options</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/search-options/column-search.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Column Search</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/search-options/advanced-search.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Advanced Search</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Extensions</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/buttons.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Buttons</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/colreorder.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">ColReorder</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/keytable.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">KeyTable</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/responsive.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Responsive</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/rowgroup.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">RowGroup</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/rowreorder.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">RowReorder</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/scroller.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Scroller</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="crud/datatables/extensions/select.html" class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Select</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:~/assets/media/svg/icons/Files/Upload.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M2,13 C2,12.5 2.5,12 3,12 C3.5,12 4,12.5 4,13 C4,13.3333333 4,15 4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 C2,15 2,13.3333333 2,13 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                                <rect fill="#000000" opacity="0.3" x="11" y="2" width="2" height="14" rx="1" />
-                                                <path d="M12.0362375,3.37797611 L7.70710678,7.70710678 C7.31658249,8.09763107 6.68341751,8.09763107 6.29289322,7.70710678 C5.90236893,7.31658249 5.90236893,6.68341751 6.29289322,6.29289322 L11.2928932,1.29289322 C11.6689749,0.916811528 12.2736364,0.900910387 12.6689647,1.25670585 L17.6689647,5.75670585 C18.0794748,6.12616487 18.1127532,6.75845471 17.7432941,7.16896473 C17.3738351,7.57947475 16.7415453,7.61275317 16.3310353,7.24329415 L12.0362375,3.37797611 Z" fill="#000000" fill-rule="nonzero" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-text">File Upload</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="crud/file-upload/image-input.html" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Image Input</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="crud/file-upload/dropzonejs.html" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">DropzoneJS</span>
-                                                <span class="menu-label">
-                                                    <span class="label label-danger label-inline">new</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="crud/file-upload/uppy.html" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Uppy</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                            
+                          
 
                         </ul>
                         <!--end::Menu Nav-->
@@ -643,16 +299,12 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
-                            <span class="text-muted font-weight-bold mr-2">2020©</span>
-                            <a href="http://keenthemes.com/metronic" target="_blank" class="text-dark-75 text-hover-primary">Keenthemes</a>
+                            <span class="text-muted font-weight-bold mr-2">2022©</span>
+                            <a href="https://erp.haphan.com/" target="_blank" class="text-dark-75 text-hover-primary">HAPHAN</a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
-                        <div class="nav nav-dark">
-                            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-5">About</a>
-                            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-5">Team</a>
-                            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
-                        </div>
+                       
                         <!--end::Nav-->
                     </div>
                     <!--end::Container-->
@@ -682,7 +334,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!--begin::Header-->
             <div class="d-flex align-items-center mt-5">
                 <div class="symbol symbol-100 mr-5">
-                    <div class="symbol-label" style="background-image:url('~/assets/media/users/300_21.jpg')"></div>
+                    <div class="symbol-label" style="background-image:url('/assets/media/users/HPexpressava.jpg')"></div>
                     <i class="symbol-badge bg-success"></i>
                 </div>
                 <div class="d-flex flex-column">

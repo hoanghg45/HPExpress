@@ -228,9 +228,9 @@
                                                 <div class="col-lg-6">
                                                     <label>Kích thước:</label>
                                                     <div class="input-group">
-                                                        <input type="text" id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
-                                                        <input type="text" id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
-                                                        <input type="text" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
+                                                        <input type="number"  id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
+                                                        <input type="number"  id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
+                                                        <input type="number" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">m</span>
 
@@ -362,7 +362,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="separator separator-dashed my-10"></div>
+                                    @*<div class="separator separator-dashed my-10"></div>
                                     <div class="mb-3">
                                         <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>7. Ghi chú thêm:</b></h3>
                                         <div class="mb-2">
@@ -374,14 +374,10 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div>*@
                                 
 
-                                    @*billtable*@
-                                    <div hidden id="billtable" style="justify-content: center; display: flex; margin: 72.0pt 72.0pt 72.0pt 72.0pt; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-                                        
-                                    </div>
-                                    @*endtable*@
+                                  
 
                              </div>
                                 <div class="card-footer">
@@ -406,6 +402,23 @@
 </div>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="~/assets/js/AddBill/Netpost.js"></script>
+<script src="~/Scripts/jquery.scannerdetection.js"></script>
+<script type="text/javascript">  
+
+    $(document).scannerDetection({
+        timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+        startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
+        endChar: [13], // be sure the scan is complete if key 13 (enter) is detected
+        avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
+        onComplete: function (barcode, qty) {
+            validScan = true;
+            $('#barcode').val(barcode);
+       
+        } // main callback function
+
+
+    });
+</script>
 <!--<script type="text/javascript">
 
     $("#printData").click(function () {
@@ -531,4 +544,5 @@
         }
 
 </script>-->
+
 <script src="~/assets/js/PropCheckBox.js"></script>

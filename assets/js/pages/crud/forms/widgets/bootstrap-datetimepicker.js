@@ -5,12 +5,14 @@ var KTBootstrapDatetimepicker = function () {
     var baseDemos = function () {
         // Demo 1
         $('#kt_datetimepicker_1').datetimepicker({
-            locale: 'de'
+            locale: 'vi',
+            minDate: new Date()
         });
 
         // Demo 2
         $('#kt_datetimepicker_2').datetimepicker({
-            locale: 'de'
+            locale: 'de',
+            
         });
 
         // Demo 3

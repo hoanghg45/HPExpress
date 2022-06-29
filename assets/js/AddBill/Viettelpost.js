@@ -1,17 +1,17 @@
 ﻿"use strict";
 
 // Class Definition
-var Netpost = function () {
+var Viettelpost = function () {
 
 
 
 
     var _handleForm = function () {
         var validation;
-        const form = document.getElementById('netpost_form');
+        const form = document.getElementById('viettel_form');
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validation = FormValidation.formValidation(
-            KTUtil.getById('netpost_form'),
+            KTUtil.getById('viettel_form'),
             {
                 fields: {
                     barcode: {
@@ -20,10 +20,11 @@ var Netpost = function () {
                                 message: 'Vui lòng nhập mã phiếu'
                             },
                             stringLength: {
-                                max: 10,
-                                min:8,
-                                message: 'Mã phiếu có độ dài từ 8 - 10 chữ số',
+                                max: 9,
+                                min: 9,
+                                message: 'Mã phiếu có độ dài 9 chữ số',
                             },
+                            
                         }
                     },
                     date: {
@@ -68,7 +69,7 @@ var Netpost = function () {
                                 message: 'Vui lòng nhập địa chỉ người nhận',
 
                             },
-                         
+
                         }
                     },
                     content: {
@@ -77,7 +78,7 @@ var Netpost = function () {
                                 message: 'Vui lòng nhập nội dung phiếu gửi',
 
                             },
-                         
+
                         }
                     },
                     package_numb: {
@@ -90,14 +91,14 @@ var Netpost = function () {
                                 message: 'Trọng lượng của hàng phải lớn hơn 0',
                                 min: 1,
                             },
-                         
+
                         }
                     },
                     'CatBox': {
                         validators: {
                             choice: {
                                 min: 1,
-                                
+
                                 message: 'Vui lòng chọn loại hàng hóa',
                             },
                         },
@@ -113,7 +114,7 @@ var Netpost = function () {
                                 min: 0.01,
                             },
                         },
-                      
+
                     },
                     pro_wid: {
                         validators: {
@@ -122,7 +123,7 @@ var Netpost = function () {
                                 min: 0.01,
                             },
                         },
-                      
+
                     },
                     pro_hei: {
                         validators: {
@@ -157,12 +158,12 @@ var Netpost = function () {
                 }
             }
         );
-        
+
 
         $('#save').on('click', function (e) {
             e.preventDefault();
             var returnUrl = HOST_URL + "WayBill"
-            addNetPost(returnUrl)
+            addViettel(returnUrl)
         });
         $('#exit').on('click', function (e) {
             e.preventDefault();
@@ -172,25 +173,25 @@ var Netpost = function () {
 
 
 
-        function addNetPost(returnUrl) {
+        function addViettel(returnUrl) {
             validation.validate().then(function (status) {
                 if (status == 'Valid') {
-                var formdata =
-                        $("#netpost_form").serialize() + '&returnUrl=' + returnUrl
+                    var formdata =
+                        $("#viettel_form").serialize() + '&returnUrl=' + returnUrl
                     console.log(formdata)
                     $.ajax({
                         type: "post",
                         url: HOST_URL + "Waybill/Create",
                         data: formdata,
                         datatype: 'json',
-                         
+
                         success: function (data) {
                             if (data.status == "success") {
                                 swal.fire({
                                     title: "Thành công",
                                     text: "Thêm phiếu thành công, tiếp theo bạn muốn?",
                                     icon: "success",
-                                    showCancelButton: true,   
+                                    showCancelButton: true,
 
                                     buttonsStyling: true,
                                     confirmButtonText: "Tiếp tục tạo!",
@@ -207,7 +208,7 @@ var Netpost = function () {
                                     else {
                                         location.reload(true)
                                         KTUtil.scrollTop();
-                                    }                                  
+                                    }
                                 });
                             } else {
                                 swal.fire({
@@ -280,5 +281,5 @@ var Netpost = function () {
 
 // Class Initialization
 jQuery(document).ready(function () {
-    Netpost.init();
+    Viettelpost.init();
 });

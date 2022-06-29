@@ -131,25 +131,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                             <span class="navi-text">Sửa mã đơn</span>\
                                         </a>\
                                     </li>\
-                                    <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-file-excel-o"></i></span>\
-                                            <span class="navi-text">Excel</span>\
-                                        </a>\
-                                    </li>\
-                                    <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-file-text-o"></i></span>\
-                                            <span class="navi-text">CSV</span>\
-                                        </a>\
-                                    </li>\
-                                    <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>\
-                                            <span class="navi-text">PDF</span>\
-                                        </a>\
-                                    </li>\
-                                </ul>\
+                                 </ul>\
                             </div>\
                         </div>\
                        </tr>\
@@ -177,24 +159,6 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                         <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link printBtn">\
                                             <span class="navi-icon"><i class="la la-print"></i></span>\
                                             <span class="navi-text">Print</span>\
-                                        </a>\
-                                    </li>\
-                                    <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-file-excel-o"></i></span>\
-                                            <span class="navi-text">Excel</span>\
-                                        </a>\
-                                    </li>\
-                                    <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-file-text-o"></i></span>\
-                                            <span class="navi-text">CSV</span>\
-                                        </a>\
-                                    </li>\
-                                    <li class="navi-item">\
-                                        <a href="#" class="navi-link">\
-                                            <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>\
-                                            <span class="navi-text">PDF</span>\
                                         </a>\
                                     </li>\
                                 </ul>\
@@ -282,7 +246,9 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                         
                         break;
                     case 2: printViettelPost(idbill)
-                        
+                        break;
+                    case 3: printTasetco()
+                        break;
                     default:
                         break;
                 }
@@ -537,7 +503,9 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                     }
                 });
             }
-
+            function printTasetco() {
+                Swal.fire("Thông báo!", "Chức năng này sẽ được cập nhật sau!", "info");
+            }
 
             function makeQR(id) {
                 var QR_CODE = new QRCode(document.getElementById("qrcode"), {

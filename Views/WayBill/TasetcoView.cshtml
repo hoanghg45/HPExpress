@@ -86,7 +86,7 @@
                                             <div class="col-lg-6">
                                                 <label> Ngày gửi:<span class="text-danger">*</span></label>
                                                 <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
-                                                    <input data-vali="true" type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" />
+                                                    <input data-vali="true" type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker"/>
                                                     <div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
                                                         <span class="input-group-text">
                                                             <i class="ki ki-calendar"></i>
@@ -108,25 +108,25 @@
                                         <div class="form-group row">
                                             <div class="col-lg-6">
                                                 <label> Mã khách hàng:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="70187" />
+                                                <input data-vali="true" readonly type="text" name="billing_card_name" class="form-control" placeholder="" value="S0751" />
                                             </div>
 
 
                                             <div class="col-lg-6">
                                                 <label> Người gửi:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
+                                                <input data-vali="true" readonly type="text" name="billing_card_name" class="form-control" placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-lg-6">
                                                 <label> Địa chỉ:<span class="text-danger">*</span></label>
-                                                <textarea data-vali="true" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                                <textarea data-vali="true" readonly rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
                                             </div>
 
 
                                             <div class="col-lg-6">
                                                 <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="123456789" />
+                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" placeholder="" value="" />
                                             </div>
                                         </div>
 
@@ -141,25 +141,25 @@
                                         <div class="form-group row">
                                             <div class="col-lg-6">
                                                 <label> Công ty nhận:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="Công Ty TNHH Canon Việt Nam-Chi Nhánh Quế Võ" />
+                                                <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="Nhập công ty nhận"  />
                                             </div>
 
 
                                             <div class="col-lg-6">
                                                 <label> Người nhận:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="MS.Hoa" />
+                                                <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="Nhập tên người nhận" value="" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-lg-6">
                                                 <label> Địa chỉ:<span class="text-danger">*</span></label>
-                                                <textarea data-vali="true" id="customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                                <textarea data-vali="true" id="customer_add" name="customer_add"  placeholder="Nhập địa chỉ khách" rows="4" style="resize:none ;" class="form-control"></textarea>
                                             </div>
 
 
                                             <div class="col-lg-6">
                                                 <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" name="cus_phone" class="form-control" placeholder="" value="123456789" />
+                                                <input data-vali="true" type="text" name="cus_phone" class="form-control" placeholder="Nhập số điện thoại khách" value="" />
                                             </div>
                                         </div>
 
@@ -176,40 +176,15 @@
                                     <div class="mb-2">
 
                                         <div class="form-group row">
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-6">
                                                 <label>Nội dung <span class="text-danger">*</span></label>
                                                 <input data-vali="true" type="text" id="content" name="content" class="form-control" placeholder="Nhập nội dung" value="" />
                                             </div>
-
-                                        </div>
-                                        <div class="form-group row">
                                             <div class="col-lg-6">
                                                 <label>Số kiện <span class="text-danger">*</span></label>
                                                 <input data-vali="true" type="number" id="package_numb" name="package_numb" class="form-control" placeholder="Nhập số kiện" value="" />
                                             </div>
-                                            <div class="col-lg-6">
-                                                <label> Loại hàng<span class="text-danger">*</span></label>
-                                                <div class="checkbox-inline">
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" data-check="false" id="CatBox1" value="1" name="CatBox1" />
-                                                        <span></span>
-                                                        Hàng Hóa
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" data-check="false" id="CatBox2" value="2" name="CatBox2" />
-                                                        <span></span>
-                                                        Tài liệu
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" data-check="false" id="CatBox3" value="3" name="CatBox3" />
-                                                        <span></span>
-                                                        Hóa chất
-                                                    </label>
 
-
-                                                </div>
-                                                <span id="valiCat" style="visibility:hidden" class="text-danger">Vui lòng chọn</span>
-                                            </div>
                                         </div>
 
                                         <div class="form-group row">
@@ -228,9 +203,9 @@
                                             <div class="col-lg-6">
                                                 <label>Kích thước:</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
-                                                    <input type="text" id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
-                                                    <input type="text" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
+                                                    <input type="number" id="pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
+                                                    <input type="number" id="pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
+                                                    <input type="number" id="pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">m</span>
 
@@ -239,6 +214,31 @@
                                                 </div>
                                             </div>
 
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label class="col-form-label">Loại sản phẩm<span class="text-danger">*</span></label>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="CatBox1" value="2" name="CatBox" />
+                                                    <label class="form-check-label">Hàng Hóa</label>
+
+                                                </div>
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="CatBox2" value="1" name="CatBox" />
+                                                    <label class="form-check-label">Tài liệu</label>
+
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="CatBox3" value="3" name="CatBox" />
+                                                    <label class="form-check-label">Hóa chất</label>
+
+                                                </div>
+
+
+
+                                            </div>
                                         </div>
 
                                     </div>
