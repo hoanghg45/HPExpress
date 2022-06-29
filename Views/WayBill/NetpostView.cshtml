@@ -73,18 +73,18 @@
                                     </div>
                                     @Html.AntiForgeryToken()
                                     <input hidden type="text" name="prov_id" class="form-control" value="1" />
-                                    <input hidden type="text" name="bill_status" class="form-control" value="1" />
+                                    
                                     <div class="mb-3">
                                         <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
                                         <div class="mb-2">
                                             <div class="form-group row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <label> Mã vạch:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="number" maxlength="10" id="barcode"  name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
+                                                    <input data-vali="true" type="number" maxlength="10" id="barcode"  name="barcode" class="form-control" placeholder="Nhập mã vạch" value="" />
                                                 </div>
 
 
-                                                <div class="col-lg-6">
+                                                @*<div class="col-lg-6">
                                                     <label> Ngày gửi:<span class="text-danger">*</span></label>
                                                     <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
                                                         <input data-vali="true" type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker" />
@@ -94,7 +94,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>*@
                                             </div>
 
 
@@ -127,7 +127,7 @@
 
                                                 <div class="col-lg-6">
                                                     <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="comp_phone" class="form-control" placeholder="Nhập số điện thoại" value="123456789" />
+                                                    <input data-vali="true" type="text" name="comp_phone" class="form-control" placeholder="Nhập số điện thoại" value="" />
                                                 </div>
                                             </div>
 
@@ -141,26 +141,26 @@
                                         <div class="mb-2">
                                             <div class="form-group row">
                                                 <div class="col-lg-6">
-                                                    <label> Công ti nhận:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="Công Ty TNHH Canon Việt Nam-Chi Nhánh Quế Võ" />
+                                                    <label> Công ti nhận (khách lẻ):<span class="text-danger">*</span></label>
+                                                    <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="" value="" />
                                                 </div>
 
 
                                                 <div class="col-lg-6">
                                                     <label> Người nhận:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="MS.Hoa" />
+                                                    <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-lg-6">
                                                     <label> Địa chỉ:<span class="text-danger">*</span></label>
-                                                    <textarea data-vali="true" id="customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                                    <textarea data-vali="true" id="customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control"></textarea>
                                                 </div>
 
 
                                                 <div class="col-lg-6">
                                                     <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="cus_phone" class="form-control" placeholder="" value="123456789" />
+                                                    <input data-vali="true" type="text" name="cus_phone" class="form-control" placeholder="" value="" />
                                                 </div>
                                             </div>
 

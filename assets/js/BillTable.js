@@ -55,53 +55,72 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
            
             
             $.each(data.data, function (i, d, p) {
-                table += '<tr>'
+                table += '<tr id="' + d.Id + '">'
 
-                table += '<th id="' + d.Id +'">'+ d.Id+'</th>'
+                table += '<th id="' + d.Id + '">' + d.Id + '</th>'
+                if (d.Dateship != null) {
                     table += '<th>' + formatDate(d.Dateship.substr(6)) + '</th>'
-                    var cus_inf = d.Cusinf.split('|')
-                    table += '<th>' + cus_inf[0] + '</th>'
-                    table += '<th>' + cus_inf[1] + '</th>'
-                    table += '<th>' + cus_inf[2] + '</th>'
-                    table += '<th>' + d.Content + '</th>'
-                    table += '<th>' + d.Trans + '</th>'
-                    var prov = {
-                        1: {
-                            'title': 'NetPost',
-                            'class': ' label-light-danger'
-                        },
-                        2: {
-                            'title': 'ViettelPost',
-                            'class': ' label-light-warning'
-                        },
-                        3: {
-                            'title': 'Tasetco',
-                            'class': ' label-light-success'
-                        },
+                }
+                else {
+                    table += '<th style=" width: 72px; ">' + 'Chưa gửi' + '</th>'
+                }
 
-                    };
-                    table += '<th>' + '<span class="label label-inline ' + prov[d.ProviderID].class + ' font-weight-bold">' + prov[d.ProviderID].title + '</span >' + '</th>'
-                
-                    table += '<th>' + d.Category + '</th>'
-                    table += '<th>' + d.Package + '</th>'
+                var cus_inf = d.Cusinf.split('|')
+                table += '<th>' + cus_inf[0] + '</th>'
+                table += '<th>' + cus_inf[1] + '</th>'
+                table += '<th>' + cus_inf[2] + '</th>'
+                table += '<th>' + d.Content + '</th>'
+                table += '<th>' + d.Trans + '</th>'
+                var prov = {
+                    1: {
+                        'title': 'NetPost',
+                        'class': ' label-light-danger'
+                    },
+                    2: {
+                        'title': 'ViettelPost',
+                        'class': ' label-light-warning'
+                    },
+                    3: {
+                        'title': 'Tasetco',
+                        'class': ' label-light-success'
+                    },
+
+                };
+                table += '<th>' + '<span class="label label-inline ' + prov[d.ProviderID].class + ' font-weight-bold">' + prov[d.ProviderID].title + '</span >' + '</th>'
+
+                table += '<th>' + d.Category + '</th>'
+                table += '<th>' + d.Package + '</th>'
                 table += '<th>' + d.Weight + 'kg </th>'
                 var stt = {
                     1: {
                         'title': 'Chờ gửi',
                         'class': ' label-light-danger'
+
                     },
                     2: {
                         'title': 'Đã gửi',
                         'class': ' label-light-success'
+                    },
+                    3: {
+                        'title': 'Chờ in',
+                        'class': ' label-light-warning'
                     }
 
 
                 };
-                table += '<th>' + '<span style="width: 60px;" class="label label-inline ' + stt[d.StatusID].class + ' font-weight-bold">' + stt[d.StatusID].title + '</span >' + '</th>'
+                var RoleID = $("#scrUserInf").data('roleid')
+                if (d.StatusID == 1 && RoleID == 1) {
+                    table += '<th>' + '<a href="javascript:;" class="shipBill"><span style="width: 60px;" class="label label-inline ' + stt[d.StatusID].class + ' font-weight-bold">' + stt[d.StatusID].title + '</span ></a>' + '</th>'
+                } else {
+                    
+                    table += '<th>' + '<span style="width: 60px;" class="label label-inline ' + stt[d.StatusID].class + ' font-weight-bold">' + stt[d.StatusID].title + '</span >' + '</th>'
+                }
+
+                
 
                 table += '<td> ';
                 var currentUser = $("#UserID").val()
-                if (currentUser == d.UserID) {
+                if (currentUser == d.UserID && d.StatusID != 2) {
                     table += '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
@@ -122,7 +141,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                     <li class="navi-item changeID">\
                                         <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link printBtn">\
                                             <span class="navi-icon"><i class="la la-print"></i></span>\
-                                            <span class="navi-text">Print</span>\
+                                            <span class="navi-text">In phiếu</span>\
                                         </a>\
                                     </li>\
                                     <li class="navi-item">\
@@ -158,7 +177,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                     <li class="navi-item ">\
                                         <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link printBtn">\
                                             <span class="navi-icon"><i class="la la-print"></i></span>\
-                                            <span class="navi-text">Print</span>\
+                                            <span class="navi-text">In phiếu</span>\
                                         </a>\
                                     </li>\
                                 </ul>\
@@ -222,7 +241,74 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
            
             ///Funtion chức năng
             
-            
+
+            $('.shipBill').click(function (event) {
+                var barcode = $(this).parent().parent().attr('id');
+                console.log(barcode)
+                Swal.fire({
+                    title: "Gửi phiếu " + barcode + " ?",
+                    text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Có!",
+                    cancelButtonText: "Không!",
+                    reverseButtons: true
+                }).then(function (result) {
+                    var page = $("#billpagi a.active").data('page')
+                    var RoleID = $("#scrUserInf").data('roleid')
+                    var DepID = $("#scrUserInf").data('depid')
+                    var UserID = $("#UserID").val()
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: HOST_URL + 'Waybill/updateStatus',
+                            data: {
+                                id: barcode
+                            },
+                            datatype: 'json',
+
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    Swal.fire({
+
+                                        icon: "success",
+                                        title: "Phiếu đã được cập nhật trạng thái",
+                                        showConfirmButton: false,
+                                        timer: 1000
+                                    }).then(function () {
+                                        billsearch(page, RoleID, DepID, UserID)
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: data.message,
+                                        showConfirmButton: false,
+                                        timer: 1000
+                                    })
+                                }
+                            },
+                            error: function (errorResult) {
+                                console.log(errorResult.responseText)
+                            }
+                        })
+                        // result.dismiss can be "cancel", "overlay",
+                        // "close", and "timer"
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire(
+                            "Đã hủy",
+                            "Dữ liệu vẫn an toàn!",
+                            "error"
+                        ).then(function () {
+
+                            billsearch(page, RoleID, DepID, UserID)
+
+
+                        })
+                    }
+                });
+
+                
+            });
 
             $("#billpagi a").click(function (event) {
                 var value = $('#searchInput').val().toLowerCase();

@@ -357,6 +357,9 @@ namespace HPExpress.Controllers
             {
                 
                 User user = _context.Users.FirstOrDefault(u => u.UserID == id);
+                if(user != null)
+                {
+               
                 if (user.Status == 1)
                 {
                     user.Status = 2;
@@ -371,6 +374,15 @@ namespace HPExpress.Controllers
                     status = "success",
 
                 }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return this.Json(new
+                    {
+                        status = "error",
+
+                    }, JsonRequestBehavior.AllowGet);
+                }
 
             }
             else
@@ -393,15 +405,27 @@ namespace HPExpress.Controllers
         {
             if (ModelState.IsValid && id != 0)
             {
+
                 User user = _context.Users.FirstOrDefault(u => u.UserID == id);
-                _context.Users.Remove(user);
-                     _context.SaveChanges();
+                if(user != null)
+                {
+                    _context.Users.Remove(user);
+                    _context.SaveChanges();
                     return this.Json(new
                     {
                         status = "success",
-                       
+
                     }, JsonRequestBehavior.AllowGet);
-                
+                }
+
+                else
+                {
+                    return this.Json(new
+                    {
+                        status = "error",
+
+                    }, JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {

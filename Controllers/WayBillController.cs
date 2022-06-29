@@ -49,7 +49,7 @@ namespace HPExpress.Controllers
                              StatusID = s.StatusID,
                             Package = obj.ProductPakage,
                             Weight = obj.ProductWeight,
-                            Dateship = obj.CreateAT,
+                            Dateship = obj.ShipAt,
                             Category =  obj.ProductCategorys.Select(c => c.CatName).ToList()
                         };
 
@@ -118,7 +118,85 @@ namespace HPExpress.Controllers
          );
             
         }
+        [HttpPost]
+        [AllowAnonymous]
 
+        public JsonResult updateStatus(string id = "")
+        {
+            try
+            {
+                if (ModelState.IsValid && id != "")
+                {
+                    Bill bill = _context.Bills.FirstOrDefault(u => u.BillID == id);
+                    if(bill != null)
+                    {
+                        if (bill.Status == 1)
+                        {
+                            int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Đã gửi")).Select(u => u.StatusID).Single();
+                            bill.Status = stt;
+                            
+                            bill.ShipAt = DateTime.Now;
+                            _context.SaveChanges();
+                            return this.Json(new
+                            {
+                                status = "success",
+                                message = "Thanh đổi trạng thái phiếu " + id + "  thành công!"
+
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else if(bill.Status == 2)
+                        {
+                            return this.Json(new
+                            {
+                                status = "error",
+                                message = "Phiếu " + id + " đã được gửi!"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return this.Json(new
+                            {
+                                status = "error",
+                                message = "Phiếu " + id + " chưa được in!"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        // If we got this far, something failed, redisplay form  return this.Json(new
+                        return this.Json(new
+                        {
+                            status = "error",
+                            message = "Phiếu " + id + " chưa được lập!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
+
+
+                }
+                else
+                {
+                    // If we got this far, something failed, redisplay form  return this.Json(new
+                    return this.Json(new
+                    {
+                        status = "error",
+                        message = "Mã phiếu không hợp lệ"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch(Exception e)
+            {
+                return this.Json(new
+                {
+                    status = "error",
+                    message = e.Message
+                }, JsonRequestBehavior.AllowGet) ;
+
+            }
+
+         
+        }
         [HttpPost]
 
         public JsonResult changeBillID(string oldId, string newID)
@@ -136,7 +214,8 @@ namespace HPExpress.Controllers
                            
                            CreateAT = oldbill.CreateAT,
                            CustomerInf = oldbill.CustomerInf,
-                           
+                           PrintAt = oldbill.PrintAt,
+                           ShipAt = oldbill.ShipAt,
                            Heigh = oldbill.Heigh,
                            Lenght = oldbill.Lenght,
                            Width = oldbill.Lenght,
@@ -191,7 +270,7 @@ namespace HPExpress.Controllers
          new
          {
              status = "error",
-             message = "Lỗi gòi!"
+             message = "Phiếu không tồn tại vui lòng kiểm tra lại!!"
          }
          , JsonRequestBehavior.AllowGet
          );
@@ -349,13 +428,16 @@ namespace HPExpress.Controllers
              
                 bill.ProductCategorys = catlst;
                 bill.ProductPakage = Int32.Parse(collection["package_numb"]);
-                bill.Status = Int32.Parse(collection["bill_status"]);
+
+                int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chờ In")).Select(u => u.StatusID).Single();
+                bill.Status = stt;
 
 
 
-                String date = collection["date"];
-                
-                DateTime tempDate = DateTime.ParseExact(date,"dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                //String date = collection["date"];
+
+                //DateTime tempDate = DateTime.ParseExact(date,"dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                DateTime tempDate = DateTime.Now;
 
                 bill.CreateAT = tempDate;
                 bill.PaymentID = Int32.Parse(collection["paymentRadios"]);
@@ -432,59 +514,65 @@ namespace HPExpress.Controllers
             {
                 
                 var bill = _context.Bills.Where(b => b.BillID.Trim().Equals(id)).FirstOrDefault();
-
-                
-                
-                
-                var cus_inf = bill.CustomerInf.Split('|');
-                string cat1 = bill.ProductCategorys.Any(b => b.CatID == 1)?"1":null;
-                string cat2 = bill.ProductCategorys.Any(b => b.CatID == 2) ? "2" : null;
-                var catlst = bill.ProductCategorys.Select(c => c.CatName).ToList();
-                string cat = String.Join(", ", catlst);
-
-                switch (bill.ProviderID)
+                if (bill != null)
                 {
-                    case 1:
-                  var modelNetpost = new NetpostViewModels(
-                  cus_inf[1],
-                  cus_inf[0],
-                  cus_inf[2],
-                  cus_inf[3],
-                  bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
-                 
-                  bill.ProductPakage.ToString(),
-                  cat1,
-                  cat2,
-                  bill.ProductWeight.ToString(),
-                  bill.Lenght is null ? null : bill.Lenght.ToString(),
-                  bill.Width is null ? null : bill.Width.ToString(),
-                  bill.Heigh is null ? null : bill.Heigh.ToString(),
-                  bill.TransID.ToString(),
-                  bill.PaymentID.ToString(),
-                  bill.ProviderID.ToString(),
-                  bill.ServiceID is null ? null : bill.ServiceID.ToString(),
-                  bill.BillContent);
-                        return Json(modelNetpost, JsonRequestBehavior.AllowGet);
-                        
-                    case 2:
-                    var modelVietel = new ViettelPostViewModels(
-                    cus_inf[1],
-                    cus_inf[0],
-                    cus_inf[2],
-                    cus_inf[3],
-                    bill.CreateAT.ToString("dd/MM/yyyy HH:mm"),
-                    bill.ProductPakage.ToString(),
-                    cat,
-                    bill.ProductWeight.ToString(),
-                    bill.Lenght is null ? null : bill.Lenght.ToString(),
-                    bill.Width is null ? null : bill.Width.ToString(),
-                    bill.Heigh is null ? null : bill.Heigh.ToString(),
-                    bill.Payment.PaymentName.ToString(),
-                    bill.Service.ServiceName is null ? null : bill.Service.ServiceName,
-                    bill.BillContent);
-                        return Json(modelVietel, JsonRequestBehavior.AllowGet);
-                }
+                    bill.PrintAt = DateTime.Now;
+                    int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chờ gửi")).Select(u => u.StatusID).Single();
+                    bill.Status = stt;
+                    _context.SaveChanges();
 
+                    var cus_inf = bill.CustomerInf.Split('|');
+                    string cat1 = bill.ProductCategorys.Any(b => b.CatID == 1) ? "1" : null;
+                    string cat2 = bill.ProductCategorys.Any(b => b.CatID == 2) ? "2" : null;
+                    var catlst = bill.ProductCategorys.Select(c => c.CatName).ToList();
+                    string cat = String.Join(", ", catlst);
+                    DateTime? myDate = bill.PrintAt;
+                    string printdate = myDate.HasValue ? myDate.Value.ToString("dd/MM/yyyy HH:mm") : "<not available>";
+                    switch (bill.ProviderID)
+                    {
+                        case 1:
+                            var modelNetpost = new NetpostViewModels(
+                            cus_inf[1],
+                            cus_inf[0],
+                            cus_inf[2],
+                            cus_inf[3],
+                             printdate,
+
+                            bill.ProductPakage.ToString(),
+                            cat1,
+                            cat2,
+                            bill.ProductWeight.ToString(),
+                            bill.Lenght is null ? null : bill.Lenght.ToString(),
+                            bill.Width is null ? null : bill.Width.ToString(),
+                            bill.Heigh is null ? null : bill.Heigh.ToString(),
+                            bill.TransID.ToString(),
+                            bill.PaymentID.ToString(),
+                            bill.ProviderID.ToString(),
+                            bill.ServiceID is null ? null : bill.ServiceID.ToString(),
+                            bill.BillContent);
+                            return Json(modelNetpost, JsonRequestBehavior.AllowGet);
+
+                        case 2:
+                            var modelVietel = new ViettelPostViewModels(
+                            cus_inf[1],
+                            cus_inf[0],
+                            cus_inf[2],
+                            cus_inf[3],
+                            printdate,
+                            bill.ProductPakage.ToString(),
+                            cat,
+                            bill.ProductWeight.ToString(),
+                            bill.Lenght is null ? null : bill.Lenght.ToString(),
+                            bill.Width is null ? null : bill.Width.ToString(),
+                            bill.Heigh is null ? null : bill.Heigh.ToString(),
+                            bill.Payment.PaymentName.ToString(),
+                            bill.Service.ServiceName is null ? null : bill.Service.ServiceName,
+                            bill.BillContent);
+                            return Json(modelVietel, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+               
 
 
 
@@ -493,7 +581,7 @@ namespace HPExpress.Controllers
 
 
 
-                return Json(new { message = "Kiểm tra đơn vị vận chuyển!!!" ,status =0 }, JsonRequestBehavior.AllowGet);
+                return Json(new { message = "Phiếu không tồn tại vui lòng kiểm tra lại!!!", status = 0 }, JsonRequestBehavior.AllowGet); 
 
 
 

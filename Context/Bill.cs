@@ -37,6 +37,8 @@ namespace HPExpress.Context
         public Nullable<int> Width { get; set; }
         public Nullable<bool> IsReturn { get; set; }
         public Nullable<int> Status { get; set; }
+        public Nullable<System.DateTime> ShipAt { get; set; }
+        public Nullable<System.DateTime> PrintAt { get; set; }
     
         public virtual Payment Payment { get; set; }
         public virtual Service Service { get; set; }

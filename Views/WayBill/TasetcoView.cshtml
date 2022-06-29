@@ -56,7 +56,7 @@
                         <!--begin::Form-->
                         <form class="form" action="/" method="post" id="kt_form_2">
                             <input hidden name="user_id" value="@Model.UserID" />
-                            <input hidden type="text" name="bill_status" class="form-control" value="1" />
+                           
                             <div class="card-body">
                                 <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
                                     <div class="alert-icon">
@@ -77,13 +77,13 @@
                                     <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">Mã đơn hàng:</h3>
                                     <div class="mb-2">
                                         <div class="form-group row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-">
                                                 <label> Mã vạch:<span class="text-danger">*</span></label>
                                                 <input data-vali="true" type="text" id="barcode" name="barcode" class="form-control" placeholder="Nhập mã vạch" value="001851321" />
                                             </div>
 
 
-                                            <div class="col-lg-6">
+                                            @*<div class="col-lg-6">
                                                 <label> Ngày gửi:<span class="text-danger">*</span></label>
                                                 <div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
                                                     <input data-vali="true" type="datetime" id="date" name="date" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker"/>
@@ -93,7 +93,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>*@
                                         </div>
 
 
@@ -140,7 +140,7 @@
                                     <div class="mb-2">
                                         <div class="form-group row">
                                             <div class="col-lg-6">
-                                                <label> Công ty nhận:<span class="text-danger">*</span></label>
+                                                <label> Công ty nhận(khách lẻ):<span class="text-danger">*</span></label>
                                                 <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="Nhập công ty nhận"  />
                                             </div>
 

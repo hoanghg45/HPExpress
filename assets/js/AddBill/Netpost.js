@@ -44,6 +44,13 @@ var Netpost = function () {
                             },
                         }
                     },
+                    customer_comp: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Vui lòng nhập tên công ty hoặc khách lẻ'
+                            }
+                        }
+                    },
                     customer_name: {
                         validators: {
                             notEmpty: {

@@ -338,17 +338,64 @@
         avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
         onComplete: function (barcode, qty) {
             validScan = true;
-            if ($('.txtbillid') != null) {
+           
+            if ($('.txtbillid').length > 0) {
                 $('.txtbillid').val(barcode);
                 id = $('.txtbillid').parent().parent().attr('id')
                 savebill(id)
+            } else {
+                var myElement = document.getElementById('searchInput');
+                if (myElement == document.activeElement) {
+                    myElement.value = barcode
+
+                }
+                else {
+                    if (@Model.RoleID == 1) {
+                        Swal.fire({
+                            title: "Gửi phiếu " + barcode+" ?",
+                            text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Có!",
+                            cancelButtonText: "Không!",
+                            reverseButtons: true
+                        }).then(function (result) {
+                            var page = $("#billpagi a.active").data('page')
+                            var RoleID = $("#scrUserInf").data('roleid')
+                            var DepID = $("#scrUserInf").data('depid')
+                            var UserID = $("#UserID").val()
+                            if (result.value) {
+                                shipBill(barcode)
+                                // result.dismiss can be "cancel", "overlay",
+                                // "close", and "timer"
+                            } else if (result.dismiss === "cancel") {
+                                Swal.fire(
+                                    "Đã hủy",
+                                    "Dữ liệu vẫn an toàn!",
+                                    "error"
+                                ).then(function () {
+
+                                    billsearch(page, RoleID, DepID, UserID)
+
+
+                                })
+                            }
+                        });
+
+
+                    }
+                }
+               
+                
             }
 
-         
+
+
         } // main callback function
 
 
     });
+    //Đổi mã phiếu với máy quét
     function savebill(id) {
 
         var check = true
@@ -427,13 +474,59 @@
         }
 
     }
-    $(document).ready(function () {
+    //hết
+
+
+    //Quét gửi khi gửi đơn
+    function shipBill(id) {
+        var page = $("#billpagi a.active").data('page')
+        var RoleID = $("#scrUserInf").data('roleid')
+        var DepID = $("#scrUserInf").data('depid')
+        var UserID = $("#UserID").val()
+
+        $.ajax({
+            type: "post",
+            url: HOST_URL + 'Waybill/updateStatus',
+            data: {
+                id: id
+            },
+            datatype: 'json',
+
+            success: function (data) {
+                if (data.status == "success") {
+                    Swal.fire({
+                        
+                        icon: "success",
+                        title: "Phiếu đã được cập nhật trạng thái",
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(function () {
+                        billsearch(page, RoleID, DepID, UserID)
+                    })
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })              
+                }
+            },
+            error: function (errorResult) {
+                console.log(errorResult.responseText)
+            }
+        })
+    }
+    //hết
+
+     $(document).ready(function () {
         var RoleID = @Model.RoleID;
         var UserID = @Model.UserID;
         var DepID = @Model.DepartmentID;
         AuthRole(RoleID, UserID, DepID)
-
+       
         
+
 
 
         $("#searchInput").on("keyup", function () {
@@ -487,7 +580,6 @@
         //    QR_CODE.makeCode("123456");
         //});
     });
-   
 </script>
 
 @*<script src="~/assets/js/pages/crud/ktdatatable/base/data-json.js"></script>*@

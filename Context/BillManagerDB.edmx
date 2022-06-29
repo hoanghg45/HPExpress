@@ -26,6 +26,8 @@
           <Property Name="Width" Type="int" />
           <Property Name="IsReturn" Type="bit" />
           <Property Name="Status" Type="int" />
+          <Property Name="ShipAt" Type="datetime" />
+          <Property Name="PrintAt" Type="datetime" />
         </EntityType>
         <EntityType Name="BillStatuses">
           <Key>
@@ -338,6 +340,8 @@
           <Property Name="IsReturn" Type="Boolean" />
           <Property Name="Status" Type="Int32" />
           <NavigationProperty Name="BillStatus" Relationship="BillManagerDBModel.FK_Bills_BillStatus" FromRole="Bill" ToRole="BillStatus" />
+          <Property Name="ShipAt" Type="DateTime" Precision="3" />
+          <Property Name="PrintAt" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -605,6 +609,8 @@
           <EntitySetMapping Name="Bills">
             <EntityTypeMapping TypeName="BillManagerDBModel.Bill">
               <MappingFragment StoreEntitySet="Bills">
+                <ScalarProperty Name="PrintAt" ColumnName="PrintAt" />
+                <ScalarProperty Name="ShipAt" ColumnName="ShipAt" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
                 <ScalarProperty Name="Width" ColumnName="Width" />
