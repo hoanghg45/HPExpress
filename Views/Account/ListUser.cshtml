@@ -264,10 +264,7 @@
                                                 <div class="col-xl-9 col-lg-9">
                                                     <select class="form-control form-control-lg form-control-solid" name="modal_RoleID" id="modal_RoleID">
 
-                                                        @foreach (var Role in ViewBag.lstRole)
-                                                        {
-                                                            <option value="@Role.RoleID">@Role.RoleDesc</option>
-                                                        }
+                                                        
 
 
                                                     </select>
@@ -301,10 +298,11 @@
             <!--end::Entry-->
         </div>
     </div>
+        <script src="~/assets/js/pages/my-script.js"></script>
         <script src="~/assets/js/User/tableUsers.js"></script>
         <script src="~/assets/js/DateFormat.js"></script>
         <script src="~/assets/js/User/searchUser.js"></script>
-        <script src="~/assets/js/User/updateUser.js" id="scrUpdate" data-roleid=@Model.RoleID data-depid=@Model.DepartmentID></script>
+        <script src="~/assets/js/User/updateUser.js" id="scrUpdate" data-curID="@Model.UserID" data-roleid=@Model.RoleID data-depid=@Model.DepartmentID></script>
         <script type="text/javascript">
     $(document).ready(function () {
         var RoleID = @Model.RoleID;

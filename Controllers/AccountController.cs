@@ -249,6 +249,7 @@ namespace HPExpress.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Route("CreateAcc")]
         public JsonResult CreateAcc(User model, string returnUrl)
         {
             try
@@ -401,29 +402,60 @@ namespace HPExpress.Controllers
         [HttpPost]
         [AllowAnonymous]
         
-        public JsonResult DeleteAccount(int id=0)
+        public JsonResult DeleteAccount(int id=0, bool check = false)
         {
             if (ModelState.IsValid && id != 0)
             {
 
                 User user = _context.Users.FirstOrDefault(u => u.UserID == id);
-                if(user != null)
-                {
-                    _context.Users.Remove(user);
-                    _context.SaveChanges();
-                    return this.Json(new
-                    {
-                        status = "success",
 
-                    }, JsonRequestBehavior.AllowGet);
+                if (user != null)
+                {
+                    int countBill = _context.Bills.Count(b => b.UserID == id);
+                    if (check == true)
+                    {
+                        foreach(var bill in _context.Bills.Where(b => b.UserID == id).ToList())
+                        {
+                            _context.Bills.Remove(bill);
+                        }
+                        _context.Users.Remove(user);
+                        _context.SaveChanges();
+                        return this.Json(new
+                        {
+                            status = "success",
+                            message = "Xóa thành công!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    if(countBill < 1)
+                    {
+                        _context.Users.Remove(user);
+                        _context.SaveChanges();
+                        return this.Json(new
+                        {
+                            status = "success",
+                            message = "Xóa thành công!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return this.Json(new
+                        {
+                            status = "warning",
+                            message = "Tài khoản này có liên quan đến dữ liệu phiếu gửi, bạn có muốn xóa tài khoản cùng các dữ liệu liên quan!"
+
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
                 }
+                    
+                   
 
                 else
                 {
                     return this.Json(new
                     {
                         status = "error",
-
+                        message = "Tài khoản không tồn tại vui lòng kiểm tra lại!"
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -433,7 +465,7 @@ namespace HPExpress.Controllers
                 return this.Json(new
                 {
                     status = "error",
-
+                    message = "Hệ thống đã gặp lỗi!"
                 }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -466,13 +498,13 @@ namespace HPExpress.Controllers
             int countAdmin = _context.Users.Count(u => u.RoleID == 1);
             int countManager = _context.Users.Count(u=> u.RoleID == 2 && u.DepartmentID == id);
 
-            if(countAdmin > 0)
+            if (countAdmin > 0)
             {
                 roles.RemoveAt(0);
             }
-            if (countManager>0)
+            if (countManager > 0)
             {
-                roles.RemoveAt(1);
+                roles.RemoveAt(0);
             }
             return this.Json(
          new
@@ -487,7 +519,7 @@ namespace HPExpress.Controllers
         //get Users Data
         [HttpGet]
         //[SessionCheck]
-        public JsonResult Accounts(string search = "",int depart = 0, int role = 0,int stt=0, int page = 0)
+        public JsonResult Accounts(string search = "",int depart = 0, int role = 0,int stt=0,int id =0, int page = 0)
         {
 
            
@@ -498,6 +530,7 @@ namespace HPExpress.Controllers
             var table = from obj in _context.Users
                         join ro in _context.Roles on obj.RoleID equals ro.RoleID
                         join de in _context.Departments on obj.DepartmentID equals de.DepartmentID
+                        where obj.UserID != id
                         select new
                         {
                             Id = obj.UserID,
@@ -515,7 +548,7 @@ namespace HPExpress.Controllers
                             CreateAt = obj.CreateAt
                         };
 
-
+           
             if (role != 0 || depart != 0 || stt !=0)
             {
 

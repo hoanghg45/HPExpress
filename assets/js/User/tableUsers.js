@@ -1,4 +1,4 @@
-﻿function showUserTable(search,depart,role,stt,page) {
+﻿function showUserTable(search,depart,role,stt,id,page) {
     $.ajax({
         type: "get",
         url: HOST_URL + '/account/Accounts',
@@ -7,6 +7,7 @@
             depart: depart,
             role: role,
             stt: stt,
+            id: id,
             page: page
             
         },
@@ -46,9 +47,10 @@
 
 
             $.each(data.data, function (i, d, p) {
+               
                 table += '<tr>'
-              
-                table += '<th >' + ((10 * (data.pageCurrent-1))+(i+1)) + '</th>'
+
+                table += '<th >' + ((10 * (data.pageCurrent - 1)) + (i + 1)) + '</th>'
                 table += '<th >' + d.Name + '</th>'
                 table += '<th >' + d.FullName + '</th>'
                 table += '<th >' + d.Role + '</th>'
@@ -67,15 +69,15 @@
 
 
                 };
-                table += '<th>' + '<a href="javascrip:;" class="status" data-userID=' + d.Id + ' >'+ '<span class="label label-inline ' + stt[d.Status].class + ' font-weight-bold">' + stt[d.Status].title + '</span >'+ '</a>' + '</th>';
+                table += '<th>' + '<a href="javascrip:;" class="status" data-userID=' + d.Id + ' >' + '<span class="label label-inline ' + stt[d.Status].class + ' font-weight-bold">' + stt[d.Status].title + '</span >' + '</a>' + '</th>';
                 if (d.LastLogin != null) {
                     var lastLogin = new Date(parseInt(d.LastLogin.substr(6)))
                     table += '<th >' + timeCal(lastLogin + "") + '</th>'
                 }
                 else {
-                    table += '<th >'+ 'Chưa từng đăng nhập' +'</th>'
+                    table += '<th >' + 'Chưa từng đăng nhập' + '</th>'
                 }
-              
+
 
 
                 table += '<td style="text-align: center"> ';
@@ -99,13 +101,13 @@
 	                                        Chọn hành động\
 	                                    </li>\
 	                                      <li class="navi-item">\
-	                                        <a href="#"  data-userID='+ d.Id +' class="navi-link btnUpdate" >\
+	                                        <a href="#"  data-userID='+ d.Id + ' class="navi-link btnUpdate" >\
 	                                            <span class="navi-icon"><i class="la la-pen"></i></span>\
 	                                            <span class="navi-text">Chỉnh sửa</span>\
 	                                        </a>\
 	                                    </li>\
                                          <li class="navi-item">\
-	                                        <a href="#" data-userID='+ d.Id + ' data-RoleID=' + d.RoleID + ' data-DepartmentID=' + d.DepartmentID +' class="navi-link btnDel">\
+	                                        <a href="#" data-userID='+ d.Id + ' data-RoleID=' + d.RoleID + ' data-DepartmentID=' + d.DepartmentID + ' class="navi-link btnDel">\
 	                                            <span class="navi-icon"><i class="la la-trash"></i></span>\
 	                                            <span class="navi-text">Xóa</span>\
 	                                        </a>\
@@ -115,6 +117,7 @@
 	                        </div>\ ';
                 table += '</td>';
                 table += '</tr>';
+               
             });
 
 
@@ -181,6 +184,7 @@
 
                         if (data.status == "success") {
                             $("#Modal").modal()
+                            
                             $("#modal_userID").val(id)
                             $("#modal_username").val(data.Name)                          
                             $("#modal_fullname").val(data.FullName)
@@ -189,8 +193,10 @@
                             $("#modal_DepartmentID").val(data.DepartmentID)
                             $("#modal_RoleID").val(data.RoleID)
                             $("input[name=Gendermodel][value=" + data.Gender + "]").prop('checked', true)
-                            
-                        
+                            setRoleByDepartForModal(data.DepartmentID)
+                            $("#modal_DepartmentID").on('change', function () {
+                                setRoleByDepartForModal(data.DepartmentID)
+                            })
                         }
                     },
                     error: function (errorResult) {
@@ -230,12 +236,85 @@
                                         "Dữ liệu đã xóa thành công!",
                                         "success"
                                     ).then(function () {
-                                        
+
                                         searchUser(page, RoleID, DepID)
                                         KTUtil.scrollTop();
 
                                     })
                                 }
+                                else if (data.status == "error") {
+                                        Swal.fire(
+                                            "Có lỗi!",
+                                            data.message,
+                                            "error"
+                                        ).then(function () {
+
+                                            searchUser(page, RoleID, DepID)
+                                            KTUtil.scrollTop();
+
+                                        })
+                                } else {
+                                        Swal.fire({
+                                                title: "Bạn có muốn xóa?",
+                                                text: data.message,
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonText: "Có!",
+                                                cancelButtonText: "Không!",
+                                            reverseButtons: true
+                                        }).then(function (result) {
+                                                if (result.value) {
+                                                    $.ajax({
+                                                        type: "post",
+                                                        url: HOST_URL + 'Account/DeleteAccount',
+                                                        data: {
+                                                            id: id,
+                                                            check: true
+                                                        },
+                                                        datatype: 'json',
+
+                                                        success: function (data) {
+                                                            if (data.status == "success") {
+                                                                Swal.fire(
+                                                                    "Đã xóa!",
+                                                                    "Dữ liệu đã xóa thành công!",
+                                                                    "success"
+                                                                ).then(function () {
+
+                                                                    searchUser(page, RoleID, DepID)
+                                                                    KTUtil.scrollTop();
+
+                                                                })
+                                                            }
+                                                            else if (data.status == "error") {
+                                                                Swal.fire(
+                                                                    "Có lỗi!",
+                                                                    data.message,
+                                                                    "error"
+                                                                ).then(function () {
+
+                                                                    searchUser(page, RoleID, DepID)
+                                                                    KTUtil.scrollTop();
+
+                                                                })
+                                                            } 
+                                                            
+
+                                                        },
+                                                        error: function (errorResult) {
+                                                            console.log(errorResult.responseText)
+                                                        }
+                                                    })
+                                                } else if (result.dismiss === "cancel") {
+                                                    Swal.fire(
+                                                        "Đã hủy",
+                                                        "Dữ liệu vẫn an toàn!",
+                                                        "error"
+                                                    )
+                                                }
+                                        });
+                                     }
+
                             },
                             error: function (errorResult) {
                                 console.log(errorResult.responseText)
@@ -332,9 +411,9 @@
                 var depart = $('#datable_search_department').val()
                 var role = $('#datable_search_role').val()
                 var stt = $('#datable_search_status').val()
-                
+                var currUser = $('#scrUpdate').data('curid')
 
-                showUserTable(search,depart,role,stt,page)
+                showUserTable(search, depart, role, stt, currUser, page)
 
 
 
@@ -350,12 +429,13 @@
 }
 
 function AuthRoleUser(RoleID, DepID) {
-
+    var currUser = $('#scrUpdate').data('curid')
     if (RoleID == 1) {
-        showUserTable("", "", "","", "")
+
+        showUserTable("", "", "", "", currUser, "")
     }
     if (RoleID == 2) {
-        showUserTable("", DepID,"","", "")
+        showUserTable("", DepID, "", "", currUser,  "")
     }
    
 }

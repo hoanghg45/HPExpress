@@ -19,11 +19,18 @@ namespace HPExpress
                 
                 );
             routes.MapRoute(
+              name: "CreateAcc",
+              url: "CreateAccount",
+              defaults: new { controller = "Account", action = "CreateAcc" }
+
+              );
+            routes.MapRoute(
                  name: "BillList",
-                 url: "{controller}/BillList",
+                 url: "Waybill/BillList",
                  defaults: new { controller = "WayBill", action = "Index" }
 
                  );
+
 
             routes.MapRoute(
                 name: "Default",

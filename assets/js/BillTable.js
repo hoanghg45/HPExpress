@@ -349,8 +349,8 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 var value = $('input[name=' + id + ']').val()
                 var span = $('#vali_' + id + '')
                 span.text('')
-                if (value.length < 8 || value.length > 10) {
-                    span.text('Mã phải có độ dài từ 8 - 10 ký tự!')
+                if (value.length < 8 || value.length > 13) {
+                    span.text('Mã phải có độ dài từ 8 - 13 ký tự!')
                     check = false
                 }
                 if (check) {
@@ -437,7 +437,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                     thopen.removeAttr('data-check')
                 
                 }
-                var th = $("th#" + idbill + "")
+                var th = $("#" + idbill).children(":first")
                 
                 th.empty()
                 var editable = '<div id="' + idbill + '"> <div style = "display:flex;justify-content:left" > <input  class="txtbillid" required oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "10" name= "' + idbill + '" style="margin-right:10px;width: 90px" value="' + idbill + '" ><a class="btnsavebillid"  href="javascript:;"> <i class="fas fa-save text-success icon-md"></i></a></div></div> <span style="font-size: 11px;" id="vali_' + idbill + '" class="text-danger"></span>'

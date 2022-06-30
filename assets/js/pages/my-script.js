@@ -68,3 +68,29 @@ function setRoleByDepart(id) {
     });
 
 }
+
+function setRoleByDepartForModal(id) {
+    $.ajax({
+        type: "get",
+        url: '/Account/filterRoleByDepart',
+        data: {
+            id: id,
+
+        },
+        datatype: 'json',
+        success: function (data) {
+
+            $("#modal_RoleID").empty();
+            var option = ''
+            $.each(data.data, function (i, d, p) {
+
+                option += '<option value="' + d.RoleID + '">' + d.RoleDesc + '</option>'
+
+            });
+
+
+            $("#modal_RoleID").append(option)
+        }
+    });
+
+}
