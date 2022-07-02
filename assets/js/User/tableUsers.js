@@ -192,7 +192,7 @@
                             $("#modal_userphone").val(data.Phone)
                             $("#modal_DepartmentID").val(data.DepartmentID)
                             $("#modal_RoleID").val(data.RoleID)
-                            $("input[name=Gendermodel][value=" + data.Gender + "]").prop('checked', true)
+                            $("input[name=modal_Gender][value=" + data.Gender + "]").prop('checked', true)
                             setRoleByDepartForModal(data.DepartmentID)
                             $("#modal_DepartmentID").on('change', function () {
                                 setRoleByDepartForModal(data.DepartmentID)
