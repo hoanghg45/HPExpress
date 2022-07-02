@@ -566,7 +566,7 @@ namespace HPExpress.Controllers
                             bill.Width is null ? null : bill.Width.ToString(),
                             bill.Heigh is null ? null : bill.Heigh.ToString(),
                             bill.Payment.PaymentName.ToString(),
-                            bill.Service.ServiceName is null ? null : bill.Service.ServiceName,
+                            bill.Service is null ? null : bill.Service.ServiceName,
                             bill.BillContent);
                             return Json(modelVietel, JsonRequestBehavior.AllowGet);
                     }

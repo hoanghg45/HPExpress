@@ -164,7 +164,7 @@ namespace HPExpress.Controllers
 
 
         }
-        public ActionResult LogOut(int id)
+        public ActionResult LogOut()
         {
               Session.Remove("UserID");
               Session.Remove("RoleID");
@@ -172,7 +172,21 @@ namespace HPExpress.Controllers
 
         }
 
-      
+        public void RefreshSession()
+        {
+            var userid = Session["UserID"];
+            var roleid = Session["RoleID"];
+
+            if (userid != null && roleid != null)
+            {
+                Session.Remove("UserID");
+                Session.Remove("RoleID");
+            }
+            Session.Add("UserID", userid);
+            Session.Add("RoleID", roleid);
+
+        }
+
 
 
 
@@ -256,17 +270,29 @@ namespace HPExpress.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
-                    model.CreateAt = DateTime.Now;
-                    model.Status = 2;
-                    model.UserPass = BCrypt.Net.BCrypt.HashPassword(model.UserPass, costHash);
-                    _context.Users.Add(model);
-                    _context.SaveChanges();
-                    return this.Json(new
+
+                    var check = _context.Users.Any(u => u.UserName == model.UserName);
+                    if (!check)
                     {
-                        status = "success",
-                        returnURL = returnUrl
-                    }, JsonRequestBehavior.AllowGet);
+                        model.CreateAt = DateTime.Now;
+                        model.Status = 2;
+                        model.UserPass = BCrypt.Net.BCrypt.HashPassword(model.UserPass, costHash);
+                        _context.Users.Add(model);
+                        _context.SaveChanges();
+                        return this.Json(new
+                        {
+                            status = "success",
+                            returnURL = returnUrl
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return this.Json(new
+                        {
+                            status = "error",
+                            message = "Tên tài khoản đã có người sử dụng, vui lòng thay đổi"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {

@@ -17,7 +17,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     <base href="">
     <meta charset="utf-8" />
-    <title>Metronic Live preview | Keenthemes</title>
+    <title>HPEXPRESS</title>
     <meta name="description" content="Metronic admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="canonical" href="https://keenthemes.com/metronic" />
@@ -55,7 +55,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="index.html">
-            <img alt="Logo" src="~/assets/media/logos/logo-light.png" />
+            <img alt="Logo" src="~/assets/media/logos/HPexpresslogobanner.png" style="width: 92px;height:25px"  />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -66,9 +66,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </button>
             <!--end::Aside Mobile Toggle-->
             <!--begin::Header Menu Mobile Toggle-->
-            <button class="btn p-0 burger-icon ml-4" id="kt_header_mobile_toggle">
-                <span></span>
-            </button>
+         
             <!--end::Header Menu Mobile Toggle-->
             <!--begin::Topbar Mobile Toggle-->
             <button class="btn btn-hover-text-primary p-0 ml-2" id="kt_header_mobile_topbar_toggle">
@@ -218,60 +216,61 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <span class="menu-text">DANH SÁCH PHIẾU</span>
                                             </a>
                                         </li>
-                                      
-                                    </ul>
-                                </div>
-                            </li>
-
-                            @if((int)@Session["RoleID"] != 3 ){
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:~/assets/media/svg/icons/Layout/Layout-left-panel-2.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M10,4 L21,4 C21.5522847,4 22,4.44771525 22,5 L22,7 C22,7.55228475 21.5522847,8 21,8 L10,8 C9.44771525,8 9,7.55228475 9,7 L9,5 C9,4.44771525 9.44771525,4 10,4 Z M10,10 L21,10 C21.5522847,10 22,10.4477153 22,11 L22,13 C22,13.5522847 21.5522847,14 21,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L21,16 C21.5522847,16 22,16.4477153 22,17 L22,19 C22,19.5522847 21.5522847,20 21,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z" fill="#000000" />
-                                                <rect fill="#000000" opacity="0.3" x="2" y="4" width="5" height="16" rx="1" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-text">QUẢN LÝ TÀI KHOẢN</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                            <span class="menu-link">
-                                                <span class="menu-text">KTDatatable</span>
-                                            </span>
-                                        </li>
-                                        <li id="waybill" class="menu-item" aria-haspopup="true">
-                                            <a href="@Url.Action("ListUser","Account")" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Danh sách tài khoản</span>
-                                            </a>
-                                        </li>
-                                        <li id="waybill" class="menu-item" aria-haspopup="true">
-                                            <a href="@Url.Action("CreateAcc","Account")" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Tạo tài khoản</span>
-                                            </a>
-                                        </li>
 
                                     </ul>
                                 </div>
                             </li>
+
+                            @if ((int)@Session["RoleID"] != 3)
+                            {
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <!--begin::Svg Icon | path:~/assets/media/svg/icons/Layout/Layout-left-panel-2.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M10,4 L21,4 C21.5522847,4 22,4.44771525 22,5 L22,7 C22,7.55228475 21.5522847,8 21,8 L10,8 C9.44771525,8 9,7.55228475 9,7 L9,5 C9,4.44771525 9.44771525,4 10,4 Z M10,10 L21,10 C21.5522847,10 22,10.4477153 22,11 L22,13 C22,13.5522847 21.5522847,14 21,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L21,16 C21.5522847,16 22,16.4477153 22,17 L22,19 C22,19.5522847 21.5522847,20 21,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z" fill="#000000" />
+                                                    <rect fill="#000000" opacity="0.3" x="2" y="4" width="5" height="16" rx="1" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-text">QUẢN LÝ TÀI KHOẢN</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                                <span class="menu-link">
+                                                    <span class="menu-text">KTDatatable</span>
+                                                </span>
+                                            </li>
+                                            <li id="waybill" class="menu-item" aria-haspopup="true">
+                                                <a href="@Url.Action("ListUser","Account")" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Danh sách tài khoản</span>
+                                                </a>
+                                            </li>
+                                            <li id="waybill" class="menu-item" aria-haspopup="true">
+                                                <a href="@Url.Action("CreateAcc","Account")" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Tạo tài khoản</span>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
                             }
 
-                            
-                          
+
+
 
                         </ul>
                         <!--end::Menu Nav-->
@@ -304,7 +303,6 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
-                       
                         <!--end::Nav-->
                     </div>
                     <!--end::Container-->
@@ -360,7 +358,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <span class="navi-text text-muted text-hover-primary" id="popUserEmail">jm@softplus.com</span>
                             </span>
                         </a>
-                        <a href="@Url.Action("Logout","Account", new { id = @Session["UserID"]})" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Đăng xuất</a>
+                        <a href="@Url.Action("Logout","Account")" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Đăng xuất</a>
                     </div>
                 </div>
             </div>
@@ -392,19 +390,19 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="font-weight-bold">Thông tin cá nhân</div>
                             <div class="text-muted">
                                 Chỉnh sửa thông tin cá nhân
-                                
+
                             </div>
                         </div>
                     </div>
                 </a>
                 <!--end:Item-->
-                
+
             </div>
             <!--end::Nav-->
             <!--begin::Separator-->
             <div class="separator separator-dashed my-7"></div>
             <!--end::Separator-->
-                
+
         </div>
         <!--end::Content-->
     </div>
@@ -1713,7 +1711,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <!--end::Content-->
     </div>
     <!--end::Demo Panel-->
-    <script>var HOST_URL = "https://localhost:44375/";</script>
+    <script>var HOST_URL = "http://bill.haphan.com/";</script>
+    @*<script>var HOST_URL = "https://localhost:44375/";</script>*@
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
     <!--end::Global Config-->
@@ -1735,6 +1734,8 @@ License: You must have a valid license purchased only from themeforest(the above
     @*datetimepicker*@
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     @Scripts.Render("~/bundles/moment")
+    @*RefreshSession*@
+    <script src="~/assets/js/SessionTimeout.js"></script>
 </body>
 <!--end::Body-->
 </html>

@@ -499,6 +499,7 @@
     <Content Include="assets\js\qrcode.js" />
     <Content Include="assets\js\qrcode.min.js" />
     <Content Include="assets\js\scripts.bundle.js" />
+    <Content Include="assets\js\SessionTimeout.js" />
     <Content Include="assets\js\User\addUser.js" />
     <Content Include="assets\js\User\searchUser.js" />
     <Content Include="assets\js\User\tableUsers.js" />
@@ -2321,6 +2322,7 @@
       <DependentUpon>BillManagerDB.edmx</DependentUpon>
     </Content>
     <Content Include="assets\media\logos\Viasfora.vsix" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
