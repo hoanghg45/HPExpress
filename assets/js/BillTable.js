@@ -94,29 +94,33 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 var stt = {
                     1: {
                         'title': 'Chờ gửi',
-                        'class': ' label-light-danger'
+                        'class': 'danger'
 
                     },
                     2: {
                         'title': 'Đã gửi',
-                        'class': ' label-light-success'
+                        'class': 'success'
                     },
                     3: {
                         'title': 'Chờ in',
-                        'class': ' label-light-warning'
+                        'class': 'warning'
                     }
 
 
                 };
+                table += '<th style="width: 80px;> <span">'
                 var RoleID = $("#scrUserInf").data('roleid')
+                var span = '<span class="label label-' + stt[d.StatusID].class + ' label-dot mr-2"></span><span class="font-weight-bold text-' + stt[d.StatusID].class + '">' +
+                    stt[d.StatusID].title + '</span>'
+
                 if (d.StatusID == 1 && RoleID == 1) {
-                    table += '<th>' + '<a href="javascript:;" class="shipBill"><span style="width: 60px;" class="label label-inline ' + stt[d.StatusID].class + ' font-weight-bold">' + stt[d.StatusID].title + '</span ></a>' + '</th>'
+                    table += '<a href="javascript:;" class="shipBill">' + span+'</a>'
                 } else {
-                    
-                    table += '<th>' + '<span style="width: 60px;" class="label label-inline ' + stt[d.StatusID].class + ' font-weight-bold">' + stt[d.StatusID].title + '</span >' + '</th>'
+
+                    table += span
                 }
 
-                
+                table += '</span> </th>'
 
                 table += '<td> ';
                 var currentUser = $("#UserID").val()
@@ -202,7 +206,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
             $('#billtable').append(table);
           
             $('#empty').empty()
-            if (data.total < 1) {                
+            if (data.total < 1) {
                 $('#empty').append('<div id="empty" class="alert alert-danger" role = "alert"> Không có dữ liêu với truy vấn này! </div>');
                 $('#billtable').empty()
                 $('#billnote').empty()
@@ -212,24 +216,66 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 var size = data.size;
                 var total = data.total;
                 var pageCurrent = data.pageCurrent;
+                /*var numSize = data.numSize;*/
                 var numSize = data.numSize;
                 var billpagi = ""
                 if (pageCurrent > 1) {
+                    billpagi += ' <a href="javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 "data-page=1><i class="ki ki-bold-double-arrow-back icon-xs"></i></a>'
                     var pagePrevious = pageCurrent - 1;
-                    billpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + pagePrevious + ' > <i class="ki ki-bold-arrow-back icon-xs"></i></a > '
+                    billpagi += '<a href = "javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + pagePrevious + ' > <i class="ki ki-bold-arrow-back icon-xs"></i></a > '
+                } else {
+                    billpagi += ' <a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled "data-page=1 ><i class="ki ki-bold-double-arrow-back icon-xs" ></i></a>'
+                    var pagePrevious = pageCurrent - 1;
+                    billpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled" data-page=' + pagePrevious + ' disabled> <i class="ki ki-bold-arrow-back icon-xs "></i></a > '
+                }
+                var limit = 3;
+                var cutoff = numSize - pageCurrent + 1
+                if (cutoff > 0) {
+                    if (cutoff >= limit) {
+                        if (pageCurrent > 1) {
+                            for (i = pageCurrent - 1; i <= pageCurrent + 1; i++) {
+                                if (i == pageCurrent) {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                } else {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                }
+                            }
+                        }
+                        else {
+                            for (i = pageCurrent; i < pageCurrent + limit; i++) {
+                                if (i == pageCurrent) {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                } else {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                }
+                            }
+                        }
+
+
+                    } else {
+                        for (i = pageCurrent - 1; i < pageCurrent + cutoff; i++) {
+                            if (i == pageCurrent) {
+                                billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                            } else {
+                                billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                            }
+                        }
+                    }
+
+                }
+                else {
+                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
                 }
 
-                for (i = 1; i <= numSize; i++) {
-                    if (i == pageCurrent) {
-                        billpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                    } else {
-                        billpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
-                    }
-                }
 
                 if (pageCurrent > 0 && pageCurrent < numSize) {
                     var nextPage = pageCurrent + 1;
-                    billpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                    billpagi += '<a href = "javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"  data-page=' + numSize + ' ><i class="ki ki-bold-double-arrow-next icon-xs"></i></a>'
+                } else {
+                    var nextPage = pageCurrent + 1;
+                    billpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                    billpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled"  data-page=' + numSize + ' ><i class="ki ki-bold-double-arrow-next icon-xs"></i></a>'
                 }
 
                 $('#billpagi').append(billpagi);
@@ -240,7 +286,8 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
             }
            
             ///Funtion chức năng
-            
+           
+                      
 
             $('.shipBill').click(function (event) {
                 var barcode = $(this).parent().parent().attr('id');

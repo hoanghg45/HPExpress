@@ -8,7 +8,15 @@
 <script src="~/assets/js/DateFormat.js"></script>
 <script src="~/assets/js/PropCheckBox.js"></script>
 <script src="~/assets/js/BillTable.js"></script>
-
+@*Chức năng với datable*@
+<!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>-->
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
@@ -82,15 +90,22 @@
                             <li class="navi-item" style="display:flex; justify-content:center">
                                 <a href="@Url.Action("Create/TasetcoView","WayBill")" class="navi-link">
                                     <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-success">TASETCO</span>
+                                        <span class="label label-xl label-inline label-light-primary">TASETCO</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item" style="display:flex; justify-content:center">
+                                <a href="javascript:;" id="openExcel" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-success">Excel</span>
                                     </span>
                                 </a>
                             </li>
 
-
                         </ul>
                         <!--end::Navigation-->
                     </div>
+
                 </div>
                 <!--end::Dropdown-->
             </div>
@@ -151,7 +166,7 @@
                                         </a>
                                     </li>
                                     <li class="navi-item">
-                                        <a href="#" class="navi-link">
+                                        <a href="javascript:;" id="exportExcel" class="navi-link">
                                             <span class="navi-icon">
                                                 <i class="la la-file-excel-o"></i>
                                             </span>
@@ -175,13 +190,13 @@
                                         </a>
                                     </li>
                                 </ul>
+
                                 <!--end::Navigation-->
                             </div>
                             <!--end::Dropdown Menu-->
                         </div>
                         <!--end::Dropdown-->
                         <!--begin::Button-->
-                      
                         <!--end::Button-->
                     </div>
                 </div>
@@ -280,7 +295,7 @@
                             </div>
                         </div>
 
-                        </form>
+                    </form>
 
                     <!--end::Search Form-->
                     <!--begin: Datatable-->
@@ -305,9 +320,39 @@
                     </div>
                     <!--end: Datatable-->
                 </div>
+                <div id="dvjson"></div>
 
             </div>
             <!--end::Card-->
+            <!--start::Modal ImportExcel-->
+
+            <div class="modal fade" id="importFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centere modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><b>Nhập dữ liệu bằng Excel:</b></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <div id="body" class="modal-body">
+
+                            <form>
+
+                                <label class="form-label" for="customFile">Chọn file Excel:</label>
+                                <input type="file" class="form-control" id="filename" accept=".xls,.xlsx" />
+
+                            </form>
+                        </div>
+                        <div id="footer" class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+                            <button type="button" id="saveExcel" onclick="uploadFile()" class="btn btn-primary font-weight-bold">Lưu dữ liệu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--end::Modal ImportExcel-->
         </div>
         <!--end::Container-->
     </div>
@@ -318,10 +363,11 @@
     </div>
     @*endtable*@
     <div id="qrcode"></div>
-    
+
 </div>
 <!--end::Content-->
 <!--begin::Page Scripts(used by this page)-->
+
 <script src="~/assets/js/changeBillID.js"></script>
 <script src="~/assets/js/BillSearch.js" id="scrUserInf" data-roleid=@Model.RoleID data-depid=@Model.DepartmentID></script>
 <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
@@ -329,8 +375,12 @@
 <script src="~/assets/js/qrcode.js"></script>
 <script src="~/assets/js/pages/my-script.js"></script>
 <script src="~/assets/js/BillTable.js"></script>
+<script src="~/Scripts/excelexport.js"></script>
 <script src="~/Scripts/jquery.scannerdetection.js"></script>
+<script src="~/assets/js/ImportExcel.js"></script>
+<script src="~/assets/js/ExportExcel.js"></script>
 <script type="text/javascript">
+
     $(document).scannerDetection({
         timeBeforeScanTest: 200, // wait for the next character for upto 200ms
         startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
@@ -338,7 +388,7 @@
         avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
         onComplete: function (barcode, qty) {
             validScan = true;
-           
+
             if ($('.txtbillid').length > 0) {
                 $('.txtbillid').val(barcode);
                 id = $('.txtbillid').parent().parent().attr('id')
@@ -385,8 +435,8 @@
 
                     }
                 }
-               
-                
+
+
             }
 
 
@@ -495,7 +545,7 @@
             success: function (data) {
                 if (data.status == "success") {
                     Swal.fire({
-                        
+
                         icon: "success",
                         title: "Phiếu đã được cập nhật trạng thái",
                         showConfirmButton: false,
@@ -509,7 +559,7 @@
                         title: data.message,
                         showConfirmButton: false,
                         timer: 1000
-                    })              
+                    })
                 }
             },
             error: function (errorResult) {
@@ -524,8 +574,8 @@
         var UserID = @Model.UserID;
         var DepID = @Model.DepartmentID;
         AuthRole(RoleID, UserID, DepID)
-       
-        
+
+
 
 
 
@@ -568,7 +618,14 @@
         $('.cancelBtn').on('click', function () {
             billsearch("", RoleID, DepID, UserID)
         });
+         
+        $('#exportExcel').on('click', function () {
 
+
+
+            billExport(RoleID, DepID, UserID)
+
+        });
         //$('#btn_search').on('click', function () {
         //    var QR_CODE = new QRCode(document.getElementById("qrcode"), {
         //        width: 100,

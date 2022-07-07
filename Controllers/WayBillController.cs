@@ -12,6 +12,10 @@ using System.Data.Entity.SqlServer;
 using HPExpress.Extension;
 using NinjaNye.SearchExtensions;
 using HPExpress.Security;
+using OfficeOpenXml;
+using System.IO;
+using System.Drawing;
+using OfficeOpenXml.Style;
 
 namespace HPExpress.Controllers
 {
@@ -25,7 +29,8 @@ namespace HPExpress.Controllers
         [Route("data")]
         public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="",int dep = 0, int usid =0,int stt =0)
         {
-            
+
+            //int co = _context.Bills.Count();
             DateTime dateFrom = DateTime.Now;
             DateTime dateTo = DateTime.Now;
             var count = _context.Bills.Count();
@@ -466,6 +471,205 @@ namespace HPExpress.Controllers
                 return Json(new { message = e.ToString() });
             }
         }
+        [HttpPost]
+        public JsonResult ReadExcelData()
+         {
+            var bugIndex = 0;
+            var excel_data = new List<Bill>();
+            var currUser = Session["UserID"].ToString();
+            int status = _context.BillStatuses.Single(s => s.StatusName == "Đã gửi").StatusID;
+            try
+            {
+                List<string> dupLst = new List<string>();
+                HttpPostedFileBase excelFile = Request.Files["UploadedFile"];
+                var package = new ExcelPackage(excelFile.InputStream);
+
+                ExcelWorksheet ws = package.Workbook.Worksheets[0];
+                var listInfo = string.Empty;
+                for (int rw = 2; rw <= ws.Dimension.End.Row; rw++)
+                {
+                    bugIndex = rw;
+                    var date = ws.Cells[rw, 1].Value;
+                    var id = ws.Cells[rw, 2].Value;
+                    var weight = ws.Cells[rw, 3].Value;
+                    string provider = ws.Cells[rw, 4].Value.ToString();
+                    var customer = ws.Cells[rw, 5].Value;
+                    string trans = (ws.Cells[rw, 6].Value).ToString();
+                    
+                    var transpot = _context.Transpots.SingleOrDefault(s => s.Description == trans);
+                    var pro = _context.ShippingProviders.SingleOrDefault(s => s.ProviderName == provider);
+                    
+                    bool check = _context.Bills.Any(b => b.BillID == id.ToString());
+                    if (!check)
+                    {
+                        Bill bill = new Bill
+                        {
+                            BillID = id.ToString(),
+                            CreateAT = DateTime.Parse(date.ToString()),
+                            ShipAt = DateTime.Parse(date.ToString()),
+                            PrintAt = DateTime.Parse(date.ToString()),
+                            ProductWeight = Double.Parse(weight.ToString()),
+                            CustomerInf = customer.ToString(),
+                            ProviderID = pro.ProviderID,
+                            TransID = transpot.TransID,
+                            UserID = Int16.Parse(currUser),
+                            Status = status
+
+                        };
+                        excel_data.Add(bill);
+                        _context.Bills.Add(bill);
+
+                    }
+                    else
+                    {
+                        dupLst.Add(id.ToString());
+                        return Json(new { status = "error", message = "Dữ liệu ở dòng <b>" + bugIndex + ",</b> có Mã phiếu: <b>" + id.ToString() + "</b> đã tồn tại vui lòng kiểm tra lại" }, JsonRequestBehavior.AllowGet);
+                    }
+
+
+                }
+
+                _context.SaveChanges();
+
+                var returndata = from obj in excel_data
+                                 join se in _context.Transpots on obj.TransID equals se.TransID
+                                 join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
+
+                                 select new
+                                 {
+                                     Id = obj.BillID.Trim(),
+                                     Cusinf = obj.CustomerInf.Trim(),
+                                     ProviderID = pro.ProviderID,
+                                     ProviderName = pro.ProviderName,
+                                     Transpot = se.TransName,
+                                     Weight = obj.ProductWeight,
+                                     Dateship = obj.ShipAt,
+
+                                 };
+                int count = returndata.Count();
+                return Json(new { status = "success", data = returndata, count = count }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { status = "error", message = "Đã có lỗi khi thêm dữ liệu ở dòng <b>"+bugIndex+",</b> vui lòng kiểm tra lại", des = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        public void ExportExcel(int id = 0, string date = "", string search = "", int dep = 0, int usid = 0, int stt = 0)
+        {
+            DateTime dateFrom = DateTime.Now;
+            DateTime dateTo = DateTime.Now;
+            var count = _context.Bills.Count();
+            //_context.Configuration.ProxyCreationEnabled = false;
+            var table = from obj in _context.Bills
+                        join se in _context.Transpots on obj.TransID equals se.TransID
+                        join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
+                        join us in _context.Users on obj.UserID equals us.UserID
+                        join de in _context.Departments on us.DepartmentID equals de.DepartmentID
+                        join s in _context.BillStatuses on obj.Status equals s.StatusID
+                        select new
+                        {
+                            Id = obj.BillID.Trim(),
+                            Cusinf = obj.CustomerInf.Trim(),
+                            UserID = us.UserID,
+                            UserName = us.UserName,
+                            Content = obj.BillContent,
+                            ProviderID = pro.ProviderID,
+                            ProviderName = pro.ProviderName,
+                            DepartmentID = de.DepartmentID,
+                            DepartmentName = de.DepartmentName,
+                            Trans = se.TransName,
+                            StatusID = s.StatusID,
+                            Package = obj.ProductPakage,
+                            Weight = obj.ProductWeight,
+                            Dateship = obj.ShipAt,
+                            Category = obj.ProductCategorys.Select(c => c.CatName).ToList()
+                        };
+
+            if (date != "")
+            {
+                String[] dateSplit = date.Split('-');
+                dateFrom = DateTime.ParseExact(dateSplit[0].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                dateTo = dateTo.AddHours(23).AddMinutes(59);
+            }
+            if (id != 0 || date != "" || usid != 0 || dep != 0 || stt != 0)
+            {
+
+                table = table.WhereIf(id != 0, t => t.ProviderID == id)
+                              .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo)
+                              .WhereIf(usid != 0, t => t.UserID == usid)
+                              .WhereIf(dep != 0, t => t.DepartmentID == dep);
+
+            }
+            if (search != "")
+            {
+
+                search = search.Trim();
+                table = table.Search(t => t.Id,
+                 t => t.ProviderName,
+                 t => t.Cusinf,
+                 t => t.Content,
+                   t => t.Trans,
+
+                   t => t.Weight.ToString(),
+                   t => t.Category.FirstOrDefault(c => c.Contains(search))
+
+                                    ).Containing(search);
+
+
+            }
+
+
+
+            table = table.Where(t => t.StatusID == 2).OrderByDescending(x => x.Dateship);
+            if (table.Count() > 0)
+            {
+                ExcelPackage ep = new ExcelPackage();
+                ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("Report");
+                Sheet.Cells["A1"].Value = "Ngày gửi";
+                Sheet.Cells["B1"].Value = "Mã phiếu";
+                Sheet.Cells["C1"].Value = "Người tạo";
+                Sheet.Cells["D1"].Value = "Trọng lượng (Kg)";
+                Sheet.Cells["E1"].Value = "Đơn vị vận chuyển";
+                Sheet.Cells["F1"].Value = "Hình thức vận chuyển";
+                Sheet.Cells["G1"].Value = "Khách hàng";
+                int row = 2;// dòng bắt đầu ghi dữ liệu
+                foreach (var item in table)
+                {
+
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.Dateship.Value.ToString("dd/MM/yyyy");
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.Id;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.UserName.Trim() + "-" + item.DepartmentName;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.Weight;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.ProviderName;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.Trans;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = item.Cusinf;
+                    row++;
+                }
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+                // Select only the header cells
+                var headerCells = Sheet.Cells[1, 1, 1, Sheet.Dimension.Columns];
+                Sheet.View.FreezePanes(2, 1);
+                // Set their text to bold, italic and underline.
+                headerCells.Style.Font.Bold = true;
+                headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment; filename=" + "Report.xlsx");
+                Response.BinaryWrite(ep.GetAsByteArray());
+                Response.End();
+
+            }
+
+           
+          
+
+            
+        }
+
         //Print
         [HttpPost]
         public JsonResult Print(FormCollection collection)
