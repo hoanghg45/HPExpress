@@ -12,24 +12,19 @@ namespace HPExpress.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Permission
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Permission()
         {
-            this.Users = new HashSet<User>();
-            this.Permissions = new HashSet<Permission>();
+            this.Roles = new HashSet<Role>();
         }
     
-        public int RoleID { get; set; }
-        public string RoleName { get; set; }
-        public string RoleDesc { get; set; }
-        public Nullable<System.DateTime> CreateAt { get; set; }
-        public Nullable<System.DateTime> UpdateAt { get; set; }
+        public int PermissionID { get; set; }
+        public string PermissionName { get; set; }
+        public string PermissionDesc { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Permission> Permissions { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

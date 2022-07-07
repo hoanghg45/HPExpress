@@ -291,6 +291,9 @@
     <Compile Include="Context\Payment.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Context\Permission.cs">
+      <DependentUpon>BillManagerDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Context\ProductCategory.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
@@ -316,6 +319,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\WayBillController.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Extension\CustomRoleProvider.cs" />
@@ -517,6 +521,7 @@
     <Content Include="assets\js\PropCheckBox.js" />
     <Content Include="assets\js\qrcode.js" />
     <Content Include="assets\js\qrcode.min.js" />
+    <Content Include="assets\js\Roles\RoleTable.js" />
     <Content Include="assets\js\scripts.bundle.js" />
     <Content Include="assets\js\SessionTimeout.js" />
     <Content Include="assets\js\User\addUser.js" />
@@ -2403,6 +2408,7 @@
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
     <Content Include="Views\Account\userProfile.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -31,7 +31,7 @@ namespace HPExpress.Context
         public Nullable<double> ProductWeight { get; set; }
         public string CustomerInf { get; set; }
         public string Note { get; set; }
-        public System.DateTime CreateAT { get; set; }
+        public Nullable<System.DateTime> CreateAT { get; set; }
         public Nullable<int> Heigh { get; set; }
         public Nullable<int> Lenght { get; set; }
         public Nullable<int> Width { get; set; }
@@ -39,6 +39,7 @@ namespace HPExpress.Context
         public Nullable<int> Status { get; set; }
         public Nullable<System.DateTime> ShipAt { get; set; }
         public Nullable<System.DateTime> PrintAt { get; set; }
+        public Nullable<int> OwnerID { get; set; }
     
         public virtual Payment Payment { get; set; }
         public virtual Service Service { get; set; }
@@ -48,5 +49,6 @@ namespace HPExpress.Context
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductCategory> ProductCategorys { get; set; }
         public virtual BillStatus BillStatus { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

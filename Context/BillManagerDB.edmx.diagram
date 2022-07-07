@@ -25,6 +25,9 @@
         <AssociationConnector Association="BillManagerDBModel.FK_Users_Departments" />
         <EntityTypeShape EntityType="BillManagerDBModel.BillStatus" Width="1.5" PointX="7.375" PointY="8.875" />
         <AssociationConnector Association="BillManagerDBModel.FK_Bills_BillStatus" />
+        <EntityTypeShape EntityType="BillManagerDBModel.Permission" Width="1.5" PointX="0.75" PointY="0.5" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_Users1" />
+        <AssociationConnector Association="BillManagerDBModel.PerOfRole" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

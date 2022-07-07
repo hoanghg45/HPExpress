@@ -20,7 +20,7 @@
           <Property Name="ProductWeight" Type="float" />
           <Property Name="CustomerInf" Type="nvarchar" MaxLength="500" />
           <Property Name="Note" Type="nvarchar" MaxLength="200" />
-          <Property Name="CreateAT" Type="datetime" Nullable="false" />
+          <Property Name="CreateAT" Type="datetime" />
           <Property Name="Heigh" Type="int" />
           <Property Name="Lenght" Type="int" />
           <Property Name="Width" Type="int" />
@@ -28,6 +28,7 @@
           <Property Name="Status" Type="int" />
           <Property Name="ShipAt" Type="datetime" />
           <Property Name="PrintAt" Type="datetime" />
+          <Property Name="OwnerID" Type="int" />
         </EntityType>
         <EntityType Name="BillStatuses">
           <Key>
@@ -62,6 +63,22 @@
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
           <Property Name="CreateAt" Type="datetime" />
           <Property Name="UpdateAt" Type="date" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="PermissionID" Type="int" Nullable="false" />
+          <Property Name="PermissionName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PermissionDesc" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="PerOfRole">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="PermissionID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductCategorys">
           <Key>
@@ -206,6 +223,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Bills_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Bills">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CatInBill_Bills">
           <End Role="Bills" Type="Self.Bills" Multiplicity="1" />
           <End Role="CatInBill" Type="Self.CatInBill" Multiplicity="*" />
@@ -227,6 +256,30 @@
             </Principal>
             <Dependent Role="CatInBill">
               <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerOfRole_Permissions">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="PerOfRole" Type="Self.PerOfRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="PermissionID" />
+            </Principal>
+            <Dependent Role="PerOfRole">
+              <PropertyRef Name="PermissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerOfRole_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="PerOfRole" Type="Self.PerOfRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="PerOfRole">
+              <PropertyRef Name="RoleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -260,6 +313,8 @@
           <EntitySet Name="CatInBill" EntityType="Self.CatInBill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PerOfRole" EntityType="Self.PerOfRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategorys" EntityType="Self.ProductCategorys" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
@@ -291,6 +346,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Bills" EntitySet="Bills" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bills_Users1" Association="Self.FK_Bills_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Bills" EntitySet="Bills" />
+          </AssociationSet>
           <AssociationSet Name="FK_CatInBill_Bills" Association="Self.FK_CatInBill_Bills">
             <End Role="Bills" EntitySet="Bills" />
             <End Role="CatInBill" EntitySet="CatInBill" />
@@ -298,6 +357,14 @@
           <AssociationSet Name="FK_CatInBill_ProductCategorys" Association="Self.FK_CatInBill_ProductCategorys">
             <End Role="ProductCategorys" EntitySet="ProductCategorys" />
             <End Role="CatInBill" EntitySet="CatInBill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerOfRole_Permissions" Association="Self.FK_PerOfRole_Permissions">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PerOfRole" EntitySet="PerOfRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerOfRole_Roles" Association="Self.FK_PerOfRole_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="PerOfRole" EntitySet="PerOfRole" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Departments" Association="Self.FK_Users_Departments">
             <End Role="Departments" EntitySet="Departments" />
@@ -327,7 +394,7 @@
           <Property Name="ProductWeight" Type="Double" />
           <Property Name="CustomerInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CreateAT" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="CreateAT" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Payment" Relationship="Self.FK_Bills_Payments" FromRole="Bills" ToRole="Payments" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Bills_Services" FromRole="Bills" ToRole="Services" />
           <NavigationProperty Name="ShippingProvider" Relationship="Self.FK_Bills_ShippingProviders" FromRole="Bills" ToRole="ShippingProviders" />
@@ -342,6 +409,8 @@
           <NavigationProperty Name="BillStatus" Relationship="BillManagerDBModel.FK_Bills_BillStatus" FromRole="Bill" ToRole="BillStatus" />
           <Property Name="ShipAt" Type="DateTime" Precision="3" />
           <Property Name="PrintAt" Type="DateTime" Precision="3" />
+          <Property Name="OwnerID" Type="Int32" />
+          <NavigationProperty Name="User1" Relationship="BillManagerDBModel.FK_Bills_Users1" FromRole="Bill" ToRole="User" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -373,6 +442,7 @@
           <Property Name="CreateAt" Type="DateTime" Precision="3" />
           <Property Name="UpdateAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+          <NavigationProperty Name="Permissions" Relationship="BillManagerDBModel.PerOfRole" FromRole="Role" ToRole="Permission" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -422,6 +492,7 @@
           <Property Name="Gender" Type="Int32" />
           <Property Name="Status" Type="Int32" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Bills1" Relationship="BillManagerDBModel.FK_Bills_Users1" FromRole="User" ToRole="Bill" />
         </EntityType>
         <Association Name="FK_Bills_Payments">
           <End Role="Payments" Type="Self.Payment" Multiplicity="0..1" />
@@ -547,6 +618,15 @@
             <End Role="BillStatus" EntitySet="BillStatuses" />
             <End Role="Bill" EntitySet="Bills" />
           </AssociationSet>
+          <EntitySet Name="Permissions" EntityType="BillManagerDBModel.Permission" />
+          <AssociationSet Name="FK_Bills_Users1" Association="BillManagerDBModel.FK_Bills_Users1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="PerOfRole" Association="BillManagerDBModel.PerOfRole">
+            <End Role="Permission" EntitySet="Permissions" />
+            <End Role="Role" EntitySet="Roles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sysdiagram">
           <Key>
@@ -600,6 +680,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="PermissionID" Type="Int32" Nullable="false" />
+          <Property Name="PermissionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PermissionDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Roles" Relationship="BillManagerDBModel.PerOfRole" FromRole="Permission" ToRole="Role" />
+        </EntityType>
+        <Association Name="FK_Bills_Users1">
+          <End Type="BillManagerDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="BillManagerDBModel.Bill" Role="Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PerOfRole">
+          <End Type="BillManagerDBModel.Permission" Role="Permission" Multiplicity="*" />
+          <End Type="BillManagerDBModel.Role" Role="Role" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -609,6 +714,7 @@
           <EntitySetMapping Name="Bills">
             <EntityTypeMapping TypeName="BillManagerDBModel.Bill">
               <MappingFragment StoreEntitySet="Bills">
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
                 <ScalarProperty Name="PrintAt" ColumnName="PrintAt" />
                 <ScalarProperty Name="ShipAt" ColumnName="ShipAt" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -746,6 +852,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="BillManagerDBModel.Permission">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="PermissionDesc" ColumnName="PermissionDesc" />
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PerOfRole" TypeName="BillManagerDBModel.PerOfRole" StoreEntitySet="PerOfRole">
+            <EndProperty Name="Role">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+            <EndProperty Name="Permission">
+              <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
