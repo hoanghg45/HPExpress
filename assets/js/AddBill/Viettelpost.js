@@ -14,19 +14,7 @@ var Viettelpost = function () {
             KTUtil.getById('viettel_form'),
             {
                 fields: {
-                    barcode: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Vui lòng nhập mã phiếu'
-                            },
-                            stringLength: {
-                                max: 9,
-                                min: 9,
-                                message: 'Mã phiếu có độ dài 9 chữ số',
-                            },
-                            
-                        }
-                    },
+                  
                     date: {
                         validators: {
                             notEmpty: {

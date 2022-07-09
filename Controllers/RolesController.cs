@@ -21,13 +21,13 @@ namespace HPExpress.Controllers
 
             var permis = db.Permissions.Select(x => new { x.PermissionID, x.PermissionName }).ToList();
             var role = (from ro in db.Roles.Where(x => x.RoleID > 0)
-                        join per in db.Permissions on ro.RoleID equals per.PermissionID
+                        
                         select new
                         {
                             idRole = ro.RoleID,
-                            namePer = per.PermissionName,
-                            idPer = per.PermissionID,
-                            nameRole = ro.RoleName,
+                            
+                            nameRole = ro.RoleDesc,
+
                             Permission= ro.Permissions.Select(c => c.PermissionID).ToList()
                         }
                         ).ToList();
@@ -42,6 +42,73 @@ namespace HPExpress.Controllers
                 }
                 , JsonRequestBehavior.AllowGet
                 );
+
+        }
+        [HttpPost]
+        // GET: Roles
+        public JsonResult SetPerbyRole(int roleID, int perID)
+        {
+
+            try
+            {
+                var per = db.Permissions.FirstOrDefault(p => p.PermissionID == perID);
+                var role = db.Roles.FirstOrDefault(r => r.RoleID == roleID);
+                if (per != null && role != null)
+                {
+                    var lstper = role.Permissions;
+                    if (lstper.Any(l => l.PermissionID == perID))
+                    {
+                        lstper.Remove(per);
+                    }
+                    else
+                    {
+                        lstper.Add(per);
+
+                    }
+                    db.SaveChanges();
+
+
+                    return this.Json(
+                        new
+                        {
+                            status = "success",
+                            message = "Thay đổi quyền thành công!"
+
+
+                        }
+                        , JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    return this.Json(
+                       new
+                       {
+                           status = "error",
+                           message = "Nhóm hoặc quyền không tồn tại!"
+
+
+                       }
+                       , JsonRequestBehavior.AllowGet
+                       );
+                }
+              
+            }
+            catch(Exception e)
+            {
+
+                return this.Json(
+                    new
+                    {
+                        status = "error",
+                        message = e.Message
+
+
+                    }
+                    , JsonRequestBehavior.AllowGet
+                    ) ;
+            }
+         
 
         }
         // GET: Roles

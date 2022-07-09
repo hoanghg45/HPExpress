@@ -131,7 +131,7 @@
             $('#usertable').append(table);
             $('#empty').empty()
             if (data.total < 1) {
-                $('#empty').append('<div id="empty" class="alert alert-danger" role = "alert"> Không có dữ liêu với truy vấn này! </div>');
+                $('#empty').append('<div class="alert alert-danger" role = "alert"> Không có dữ liêu với truy vấn này! </div>');
                 $('#billtable').empty()
                 $('#usernote').empty()
                 $('#userpagi').empty()
@@ -143,21 +143,67 @@
                 var numSize = data.numSize;
                 var userpagi = ""
                 if (pageCurrent > 1) {
+                    userpagi += ' <a href="javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 "data-page=1><i class="ki ki-bold-double-arrow-back icon-xs"></i></a>'
                     var pagePrevious = pageCurrent - 1;
-                    userpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + pagePrevious + ' > <i class="ki ki-bold-arrow-back icon-xs"></i></a > '
+                    userpagi += '<a href = "javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + pagePrevious + ' > <i class="ki ki-bold-arrow-back icon-xs"></i></a > '
+                } else {
+                    userpagi += ' <a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled "data-page=1 ><i class="ki ki-bold-double-arrow-back icon-xs" ></i></a>'
+                    var pagePrevious = pageCurrent - 1;
+                    userpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled" data-page=' + pagePrevious + ' disabled> <i class="ki ki-bold-arrow-back icon-xs "></i></a > '
+                }
+                var limit = 3;
+                var cutoff = numSize - pageCurrent + 1
+                if (numSize > 1) {
+                    if (cutoff > 0) {
+                        if (cutoff >= limit) {
+                            if (pageCurrent > 1) {
+                                for (i = pageCurrent - 1; i <= pageCurrent + 1; i++) {
+                                    if (i == pageCurrent) {
+                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                    } else {
+                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                    }
+                                }
+                            }
+                            else {
+                                for (i = pageCurrent; i < pageCurrent + limit; i++) {
+                                    if (i == pageCurrent) {
+                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                    } else {
+                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                    }
+                                }
+                            }
+
+
+                        } else {
+                            for (i = pageCurrent - 1; i < pageCurrent + cutoff; i++) {
+                                if (i == pageCurrent) {
+                                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                } else {
+                                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                }
+                            }
+                        }
+
+                    }
+                    else {
+                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                    }
+                } else {
+                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + pageCurrent + '>' + pageCurrent + '</a>'
                 }
 
-                for (i = 1; i <= numSize; i++) {
-                    if (i == pageCurrent) {
-                        userpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                    } else {
-                        userpagi += '<a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
-                    }
-                }
+
 
                 if (pageCurrent > 0 && pageCurrent < numSize) {
                     var nextPage = pageCurrent + 1;
-                    userpagi += '<a href = "#" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                    userpagi += '<a href = "javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"  data-page=' + numSize + ' ><i class="ki ki-bold-double-arrow-next icon-xs"></i></a>'
+                } else {
+                    var nextPage = pageCurrent + 1;
+                    userpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled" data-page=' + nextPage + ' ><i class="ki ki-bold-arrow-next icon-xs"></i></a>'
+                    userpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled"  data-page=' + numSize + ' ><i class="ki ki-bold-double-arrow-next icon-xs"></i></a>'
                 }
 
                 $('#userpagi').append(userpagi);

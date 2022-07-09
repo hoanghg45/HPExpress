@@ -14,18 +14,7 @@ var Netpost = function () {
             KTUtil.getById('netpost_form'),
             {
                 fields: {
-                    barcode: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Vui lòng nhập mã phiếu'
-                            },
-                            stringLength: {
-                                max: 10,
-                                min:8,
-                                message: 'Mã phiếu có độ dài từ 8 - 10 chữ số',
-                            },
-                        }
-                    },
+                   
                     date: {
                         validators: {
                             notEmpty: {

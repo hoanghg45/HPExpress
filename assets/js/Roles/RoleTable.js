@@ -26,14 +26,14 @@
                 var PerInRole = d.Permission;
                 $.each(data.per, function (i, d, p) {
                     var checkbox = 
-                    tr += '<td class="getIdCheck" id="' + d.PermissionID + '">'
+                    tr += '<td  id="' + d.PermissionID + '">'
 
                     if (PerInRole.includes(d.PermissionID)) {
-                        
-                        tr += '<div class="form-check"><input class="form-check-input" type = "checkbox" value = "" id = "flexCheckChecked" checked ></div>'
+
+                        tr += '<label class="checkbox checkbox-outline checkbox-primary"><input type="checkbox" class="getIdCheck" name="Checkboxes15" value=' + d.PermissionID + ' checked="checked" /><span></span></label>'
                     }
                     else {
-                        tr += '<div class="form-check"><input class="form-check-input" type = "checkbox" value = "" id = "flexCheckChecked"  ></div>'
+                        tr += '<label class="checkbox checkbox-outline checkbox-primary"><input type="checkbox" class="getIdCheck" name="Checkboxes15" value=' + d.PermissionID + '  /><span></span></label>'
                     }
                     tr += '</td>'
                 });
@@ -43,19 +43,66 @@
             });
             $("#PerName").append(th)
 
-            //var ids = $('.getPermission').map(function (_, x) { return x.id }).get();
-            //for (let i = 0; i < ids.length; i++) {
-            //    if (ids[i].length >= 1 || ids[i] != null) {
+            $(".getIdCheck").change(function () {
+                var perid = $(this).val()
+                var roleid = $(this).parents("tr.RoleID").attr('id')
+                console.log(roleid + "-" + perid)
+                Swal.fire({
+                    title: "Bạn có chắc muốn thay đổi quyền?",
+                    text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Có!",
+                    cancelButtonText: "Không!",
+                    heightAuto: false,
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: HOST_URL + 'Roles/SetPerbyRole',
+                            data: {
+                                roleID: roleid,
+                                perID: perid
+                            },
+                            datatype: 'json',
 
-            //        var m = ids[i].split(',');
-            //        var idss = $('.getIdPer').map(function (_, x) { return x.id }).get();                      
-            //            for (let j = 0; j < idss.length; j++) {
-            //                var result = m.includes(idss[j])
-                           
-            //            }
-            //    }
-               
-            //}
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    Swal.fire({
+                                        title: "Thành công",
+                                        text: data.message,
+                                        icon: "success",
+                                        heightAuto: false
+                                    }).then(function () {
+
+                                        
+                                        KTUtil.scrollTop();
+
+                                    })
+                                }
+                            },
+                            error: function (errorResult) {
+                                console.log(errorResult.responseText)
+                            }
+                        })
+
+
+                        // result.dismiss can be "cancel", "overlay",
+                        // "close", and "timer"
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            title: "Đã hủy",
+                            text: "Dữ liệu vẫn an toàn!",
+                            icon: "warning",
+                            heightAuto: false
+                        })
+                          
+                    }
+                });
+
+                
+            })
             
          }
     })

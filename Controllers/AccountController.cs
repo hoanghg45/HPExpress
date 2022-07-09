@@ -426,7 +426,7 @@ namespace HPExpress.Controllers
 
         [SessionCheck]
         [HttpPost]
-        [AllowAnonymous]
+        
         
         public JsonResult DeleteAccount(int id=0, bool check = false)
         {

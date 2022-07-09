@@ -395,12 +395,17 @@ namespace HPExpress.Controllers
             {
                 // TODO: Add insert logic here
                 Bill bill = new Bill();
-                string id = collection["barcode"].Trim();
+                Random ran = new Random();
+                string id = "bill" + ran.Next();
                 if (_context.Bills.Any(b => b.BillID == id ))
                 {
-                    return Json(new { message = "Mã trùng với 1 phiếu trước đó, vui lòng kiểm tra và thử lại!" });
+                    while (_context.Bills.Any(b => b.BillID == id))
+                    {
+                        id = "bill" + ran.Next();
+                    }
+                    bill.BillID = id;
                 }
-                else { bill.BillID = collection["barcode"].Trim(); }
+                else { bill.BillID = id; }
                 
                 
                 bill.UserID = Int32.Parse(collection["user_id"]);

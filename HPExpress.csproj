@@ -317,6 +317,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -336,6 +337,7 @@
     <Compile Include="Security\CustomRoleProvider.cs" />
     <Compile Include="Security\SessionCheck.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\pages\error\error-3.css" />
@@ -374,6 +376,7 @@
     <Content Include="assets\js\BillTable.js" />
     <Content Include="assets\js\changeBillID.js" />
     <Content Include="assets\js\DateFormat.js" />
+    <Content Include="assets\js\Department\AddDep.js" />
     <Content Include="assets\js\ExportExcel.js" />
     <Content Include="assets\js\ImportExcel.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />
@@ -521,6 +524,7 @@
     <Content Include="assets\js\PropCheckBox.js" />
     <Content Include="assets\js\qrcode.js" />
     <Content Include="assets\js\qrcode.min.js" />
+    <Content Include="assets\js\Department\DepartTable.js" />
     <Content Include="assets\js\Roles\RoleTable.js" />
     <Content Include="assets\js\scripts.bundle.js" />
     <Content Include="assets\js\SessionTimeout.js" />
@@ -2409,6 +2413,7 @@
     <Content Include="Scripts\moment-with-locales.min.js.map" />
     <Content Include="Views\Account\userProfile.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Department\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
