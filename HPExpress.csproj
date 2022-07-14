@@ -261,9 +261,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\Bill.cs">
       <DependentUpon>BillManagerDB.tt</DependentUpon>
     </Compile>
@@ -319,7 +317,6 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\WayBillController.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
@@ -335,15 +332,20 @@
     <Compile Include="Models\ViettelPostViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\CustomRoleProvider.cs" />
+    <Compile Include="Security\HasCredentialAttribute.cs" />
+    <Compile Include="Security\MyConstants.cs" />
     <Compile Include="Security\SessionCheck.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="WebRoleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\pages\error\404.css" />
     <Content Include="assets\css\pages\error\error-3.css" />
     <Content Include="assets\css\pages\error\error-4.css" />
     <Content Include="assets\css\pages\error\error-5.css" />
     <Content Include="assets\css\pages\error\error-6.css" />
+    <Content Include="assets\css\pages\error\forbidden.css" />
     <Content Include="assets\css\pages\invoice\invoice-6.css" />
     <Content Include="assets\css\pages\login\classic\login-1.css" />
     <Content Include="assets\css\pages\login\classic\login-2.css" />
@@ -377,6 +379,7 @@
     <Content Include="assets\js\changeBillID.js" />
     <Content Include="assets\js\DateFormat.js" />
     <Content Include="assets\js\Department\AddDep.js" />
+    <Content Include="assets\js\Department\UpdateDep.js" />
     <Content Include="assets\js\ExportExcel.js" />
     <Content Include="assets\js\ImportExcel.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />
@@ -487,6 +490,7 @@
     <Content Include="assets\js\pages\custom\wizard\wizard-4.js" />
     <Content Include="assets\js\pages\custom\wizard\wizard-5.js" />
     <Content Include="assets\js\pages\custom\wizard\wizard-6.js" />
+    <Content Include="assets\js\pages\error\404.js" />
     <Content Include="assets\js\pages\features\base\dropdown.js" />
     <Content Include="assets\js\pages\features\calendar\background-events.js" />
     <Content Include="assets\js\pages\features\calendar\basic.js" />
@@ -2377,7 +2381,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Error\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -2414,6 +2418,7 @@
     <Content Include="Views\Account\userProfile.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Department\Index.cshtml" />
+    <Content Include="Error\Forbidden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

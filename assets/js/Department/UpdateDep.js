@@ -1,24 +1,21 @@
 ﻿"use strict";
 
 // Class Definition
-var addDep = function () {
+var Update = function () {
 
-
-
-
-    var _handleForm = function () {
+    var _handleSignInForm = function () {
         var validation;
-        const form = document.getElementById('adddep_form');
+        const form = document.getElementById('editdep_form');
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validation = FormValidation.formValidation(
-            KTUtil.getById('adddep_form'),
+            KTUtil.getById('editdep_form'),
             {
                 fields: {
-                    DepName: {
+                    editDepName: {
                         validators: {
                             notEmpty: {
                                 message: 'Vui lòng nhập tên phòng ban'
-                            },                          
+                            },
                         }
                     },
                 },
@@ -36,26 +33,28 @@ var addDep = function () {
                 }
             }
         );
+        
 
 
-        $('#btnCreateDep').on('click', function (e) {
+        $('#btnSaveDep').on('click', function (e) {
             e.preventDefault();
-           var data= $('#DepName').val()
-            addDepartment(data)
+            var name = $('#editDepName').val()
+            var id = $('#editDepID').val()
+            editDepartment(id, name)
         });
-       
 
 
 
-        function addDepartment(id) {
+        function editDepartment(id, newname) {
             validation.validate().then(function (status) {
                 if (status == 'Valid') {
-                    
+
                     $.ajax({
                         type: "post",
-                        url: HOST_URL + "Department/Create",
+                        url: HOST_URL + "Department/Edit",
                         data: {
-                            nameDep: id
+                            id: id,
+                            newname: newname
                         },
                         datatype: 'json',
 
@@ -63,12 +62,12 @@ var addDep = function () {
                             if (data.status == "success") {
                                 swal.fire({
                                     title: "Thành công",
-                                    text: "Thêmphòng ban thành công công!",
+                                    text: data.message,
                                     icon: "success",
                                     showCancelButton: false,
 
                                     buttonsStyling: true,
-                                   
+
                                     heightAuto: false,
                                     customClass: {
                                         confirmButton: "btn font-weight-bold btn-light-primary"
@@ -77,10 +76,10 @@ var addDep = function () {
                                 }).then(function (result) {
                                     var page = $("#deppagi a.active").data('page')
                                     showtable(page)
-                                    $('#CreateDep').modal('hide')
-                                        
+                                    $('#EditDep').modal('hide')
+
                                 })
-                            
+
                             } else {
                                 swal.fire({
                                     title: "Có lỗi!",
@@ -136,8 +135,7 @@ var addDep = function () {
         }
     }
 
-    
-}
+
 
     // Public Functions
     return {
@@ -145,14 +143,18 @@ var addDep = function () {
         init: function () {
 
 
-            _handleForm();
-            
+            _handleSignInForm();
 
         }
     };
 }();
 
+
 // Class Initialization
 jQuery(document).ready(function () {
-    addDep.init();
+    Update.init();
 });
+
+
+
+

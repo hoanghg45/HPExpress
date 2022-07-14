@@ -13,8 +13,8 @@ namespace HPExpress.Controllers
         
         public BillManagerDBEntities _db = new BillManagerDBEntities();
 
-        //[Authorize(Roles = "Admin")]
         
+
         public ActionResult Index()
         {
            

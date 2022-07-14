@@ -45,72 +45,80 @@
             </div>
             <!--end::Info-->
             <!--begin::Toolbar-->
-            <div class="d-flex align-items-center">
-                <!--begin::Actions-->
-                <a class="btn btn-light-primary font-weight-bolder btn-sm">Thêm phiếu</a>
-                <!--end::Actions-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
-                    <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="svg-icon svg-icon-primary svg-icon-2x">
-                            <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg-->
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <polygon points="0 0 24 0 24 24 0 24" />
-                                    <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                    <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000" />
-                                </g>
-                            </svg>
-                            <!--end::Svg Icon-->
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover">
-                            <li class="navi-header font-weight-bold py-4">
-                                <span class="font-size-lg">Chọn loại:</span>
-                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                            </li>
-                            <li class="navi-separator mb-3 opacity-70"></li>
+            @if (ViewBag.CreateBill)
+            {
+                <div class="d-flex align-items-center">
+                    <!--begin::Actions-->
+                    <a class="btn btn-light-primary font-weight-bolder btn-sm">Thêm phiếu</a>
+                    <!--end::Actions-->
+                    <!--begin::Dropdown-->
+                    <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
+                        <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg-->
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24" />
+                                        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                        <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000" />
+                                    </g>
+                                </svg>
+                                <!--end::Svg Icon-->
+                            </span>
+                        </a>
 
-                            <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="@Url.Action("Create/NetpostView","WayBill")" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-danger">NETPOST</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="@Url.Action("Create/ViettelPostView","WayBill")" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-warning">VIETTELPOST</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="@Url.Action("Create/TasetcoView","WayBill")" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-primary">TASETCO</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item" style="display:flex; justify-content:center">
-                                <a href="javascript:;" id="openExcel" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-success">Excel</span>
-                                    </span>
-                                </a>
-                            </li>
 
-                        </ul>
-                        <!--end::Navigation-->
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
+                            <!--begin::Navigation-->
+                            <ul class="navi navi-hover">
+                                <li class="navi-header font-weight-bold py-4">
+                                    <span class="font-size-lg">Chọn loại:</span>
+                                    <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
+                                </li>
+                                <li class="navi-separator mb-3 opacity-70"></li>
+
+                                <li class="navi-item" style="display:flex; justify-content:center">
+                                    <a href="@Url.Action("Create/NetpostView","WayBill")" class="navi-link">
+                                        <span class="navi-text">
+                                            <span class="label label-xl label-inline label-light-danger">NETPOST</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="navi-item" style="display:flex; justify-content:center">
+                                    <a href="@Url.Action("Create/ViettelPostView","WayBill")" class="navi-link">
+                                        <span class="navi-text">
+                                            <span class="label label-xl label-inline label-light-warning">VIETTELPOST</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="navi-item" style="display:flex; justify-content:center">
+                                    <a href="@Url.Action("Create/TasetcoView","WayBill")" class="navi-link">
+                                        <span class="navi-text">
+                                            <span class="label label-xl label-inline label-light-primary">TASETCO</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="navi-item" style="display:flex; justify-content:center">
+                                    <a href="javascript:;" id="openExcel" class="navi-link">
+                                        <span class="navi-text">
+                                            <span class="label label-xl label-inline label-light-success">Excel</span>
+                                        </span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!--end::Navigation-->
+                        </div>
+
+                       
+
                     </div>
-
+                    <!--end::Dropdown-->
                 </div>
-                <!--end::Dropdown-->
+            }
+                <!--end::Toolbar-->
             </div>
-            <!--end::Toolbar-->
-        </div>
+        
     </div>
     <!--end::Subheader-->
     <!--begin::Entry-->
@@ -219,7 +227,7 @@
                                 <select class="form-control" id="kt_datatable_search_status">
                                     <option value="">Tất cả</option>
                                     @foreach (var Prov in ViewBag.ProvList)
-                                    {
+                        {
                                         <option value="@Prov.ProviderID">@Prov.ProviderName</option>
                                     }
                                 </select>
@@ -240,19 +248,19 @@
 
 
                             @if (Model.RoleID != 2 && Model.RoleID != 3)
-                            {
+                        {
                                 <div class="col-lg-4 mb-lg-0 mb-6">
                                     <label>Phòng - Ban:</label>
                                     <select class="form-control datatable-input" id="datable_search_department">
                                         <option value="">Tất cả</option>
                                         @foreach (var Dep in ViewBag.DepartList)
-                                        {
+                        {
                                             <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
                                         }
                                     </select>
                                 </div>
                             }
-                            @if (Model.RoleID != 3)
+                    @if (Model.RoleID != 3)
                             {
 
 
@@ -263,16 +271,16 @@
                                         <option value="">Tất cả</option>
                                         @foreach (var User in ViewBag.UserList)
                                         {
-                                            if (Model.UserID == User.UserID)
-                                            {
+                        if (Model.UserID == User.UserID)
+                        {
                                                 <option value="@User.UserID">Tôi</option>
                                             }
-                                            else
-                                            {
+                        else
+                        {
                                                 <option value="@User.UserID">@User.FullName</option>
                                             }
 
-                                        }
+                    }
 
                                     </select>
                                 </div>
@@ -400,7 +408,9 @@
 
                 }
                 else {
-                    if (@Model.RoleID == 1) {
+                    var check =  @Html.Raw(Json.Encode(@ViewBag.lstper));
+                   
+                    if (check.includes("PrintBill")) {
                         Swal.fire({
                             title: "Gửi phiếu " + barcode+" ?",
                             text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
@@ -408,7 +418,8 @@
                             showCancelButton: true,
                             confirmButtonText: "Có!",
                             cancelButtonText: "Không!",
-                            reverseButtons: true
+                            reverseButtons: true,
+                            heightAuto: false
                         }).then(function (result) {
                             var page = $("#billpagi a.active").data('page')
                             var RoleID = $("#scrUserInf").data('roleid')
@@ -419,11 +430,13 @@
                                 // result.dismiss can be "cancel", "overlay",
                                 // "close", and "timer"
                             } else if (result.dismiss === "cancel") {
-                                Swal.fire(
-                                    "Đã hủy",
-                                    "Dữ liệu vẫn an toàn!",
-                                    "error"
-                                ).then(function () {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Dữ liệu vẫn an toàn",
+                                    showConfirmButton: false,
+                                    heightAuto: false,
+                                    timer: 2000
+                                }).then(function () {
 
                                     billsearch(page, RoleID, DepID, UserID)
 
@@ -464,7 +477,8 @@
                 showCancelButton: true,
                 confirmButtonText: "Có!",
                 cancelButtonText: "Không!",
-                reverseButtons: true
+                reverseButtons: true,
+                heightAuto: false
             }).then(function (result) {
                 var page = $("#billpagi a.active").data('page')
                 var RoleID = $("#scrUserInf").data('roleid')
@@ -483,9 +497,16 @@
                         success: function (data) {
                             if (data.status == "success") {
                                 Swal.fire(
-                                    "Thay đổi thành công!",
-                                    data.message,
-                                    "success"
+                                    Swal.fire({
+
+                                        icon: "success",
+                                        title: "Phiếu đã được cập nhật mã",
+                                        showConfirmButton: false,
+                                        heightAuto: false,
+                                        timer: 2000
+                                    }).then(function () {
+                                        billsearch(page, RoleID, DepID, UserID)
+                                    })
                                 ).then(function () {
 
                                     billsearch(page, RoleID, DepID, UserID)
@@ -493,11 +514,13 @@
 
                                 })
                             } else {
-                                Swal.fire(
-                                    "Đã có lỗi!",
-                                    data.message,
-                                    "error"
-                                )
+                                Swal.fire({
+                                    icon: "error",
+                                    title: data.message,
+                                    showConfirmButton: false,
+                                    heightAuto: false,
+                                    timer: 2000
+                                })
                             }
                         },
                         error: function (errorResult) {
@@ -509,11 +532,13 @@
                     // result.dismiss can be "cancel", "overlay",
                     // "close", and "timer"
                 } else if (result.dismiss === "cancel") {
-                    Swal.fire(
-                        "Đã hủy",
-                        "Dữ liệu vẫn an toàn!",
-                        "error"
-                    ).then(function () {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Dữ liệu vẫn an toàn",
+                        showConfirmButton: false,
+                        heightAuto: false,
+                        timer: 2000
+                    }).then(function () {
 
                         billsearch(page, RoleID, DepID, UserID)
 
@@ -549,7 +574,8 @@
                         icon: "success",
                         title: "Phiếu đã được cập nhật trạng thái",
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 1000,
+                        heightAuto: false
                     }).then(function () {
                         billsearch(page, RoleID, DepID, UserID)
                     })
@@ -558,7 +584,8 @@
                         icon: "error",
                         title: data.message,
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 1000,
+                        heightAuto: false
                     })
                 }
             },
@@ -574,8 +601,8 @@
         var UserID = @Model.UserID;
         var DepID = @Model.DepartmentID;
         AuthRole(RoleID, UserID, DepID)
-
-
+         @*var lstper = @ViewBag.lstper;
+         console.log(lstper)*@
 
 
 
@@ -618,7 +645,7 @@
         $('.cancelBtn').on('click', function () {
             billsearch("", RoleID, DepID, UserID)
         });
-         
+
         $('#exportExcel').on('click', function () {
 
 

@@ -109,7 +109,7 @@
                 </div>
             </div>
             <!--end::Card-->
-            <!-- Modal-->
+            <!-- CreateModal-->
             <div class="modal fade" id="CreateDep" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -134,6 +134,34 @@
                     </div>
                 </div>
             </div>
+            <!-- end:CreateModal-->
+            <!-- CreateModal-->
+            <div class="modal fade" id="EditDep" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Sửa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <form id="editdep_form">
+                                    <input id="editDepID" hidden />
+                                    <label>Tên phòng ban:</label>
+                                    <input type="text" class="form-control form-control-solid" id="editDepName" name="editDepName" placeholder="Nhập tên phòng ban" />
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Hủy</button>
+                            <button type="button" id="btnSaveDep" class="btn btn-primary font-weight-bold">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end:CreateModal-->
         </div>
         <!--end::Container-->
     </div>
@@ -142,6 +170,7 @@
 
 <script src="~/assets/js/Department/DepartTable.js"></script>
 <script src="~/assets/js/Department/AddDep.js"></script>
+<script src="~/assets/js/Department/UpdateDep.js"></script>
 @*<script type="text/javascript">
     $(document).ready(function () {
         $('#depTable').DataTable({

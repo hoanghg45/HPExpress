@@ -33,6 +33,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
 
             table += '<th scope="col">Mã phiếu</th>'
             table += '<th scope="col">Ngày gửi</th>'
+            table += '<th scope="col">Người gửi</th>'
             table += '<th scope="col">Người nhận</th>'
             table += '<th scope="col">Công ty nhận</th>'
             table += '<th scope="col">Địa chỉ</th>'
@@ -42,7 +43,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
           
             table += '<th scope="col">Phân loại</th>'
             table += '<th scope="col">Số kiện</th>'
-            table += '<th scope="col">Cân nặng</th>'
+            
             table += '<th scope="col">Trạng thái</th>'
             table += '<th scope="col"></th>'
 
@@ -56,14 +57,21 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
             
             $.each(data.data, function (i, d, p) {
                 table += '<tr id="' + d.Id + '">'
-
-                table += '<th id="' + d.Id + '">' + d.Id + '</th>'
+                var sl = d.Id.slice(0, 4)
+                if (sl != "bill") {
+                    table += '<th id="' + d.Id + '">' + d.Id + '</th>'
+                }
+                else {
+                    table += '<th id="' + d.Id + '">Phiếu chưa được gán mã</th>'
+                }
+                
                 if (d.Dateship != null) {
                     table += '<th>' + formatDate(d.Dateship.substr(6)) + '</th>'
                 }
                 else {
                     table += '<th style=" width: 72px; ">' + 'Chưa gửi' + '</th>'
                 }
+                table += '<th>' + d.Owner + '</th>'
 
                 var cus_inf = d.Cusinf.split('|')
                 table += '<th>' + cus_inf[0] + '</th>'
@@ -90,30 +98,57 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
 
                 table += '<th>' + d.Category + '</th>'
                 table += '<th>' + d.Package + '</th>'
-                table += '<th>' + d.Weight + 'kg </th>'
+                
                 var stt = {
-                    1: {
-                        'title': 'Chờ gửi',
+                    'Chưa hoàn thành': {
+                        'title': 'Chưa hoàn thành',
                         'class': 'danger'
 
                     },
-                    2: {
+                    'Chờ gửi': {
+                        'title': 'Chờ gửi',
+                        'class': 'info'
+
+                    },
+                    'Đã gửi': {
                         'title': 'Đã gửi',
                         'class': 'success'
                     },
-                    3: {
+                    'Chờ In': {
                         'title': 'Chờ in',
                         'class': 'warning'
                     }
 
 
                 };
-                table += '<th style="width: 80px;> <span">'
+                table += '<th style="width: 80px;"> '
                 var RoleID = $("#scrUserInf").data('roleid')
-                var span = '<span class="label label-' + stt[d.StatusID].class + ' label-dot mr-2"></span><span class="font-weight-bold text-' + stt[d.StatusID].class + '">' +
-                    stt[d.StatusID].title + '</span>'
+                var span = '<span class="label label-' + stt[d.StatusName.trim()].class + ' label-dot mr-2"></span><span class="font-weight-bold text-' + stt[d.StatusName.trim()].class + '">' +
+                    stt[d.StatusName.trim()].title + '</span>'
+                var currentUser = $("#UserID").val()
+                function getPer() {
+                    var result = "";
+                     $.ajax({
+                        type: "Get",
+                        url: HOST_URL + 'Account/DetailAccount/',
+                        data: {
+                            "id": currentUser
+                         },
+                         async: false,
+                         datatype: 'json',
+                         success: function (data) {
+                             result = data.Per;
+                         }
 
-                if (d.StatusID == 1 && RoleID == 1) {
+                        
+                     });
+                    return result;
+                }
+
+                var lstPer = getPer()
+
+                if ( d.StatusName.trim() == "Chờ gửi" && lstPer.includes("ShipBill"))
+                {
                     table += '<a href="javascript:;" class="shipBill">' + span+'</a>'
                 } else {
 
@@ -121,10 +156,10 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 }
 
                 table += '</span> </th>'
-
+                 
                 table += '<td> ';
-                var currentUser = $("#UserID").val()
-                if (currentUser == d.UserID && d.StatusID != 2) {
+                
+                if (d.StatusName.trim() != "Chưa hoàn thành" && lstPer.includes("PrintBill")) {
                     table += '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
@@ -160,7 +195,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                        </tr>\
                        \
                     ';
-                } else {
+                } else if (d.StatusName.trim() == "Chưa hoàn thành" && lstPer.includes("CreateBill") ) {
                     table += '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
@@ -179,9 +214,15 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                         Chọn hành động:\
                                     </li>\
                                     <li class="navi-item ">\
-                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link printBtn">\
-                                            <span class="navi-icon"><i class="la la-print"></i></span>\
-                                            <span class="navi-text">In phiếu</span>\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link finishBtn">\
+                                            <span class="navi-icon"><i class="la la-check"></i></span>\
+                                            <span class="navi-text">Xác nhận hoàn thành</span>\
+                                        </a>\
+                                    </li>\
+                                    <li class="navi-item ">\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link removeBtn">\
+                                            <span class="navi-icon"><i class="la la-trash"></i></span>\
+                                            <span class="navi-text">Hủy phiếu</span>\
                                         </a>\
                                     </li>\
                                 </ul>\
@@ -229,31 +270,18 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                     billpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled" data-page=' + pagePrevious + ' disabled> <i class="ki ki-bold-arrow-back icon-xs "></i></a > '
                 }
                 var limit = 3;
-                var cutoff = numSize - pageCurrent + 1
-                if (cutoff > 0) {
-                    if (cutoff >= limit) {
-                        if (pageCurrent > 1) {
-                            for (i = pageCurrent - 1; i <= pageCurrent + 1; i++) {
-                                if (i == pageCurrent) {
-                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                                } else {
-                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
-                                }
+                if (numSize >= limit) {
+
+                    if (pageCurrent != numSize) {
+                        for (i = pageCurrent - 1; i <= pageCurrent + 1; i++) {
+                            if (i == pageCurrent) {
+                                billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                            } else {
+                                billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
                             }
                         }
-                        else {
-                            for (i = pageCurrent; i < pageCurrent + limit; i++) {
-                                if (i == pageCurrent) {
-                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                                } else {
-                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
-                                }
-                            }
-                        }
-
-
                     } else {
-                        for (i = pageCurrent - 1; i < pageCurrent + cutoff; i++) {
+                        for (i = pageCurrent - 2; i <= pageCurrent; i++) {
                             if (i == pageCurrent) {
                                 billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
                             } else {
@@ -262,10 +290,34 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                         }
                     }
 
+
+
+                } else {
+                    if (numSize > 1) {
+                        if (pageCurrent != 1) {
+                            for (i = pageCurrent - 1; i <= numSize; i++) {
+                                if (i == pageCurrent) {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                } else {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                }
+                            }
+                        } else {
+                            for (i = pageCurrent; i <= numSize; i++) {
+                                if (i == pageCurrent) {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                } else {
+                                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                }
+                            }
+                        }
+
+                    } else {
+                        billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + pageCurrent + '>' + pageCurrent + '</a>'
+                    }
+
                 }
-                else {
-                    billpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                }
+
 
 
                 if (pageCurrent > 0 && pageCurrent < numSize) {
@@ -299,7 +351,8 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                     showCancelButton: true,
                     confirmButtonText: "Có!",
                     cancelButtonText: "Không!",
-                    reverseButtons: true
+                    reverseButtons: true,
+                    heightAuto: false,
                 }).then(function (result) {
                     var page = $("#billpagi a.active").data('page')
                     var RoleID = $("#scrUserInf").data('roleid')
@@ -321,7 +374,8 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                         icon: "success",
                                         title: "Phiếu đã được cập nhật trạng thái",
                                         showConfirmButton: false,
-                                        timer: 1000
+                                        heightAuto: false,
+                                        timer: 2000
                                     }).then(function () {
                                         billsearch(page, RoleID, DepID, UserID)
                                     })
@@ -330,7 +384,8 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                         icon: "error",
                                         title: data.message,
                                         showConfirmButton: false,
-                                        timer: 1000
+                                        heightAuto: false,
+                                        timer: 2000
                                     })
                                 }
                             },
@@ -341,11 +396,13 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                         // result.dismiss can be "cancel", "overlay",
                         // "close", and "timer"
                     } else if (result.dismiss === "cancel") {
-                        Swal.fire(
-                            "Đã hủy",
-                            "Dữ liệu vẫn an toàn!",
-                            "error"
-                        ).then(function () {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Dữ liệu vẫn an toàn",
+                            showConfirmButton: false,
+                            heightAuto: false,
+                            timer: 2000
+                        }).then(function () {
 
                             billsearch(page, RoleID, DepID, UserID)
 
@@ -355,6 +412,152 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 });
 
                 
+            });
+
+            $('.finishBtn').click(function (event) {
+                var barcode = $(this).data('id')
+                console.log(barcode)
+                Swal.fire({
+                    title: "Bạn muốn hoàn thành phiếu ?",
+                    text: "Vui lòng kiểm tra kỹ thông tin phiếu!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Có!",
+                    cancelButtonText: "Không!",
+                    reverseButtons: true,
+                    heightAuto: false,
+                }).then(function (result) {
+                    var page = $("#billpagi a.active").data('page')
+                    var RoleID = $("#scrUserInf").data('roleid')
+                    var DepID = $("#scrUserInf").data('depid')
+                    var UserID = $("#UserID").val()
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: HOST_URL + 'Waybill/updateStatus',
+                            data: {
+                                id: barcode
+                            },
+                            datatype: 'json',
+
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    Swal.fire({
+
+                                        icon: "success",
+                                        title: "Phiếu đã được cập nhật trạng thái",
+                                        showConfirmButton: false,
+                                        heightAuto: false,
+                                        timer: 2000
+                                    }).then(function () {
+                                        billsearch(page, RoleID, DepID, UserID)
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: data.message,
+                                        showConfirmButton: false,
+                                        heightAuto: false,
+                                        timer: 2000
+                                    })
+                                }
+                            },
+                            error: function (errorResult) {
+                                console.log(errorResult.responseText)
+                            }
+                        })
+                        // result.dismiss can be "cancel", "overlay",
+                        // "close", and "timer"
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Dữ liệu vẫn an toàn",
+                            showConfirmButton: false,
+                            heightAuto: false,
+                            timer: 2000
+                        }).then(function () {
+
+                            billsearch(page, RoleID, DepID, UserID)
+
+
+                        })
+                    }
+                });
+
+
+            });
+
+            $('.removeBtn').click(function (event) {
+                var barcode = $(this).data('id')
+                console.log(barcode)
+                Swal.fire({
+                    title: "Bạn muốn xóa phiếu ?",
+                    text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Có!",
+                    cancelButtonText: "Không!",
+                    reverseButtons: true,
+                    heightAuto: false,
+                }).then(function (result) {
+                    var page = $("#billpagi a.active").data('page')
+                    var RoleID = $("#scrUserInf").data('roleid')
+                    var DepID = $("#scrUserInf").data('depid')
+                    var UserID = $("#UserID").val()
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: HOST_URL + 'Waybill/Remove',
+                            data: {
+                                id: barcode
+                            },
+                            datatype: 'json',
+
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    Swal.fire({
+
+                                        icon: "success",
+                                        title: "Xóa thành công",
+                                        showConfirmButton: false,
+                                        heightAuto: false,
+                                        timer: 2000
+                                    }).then(function () {
+                                        billsearch(page, RoleID, DepID, UserID)
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: data.message,
+                                        showConfirmButton: false,
+                                        heightAuto: false,
+                                        timer: 2000
+                                    })
+                                }
+                            },
+                            error: function (errorResult) {
+                                console.log(errorResult.responseText)
+                            }
+                        })
+                        // result.dismiss can be "cancel", "overlay",
+                        // "close", and "timer"
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Dữ liệu vẫn an toàn",
+                            showConfirmButton: false,
+                            heightAuto: false,
+                            timer: 2000
+                        }).then(function () {
+
+                            billsearch(page, RoleID, DepID, UserID)
+
+
+                        })
+                    }
+                });
+
+
             });
 
             $("#billpagi a").click(function (event) {
@@ -372,23 +575,41 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
 
             $('.printBtn').click(function (event) {
 
+
                 var idbill = $(this).data('id')
-                var proid = $(this).data('proid')
-                switch (proid) {
-                    case 1: printNetPost(idbill)
-                        
-                        break;
-                    case 2: printViettelPost(idbill)
-                        break;
-                    case 3: printTasetco()
-                        break;
-                    default:
-                        break;
+                var check = idbill.slice(0, 4)
+
+                if (check == "bill") {
+                    Swal.fire({
+                        title: "Phiếu chưa có mã?",
+                        text: "Vui lòng nhập mã đơn trước khi in!",
+                        icon: "info",
+                        showConfirmButton: false,
+                        heightAuto: false,
+                        timer: 2000
+                    })
+                } else {
+                 
+
+                    var proid = $(this).data('proid')
+                    switch (proid) {
+                        case 1: printNetPost(idbill)
+
+                            break;
+                        case 2: printViettelPost(idbill)
+                            break;
+                        case 3: printTasetco()
+                            break;
+                        default:
+                            break;
+                    }
                 }
+             
                 
 
               
             });
+            
 
             function savebill(id) {
                 
@@ -408,7 +629,9 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                         showCancelButton: true,
                         confirmButtonText: "Có!",
                         cancelButtonText: "Không!",
-                        reverseButtons: true
+                        reverseButtons: true,
+                        heightAuto: false
+
                     }).then(function (result) {
                         var page = $("#billpagi a.active").data('page')
                         var RoleID = $("#scrUserInf").data('roleid')
@@ -426,10 +649,17 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
 
                                 success: function (data) {
                                     if (data.status == "success") {
-                                        Swal.fire(
-                                            "Thay đổi thành công!",
-                                            data.message,
-                                            "success"
+                                        Swal.fire({
+                                            title: "Thay đổi thành công!",
+                                            text: data.message,
+                                            icon: "success",
+                                            showCancelButton: false,
+                                            confirmButtonText: "Có!",
+                                            cancelButtonText: "Không!",
+                                            reverseButtons: true,
+                                            heightAuto: false
+
+                                        }                                         
                                         ).then(function () {
 
                                             billsearch(page, RoleID, DepID, UserID)
@@ -651,6 +881,8 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 QR_CODE.makeCode(qrid);
                 console.log(typeof (qrid))
             }
+
+            
 
         }
        

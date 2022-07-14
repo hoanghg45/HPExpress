@@ -1,5 +1,8 @@
-﻿using Microsoft.Owin;
+﻿using HPExpress.Context;
+using HPExpress.Security;
+using Microsoft.Owin;
 using Owin;
+using System.Linq;
 
 [assembly: OwinStartupAttribute(typeof(HPExpress.Startup))]
 namespace HPExpress
@@ -8,7 +11,12 @@ namespace HPExpress
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+
+            
+
         }
+       
+
+      
     }
 }

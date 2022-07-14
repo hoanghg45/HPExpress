@@ -112,10 +112,26 @@
                                                     <input data-vali="true" type="text" name="billing_card_name" class="form-control" readonly placeholder="" value="70187" />
                                                 </div>
 
-
+                                                
                                                 <div class="col-lg-6">
                                                     <label> Người gửi:<span class="text-danger">*</span></label>
-                                                    <input data-vali="true" type="text" name="billing_card_name" class="form-control" readonly  placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
+                                                    <br />
+                                                    <select name="owner_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                                        @foreach (var u in ViewBag.lstOwner)
+                                                        {
+                                                            if (u.UserID == Model.UserID)
+                                                            {
+                                                                <option value="@u.UserID" data-tokens="@u.FullName" selected>Tôi</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@u.UserID" data-tokens="@u.FullName">@u.FullName</option>
+                                                            }
+
+                                                        }
+
+                                                    </select>
+
                                                 </div>
                                             </div>
                                             <div class="form-group row">

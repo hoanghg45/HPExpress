@@ -1,5 +1,6 @@
 ﻿using HPExpress.Context;
 using HPExpress.Extension;
+using HPExpress.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,12 @@ using System.Web.Mvc;
 
 namespace HPExpress.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DepartmentController : Controller
     {
         private BillManagerDBEntities db = new BillManagerDBEntities();
         // GET: Department
+        
         public ActionResult Index()
         {
             return View();
@@ -60,9 +63,119 @@ namespace HPExpress.Controllers
         }
 
         // GET: Department/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public JsonResult Details(int id =0)
         {
-            return View();
+            try
+            {
+                // TODO: Add insert logic here
+
+                if (ModelState.IsValid)
+                {
+
+                    if (id != 0)
+                    {
+                        var dep = db.Departments.Where(d => d.DepartmentID == id).Select(u => new { u.DepartmentID, u.DepartmentName }).SingleOrDefault();
+                        return this.Json(new
+                        {
+                            status = "success",
+                            
+                            dep = dep
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return this.Json(new
+                        {
+                            status = "error",
+                            message = "Phòng,ban không tồn tại, vui lòng thử lại sau!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return this.Json(new
+                    {
+                        status = "error",
+                        message = "Phòng,ban không tồn tại, vui lòng thử lại sau!"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+
+
+            }
+            catch
+            {
+                return this.Json(new
+                {
+                    status = "error",
+                    message = "Phòng,ban không tồn tại, vui lòng thử lại sau!"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // POST: Department/Edit/5
+        [HttpPost]
+        public JsonResult Edit(int id = 0, string newName = null)
+        {
+            try
+            {
+                // TODO: Add update logic here
+                if (id != 0 && newName != null)
+                {
+                    bool isvalid = db.Departments.Any(d => d.DepartmentName == newName);
+                    if (!isvalid)
+                    {
+                        if (!db.Departments.Any(d => d.DepartmentName == newName))
+                        {
+                            var dep = db.Departments.FirstOrDefault(d => d.DepartmentID == id);
+                            dep.DepartmentName = newName;
+                            db.SaveChanges();
+
+                            return this.Json(new
+                            {
+
+                                status = "success",
+                                message = "Thay đổi thành công!"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return this.Json(new
+                            {
+                                status = "error",
+                                message = "Tên phòng đã tồn tại, vui long kiểm tra và thử lại!"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        return this.Json(new
+                        {
+                            status = "error",
+                            message = "Tên Phòng,ban đã tồn tại, vui lòng thử  tên khác!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                else
+                {
+                    return this.Json(new
+                    {
+                        status = "error",
+                        message = "Phòng,ban không tồn tại, vui lòng thử lại sau!"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch
+            {
+                return this.Json(new
+                {
+                    status = "error",
+                    message = "Phòng,ban không tồn tại, vui lòng thử lại sau!"
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Department/Create
@@ -113,27 +226,10 @@ namespace HPExpress.Controllers
             }
         }
 
-        // GET: Department/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        
+        
 
-        // POST: Department/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
 
        
 

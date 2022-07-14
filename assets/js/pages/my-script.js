@@ -70,11 +70,13 @@ function setRoleByDepart(id) {
 }
 
 function setRoleByDepartForModal(id) {
+    var idUser = $("#modal_userID").val();
     $.ajax({
         type: "get",
         url: '/Account/filterRoleByDepart',
         data: {
             id: id,
+            iduser: idUser
 
         },
         datatype: 'json',

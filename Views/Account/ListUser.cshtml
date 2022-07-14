@@ -27,7 +27,11 @@
                 <a href="#" class=""></a>
                 <!--end::Button-->
                 <!--begin::Button-->
-                <a href="@Url.Action("CreateAcc","Account")" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">Tạo tài khoản</a>
+                @if (Session["Role"].ToString() == "Admin")
+                {
+                    <a href="@Url.Action("CreateAcc","Account")" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">Tạo tài khoản</a>
+                }
+
                 <!--end::Button-->
 
             </div>
@@ -169,13 +173,14 @@
                                         <!--begin::Group-->
                                         <div class="form-group row">
                                             <label class="col-xl-3 col-lg-3 col-form-label">Mật khẩu</label>
-                                            <div class="col-lg-9 col-xl-9">
-                                                <input class="form-control form-control-solid form-control-lg" placeholder="Nhập mật khẩu" name="modal_UserPass" id="modal_UserPass" type="password" value="" />
+                                            <div  class="col-lg-9 col-xl-9">
+                                                <a href="#" id="changePass">Đổi mật khẩu</a>
+                                                <input hidden class="form-control form-control-solid form-control-lg" placeholder="Nhập mật khẩu" name="modal_UserPass" id="modal_UserPass" type="password" value="" />
                                                 <span style="color:red" class="form-text ">Chỉ nhập khi có sự thay đổi về mật khẩu</span>
                                             </div>
                                         </div>
                                         <!--end::Group--><!--begin::Group-->
-                                        <div class="form-group row">
+                                        <div id="divConfirmPass" hidden class="form-group row">
                                             <label class="col-xl-3 col-lg-3 col-form-label">Nhập lại mật khẩu</label>
                                             <div class="col-lg-9 col-xl-9">
                                                 <input class="form-control form-control-solid form-control-lg" placeholder="Nhập xác nhận mật khẩu" name="modal_confirmPass" id="modal_confirmPass" type="password" value="" />
@@ -304,25 +309,30 @@
         <script src="~/assets/js/User/searchUser.js"></script>
         <script src="~/assets/js/User/updateUser.js" id="scrUpdate" data-curID="@Model.UserID" data-roleid=@Model.RoleID data-depid=@Model.DepartmentID></script>
         <script type="text/javascript">
-    $(document).ready(function () {
-        var RoleID = @Model.RoleID;
-        var DepID = @Model.DepartmentID;
-        AuthRoleUser(RoleID, DepID)
-        $("#searchUser").on("keyup", function () {
-            searchUser("", RoleID, DepID)
+            $(document).ready(function () {
+                var RoleID = @Model.RoleID;
+                var DepID = @Model.DepartmentID;
+                AuthRoleUser(RoleID, DepID)
+                $("#searchUser").on("keyup", function () {
+                    searchUser("", RoleID, DepID)
 
-        });
-        $('#datable_search_role').on('change', function () {
-            searchUser("", RoleID, DepID)
+                });
+                $('#datable_search_role').on('change', function () {
+                    searchUser("", RoleID, DepID)
 
-        });
-        $('#datable_search_department').on('change', function () {
-            searchUser("", RoleID, DepID)
-        });
-        $('#datable_search_status').on('change', function () {
-            searchUser("", RoleID, DepID)
-        });
+                });
+                $('#datable_search_department').on('change', function () {
+                    searchUser("", RoleID, DepID)
+                });
+                $('#datable_search_status').on('change', function () {
+                    searchUser("", RoleID, DepID)
+                });
 
-
-    });
+                $("#changePass").click(function () {
+                    $("#modal_UserPass").removeAttr("hidden");
+                    $("#divConfirmPass").removeAttr("hidden");
+                    $(this).attr("hidden", true);
+                })
+            });
+          
         </script>

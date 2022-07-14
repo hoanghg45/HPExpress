@@ -35,7 +35,7 @@ namespace HPExpress.Controllers
             DateTime dateTo = DateTime.Now;
             var count = _context.Bills.Count();
             //_context.Configuration.ProxyCreationEnabled = false;
-            var table = from obj in _context.Bills
+            var table = (from obj in _context.Bills
                         join se in _context.Transpots on obj.TransID equals se.TransID
                         join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
                         join us in _context.Users on obj.UserID equals us.UserID
@@ -52,11 +52,15 @@ namespace HPExpress.Controllers
                             DepartmentID = de.DepartmentID,
                             Trans = se.TransName,
                              StatusID = s.StatusID,
+                             StatusName = s.StatusName,
                             Package = obj.ProductPakage,
                             Weight = obj.ProductWeight,
                             Dateship = obj.ShipAt,
-                            Category =  obj.ProductCategorys.Select(c => c.CatName).ToList()
-                        };
+                            Category =  obj.ProductCategorys.Select(c => c.CatName).ToList(),
+                            OwnerID = obj.OwnerID,
+                            Owner = obj.User1.FullName.Trim()
+
+                        });
 
             if (date != "") {
                 String[] dateSplit = date.Split('-');
@@ -90,7 +94,10 @@ namespace HPExpress.Controllers
 
 
             }
-           
+            
+            
+            
+
             int pageSize = 10;
             page = (page > 0) ? page : 1;
             int start = (int)(page - 1) * pageSize;
@@ -100,7 +107,25 @@ namespace HPExpress.Controllers
             float totalNumsize = (totalBill / (float)pageSize);
             int numSize = (int)Math.Ceiling(totalNumsize);
             ViewBag.numSize = numSize;
+           
             table = table.OrderByDescending(x => x.Dateship).Skip(start).Take(pageSize);
+            
+            int currentUserID = (int)Session["UserID"];
+            var a = table.ToList();
+            var privatedata = a.Where(b => b.StatusName == "Chưa hoàn thành" && b.UserID != currentUserID && b.OwnerID != currentUserID).ToList();
+
+            var result = a.Except(privatedata);
+            //foreach(var item in privatedata)
+            //{
+
+            //    if (a.Any(p => p.Id == item.Id))
+            //    {
+            //        var del = a.Where(m => m.Id == item.Id).Single();
+            //        a.Remove(del);
+            //    }
+            //}
+
+
             var fromto = PaginationExtension.FromTo(totalBill, (int)page, pageSize);
 
             int from = fromto.Item1;
@@ -110,7 +135,7 @@ namespace HPExpress.Controllers
             return this.Json(
          new
          {
-             data = table,
+             data = result,
              pageCurrent = page,
              numSize = numSize,
              total = totalBill,
@@ -135,7 +160,7 @@ namespace HPExpress.Controllers
                     Bill bill = _context.Bills.FirstOrDefault(u => u.BillID == id);
                     if(bill != null)
                     {
-                        if (bill.Status == 1)
+                        if (bill.BillStatus.StatusName == "Chờ gửi")
                         {
                             int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Đã gửi")).Select(u => u.StatusID).Single();
                             bill.Status = stt;
@@ -149,12 +174,18 @@ namespace HPExpress.Controllers
 
                             }, JsonRequestBehavior.AllowGet);
                         }
-                        else if(bill.Status == 2)
+                        else if(bill.BillStatus.StatusName == "Chưa hoàn thành")
                         {
+                            int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chờ In")).Select(u => u.StatusID).Single();
+                            bill.Status = stt;
+
+                            
+                            _context.SaveChanges();
                             return this.Json(new
                             {
-                                status = "error",
-                                message = "Phiếu " + id + " đã được gửi!"
+
+                                status = "success",
+                                message = "Thanh đổi trạng thái phiếu thành công!"
                             }, JsonRequestBehavior.AllowGet);
                         }
                         else
@@ -232,7 +263,8 @@ namespace HPExpress.Controllers
                            ProviderID = oldbill.ProviderID,
                            TransID = oldbill.TransID,
                            ProductWeight = oldbill.ProductWeight,
-                           Status = oldbill.Status
+                           Status = oldbill.Status,
+                           OwnerID = oldbill.OwnerID
                     };
 
                     newbill.ProductCategorys = oldbill.ProductCategorys;
@@ -350,6 +382,11 @@ namespace HPExpress.Controllers
             List<BillStatus> statuslst = new List<BillStatus>();
             statuslst = _context.BillStatuses.ToList();
             ViewBag.statuslst = statuslst;
+            string[] lstper = currUser.Role.Permissions.Select(p => p.PermissionName).ToArray();
+            ViewBag.lstper = lstper;
+            ViewBag.CreateBill = false;
+            ViewBag.CreateBill = lstper.Contains("CreateBill");
+            
 
             return View(currUser);
         }
@@ -362,11 +399,14 @@ namespace HPExpress.Controllers
         }
 
         // GET: WayBill/Create/{id}
+        [Authorize(Roles = "CreateBill")]
         public ActionResult Create(string id)
         {
             //ShippingProvider sp = _context.ShippingProviders.Where(p => p.ProviderName == viewName).FirstOrDefault();
             var idUser = Session["UserID"];
             User user = _context.Users.Find(idUser);
+            var lstOwner = _context.Users.Where(u => u.Status == 2).OrderBy(u => u.FullName.Trim()).ToList();
+            ViewBag.lstOwner = lstOwner;
             switch (id)
             {
                 case "NetpostView":
@@ -389,6 +429,7 @@ namespace HPExpress.Controllers
         // POST: WayBill/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CreateBill")]
         public JsonResult Create(FormCollection collection, string returnUrl)
         {
             try
@@ -409,6 +450,8 @@ namespace HPExpress.Controllers
                 
                 
                 bill.UserID = Int32.Parse(collection["user_id"]);
+                bill.OwnerID = Int32.Parse(collection["owner_id"]);
+
                 bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
                 string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
                 bill.CustomerInf = cus_inf.Trim();
@@ -439,7 +482,7 @@ namespace HPExpress.Controllers
                 bill.ProductCategorys = catlst;
                 bill.ProductPakage = Int32.Parse(collection["package_numb"]);
 
-                int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chờ In")).Select(u => u.StatusID).Single();
+                int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chưa hoàn thành")).Select(u => u.StatusID).Single();
                 bill.Status = stt;
 
 
@@ -674,7 +717,60 @@ namespace HPExpress.Controllers
 
             
         }
+        [HttpPost]
+        public JsonResult Remove(string id)
+        {
+            try
+            {
+                if (ModelState.IsValid && id != "")
+                {
+                    Bill bill = _context.Bills.FirstOrDefault(u => u.BillID == id);
+                    if (bill != null)
 
+                    {
+                        _context.Bills.Remove(bill);
+                        _context.SaveChanges();
+                        return this.Json(new
+                        {
+                            status = "success",
+                            message = "Xóa phiếu thành công!"
+
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        // If we got this far, something failed, redisplay form  return this.Json(new
+                        return this.Json(new
+                        {
+                            status = "error",
+                            message = "Phiếu chưa được lập vui lòng kiểm tra lại!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
+
+
+                }
+                else
+                {
+                    // If we got this far, something failed, redisplay form  return this.Json(new
+                    return this.Json(new
+                    {
+                        status = "error",
+                        message = "Mã phiếu không hợp lệ"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return this.Json(new
+                {
+                    status = "error",
+                    message = e.Message
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
         //Print
         [HttpPost]
         public JsonResult Print(FormCollection collection)

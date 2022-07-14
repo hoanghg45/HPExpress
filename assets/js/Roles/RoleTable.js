@@ -17,7 +17,7 @@
             $("#tbody").empty();
             let th = '<th> Quyền </th>'
             $.each(data.per, function (i, d, p) {
-                th += '<th class="getIdPer" id="' + d.PermissionID + '">' + d.PermissionName + '</th>'
+                th += '<th class="getIdPer" id="' + d.PermissionID + '">' + d.PermissionDesc + '</th>'
                
             });
             $.each(data.data, function (i, d, p) {

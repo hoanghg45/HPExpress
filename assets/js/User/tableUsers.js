@@ -69,7 +69,7 @@
 
 
                 };
-                table += '<th>' + '<a href="javascrip:;" class="status" data-userID=' + d.Id + ' >' + '<span class="label label-inline ' + stt[d.Status].class + ' font-weight-bold">' + stt[d.Status].title + '</span >' + '</a>' + '</th>';
+                table += '<th>' + '<a href="javascrip:;" class="status" data-userID=' + d.Id + ' >' + '<span  style="width: 50pt;height: 20pt;" class="label label-inline ' + stt[d.Status].class + ' font-weight-bold">' + stt[d.Status].title + '</span >' + '</a>' + '</th>';
                 if (d.LastLogin != null) {
                     var lastLogin = new Date(parseInt(d.LastLogin.substr(6)))
                     table += '<th >' + timeCal(lastLogin + "") + '</th>'
@@ -152,32 +152,40 @@
                     userpagi += '<a  class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 disabled" data-page=' + pagePrevious + ' disabled> <i class="ki ki-bold-arrow-back icon-xs "></i></a > '
                 }
                 var limit = 3;
-                var cutoff = numSize - pageCurrent + 1
-                if (numSize > 1) {
-                    if (cutoff > 0) {
-                        if (cutoff >= limit) {
-                            if (pageCurrent > 1) {
-                                for (i = pageCurrent - 1; i <= pageCurrent + 1; i++) {
-                                    if (i == pageCurrent) {
-                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                                    } else {
-                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
-                                    }
-                                }
+                if (numSize >= limit) {
+
+                    if (pageCurrent != numSize) {
+                        for (i = pageCurrent - 1; i <= pageCurrent + 1; i++) {
+                            if (i == pageCurrent) {
+                                userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                            } else {
+                                userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
                             }
-                            else {
-                                for (i = pageCurrent; i < pageCurrent + limit; i++) {
-                                    if (i == pageCurrent) {
-                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                                    } else {
-                                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
-                                    }
-                                }
+                        }
+                    } else {
+                        for (i = pageCurrent - 2; i <= pageCurrent; i++) {
+                            if (i == pageCurrent) {
+                                userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                            } else {
+                                userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
                             }
+                        }
+                    }
 
 
+
+                } else {
+                    if (numSize > 1) {
+                        if (pageCurrent != 1) {
+                            for (i = pageCurrent - 1; i <= numSize; i++) {
+                                if (i == pageCurrent) {
+                                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
+                                } else {
+                                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" data-page= ' + i + '>' + i + '</a>'
+                                }
+                            }
                         } else {
-                            for (i = pageCurrent - 1; i < pageCurrent + cutoff; i++) {
+                            for (i = pageCurrent; i <= numSize; i++) {
                                 if (i == pageCurrent) {
                                     userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
                                 } else {
@@ -186,12 +194,10 @@
                             }
                         }
 
+                    } else {
+                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + pageCurrent + '>' + pageCurrent + '</a>'
                     }
-                    else {
-                        userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + i + '>' + pageCurrent + '</a>'
-                    }
-                } else {
-                    userpagi += '<a href="javascript:;" class="btn btn-icon btn-sm border-0 btn-hover-primary active mr-2 my-1" data-page= ' + pageCurrent + '>' + pageCurrent + '</a>'
+
                 }
 
 
@@ -238,11 +244,15 @@
                             $("#modal_userphone").val(data.Phone)
                             $("#modal_DepartmentID").val(data.DepartmentID)
                             $("#modal_RoleID").val(data.RoleID)
+
                             $("input[name=modal_Gender][value=" + data.Gender + "]").prop('checked', true)
                             setRoleByDepartForModal(data.DepartmentID)
                             $("#modal_DepartmentID").on('change', function () {
                                 setRoleByDepartForModal(data.DepartmentID)
                             })
+                            $("#modal_UserPass").attr("hidden", true);;
+                            $("#divConfirmPass").attr("hidden", true);;
+                            $("#changePass").removeAttr("hidden");
                         }
                     },
                     error: function (errorResult) {
@@ -264,7 +274,8 @@
                     showCancelButton: true,
                     confirmButtonText: "Có, xóa!",
                     cancelButtonText: "Không!",
-                    reverseButtons: true
+                    reverseButtons: true,
+                    heightAuto: false,
                 }).then(function (result) {
                     if (result.value) {
                         $.ajax({
@@ -306,7 +317,8 @@
                                                 icon: "warning",
                                                 showCancelButton: true,
                                                 confirmButtonText: "Có!",
-                                                cancelButtonText: "Không!",
+                                            cancelButtonText: "Không!",
+                                            heightAuto: false,
                                             reverseButtons: true
                                         }).then(function (result) {
                                                 if (result.value) {
@@ -396,6 +408,7 @@
                     showCancelButton: true,
                     confirmButtonText: "Có!",
                     cancelButtonText: "Không!",
+                    heightAuto: false,
                     reverseButtons: true
                 }).then(function (result) {
                     if (result.value) {
