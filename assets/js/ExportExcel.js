@@ -1,5 +1,50 @@
 ﻿function exportExcel(id, datetime, search, depart, userid) {
-    window.location.href = 'ExportExcel/?id=' + id +'&date=' + datetime + '&search=' + search + '&dep=' + depart + '&usid=' + userid
+    $.ajax({
+        url: '/WayBill/CheckExport',
+        datatype: 'json',
+        data: {
+            id: id,
+            date: datetime,
+            search: search,
+            dep: depart,
+            usid: userid
+        },
+        success: function (result) {
+            if (result.status == 'success') {
+                window.location.href = 'ExportExcel/?id=' + id + '&date=' + datetime + '&search=' + search + '&dep=' + depart + '&usid=' + userid
+                Swal.fire({
+                    title: "Thành công!",
+                    text: result.message,
+                    icon: "success",
+                    showCancelButton: false,
+                    reverseButtons: true,
+                    heightAuto: false,
+                })
+            } else {
+                Swal.fire({
+                    title: "Lỗi!",
+                    text: result.message,
+                    icon: "error",
+                    showCancelButton: false,
+                    reverseButtons: true,
+                    heightAuto: false,
+                })
+            }
+        },
+        error: function (xhr) {
+            Swal.fire({
+                title: "Lỗi!",
+                text: xhr.responseText,
+                icon: "error",
+                showCancelButton: false,
+                reverseButtons: true,
+                heightAuto: false,
+            })
+
+        }
+    })
+  
+    
         /*? id = ' + id + ' & date=' + datetime + ' & search=' + search + ' & dep=' + depart + ' & usid=' + userid*/
 }
 
@@ -27,6 +72,8 @@ function billExport( RoleID, DepID, UserID) {
         case 2: exportExcel(id, date, value, DepID, userid)
             break;
         case 3: exportExcel(id, date, value, "", UserID)
+            break;
+        case 4: exportExcel(id, date, value, depart, UserID)
             break;
         default:
             break;

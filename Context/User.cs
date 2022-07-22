@@ -19,6 +19,8 @@ namespace HPExpress.Context
         {
             this.Bills = new HashSet<Bill>();
             this.Bills1 = new HashSet<Bill>();
+            this.Bills2 = new HashSet<Bill>();
+            this.Users1 = new HashSet<User>();
         }
     
         public int UserID { get; set; }
@@ -33,6 +35,7 @@ namespace HPExpress.Context
         public Nullable<int> Gender { get; set; }
         public Nullable<int> Status { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
+        public Nullable<int> CreateBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bills { get; set; }
@@ -40,5 +43,10 @@ namespace HPExpress.Context
         public virtual Department Department { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bills1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Bill> Bills2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users1 { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

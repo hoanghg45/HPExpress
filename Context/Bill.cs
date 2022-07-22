@@ -40,6 +40,8 @@ namespace HPExpress.Context
         public Nullable<System.DateTime> ShipAt { get; set; }
         public Nullable<System.DateTime> PrintAt { get; set; }
         public Nullable<int> OwnerID { get; set; }
+        public Nullable<int> ShipBy { get; set; }
+        public string Phone { get; set; }
     
         public virtual Payment Payment { get; set; }
         public virtual Service Service { get; set; }
@@ -50,5 +52,6 @@ namespace HPExpress.Context
         public virtual ICollection<ProductCategory> ProductCategorys { get; set; }
         public virtual BillStatus BillStatus { get; set; }
         public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
     }
 }

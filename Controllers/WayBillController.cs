@@ -16,15 +16,17 @@ using OfficeOpenXml;
 using System.IO;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using Newtonsoft.Json;
 
 namespace HPExpress.Controllers
 {
+    [Authorize]
     [SessionCheck]
     public class WayBillController : Controller
     {
         
         BillManagerDBEntities _context = new BillManagerDBEntities();
-      
+        
         [HttpGet]
         [Route("data")]
         public JsonResult data(int id = 0, int? page = 0, string date = "", string search ="",int dep = 0, int usid =0,int stt =0)
@@ -44,6 +46,7 @@ namespace HPExpress.Controllers
                         select new
                         {
                             Id = obj.BillID.Trim(),
+                            Phone = obj.Phone,
                             Cusinf = obj.CustomerInf.Trim(),
                             UserID = us.UserID,
                             Content = obj.BillContent,
@@ -58,7 +61,8 @@ namespace HPExpress.Controllers
                             Dateship = obj.ShipAt,
                             Category =  obj.ProductCategorys.Select(c => c.CatName).ToList(),
                             OwnerID = obj.OwnerID,
-                            Owner = obj.User1.FullName.Trim()
+                            Owner = obj.User1.FullName.Trim(),
+                            ShipBy = obj.User2.FullName.Trim()
 
                         });
 
@@ -68,6 +72,7 @@ namespace HPExpress.Controllers
                  dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 dateTo = dateTo.AddHours(23).AddMinutes(59);
             }
+
             if (id != 0 || date != "" || usid != 0 || dep != 0 ||stt != 0)
             {
                 
@@ -77,7 +82,24 @@ namespace HPExpress.Controllers
                               .WhereIf(dep != 0, t => t.DepartmentID == dep)
                               .WhereIf(stt != 0, t => t.StatusID == stt);
             }
-            if(search != "")
+            var idKho = _context.Departments.Single(d => d.DepartmentName == "BỘ PHẬN KHO XƯỞNG").DepartmentID;
+            var idHnoi = _context.Departments.Single(d => d.DepartmentName == "VĂN PHÒNG HÀ NỘI").DepartmentID;
+            int currentUserID = (int)Session["UserID"];
+            var currentUser = _context.Users.First(u => u.UserID == currentUserID);
+            if(currentUser.Role.RoleName == "BillManager")
+            {
+                if (currentUser.DepartmentID == idKho || currentUser.DepartmentID == idHnoi)
+                {
+                    table = table.WhereIf(currentUser.Department.DepartmentName == "BỘ PHẬN KHO XƯỞNG", t => t.DepartmentID == idKho)
+                             .WhereIf(currentUser.Department.DepartmentName == "VĂN PHÒNG HÀ NỘI", t => t.DepartmentID == idHnoi);
+                }
+                else if (currentUser.Department.DepartmentName == "HÀNH CHÍNH NHÂN SỰ" || currentUser.Department.DepartmentName == "SALES ADMIN")
+                {
+                    table = table.Where(t => t.DepartmentID != idKho && t.DepartmentID != idHnoi);
+                }
+            }
+            
+            if (search != "")
             {
                 
                 search = search.Trim();
@@ -86,7 +108,7 @@ namespace HPExpress.Controllers
                  t => t.Cusinf,
                  t => t.Content,
                    t => t.Trans,
-                   
+                   t => t.Owner,
                    t => t.Weight.ToString(),
                    t => t.Category.FirstOrDefault(c => c.Contains(search))
 
@@ -110,7 +132,7 @@ namespace HPExpress.Controllers
            
             table = table.OrderByDescending(x => x.Dateship).Skip(start).Take(pageSize);
             
-            int currentUserID = (int)Session["UserID"];
+           
             var a = table.ToList();
             var privatedata = a.Where(b => b.StatusName == "Chưa hoàn thành" && b.UserID != currentUserID && b.OwnerID != currentUserID).ToList();
 
@@ -149,9 +171,9 @@ namespace HPExpress.Controllers
             
         }
         [HttpPost]
-        [AllowAnonymous]
+        
 
-        public JsonResult updateStatus(string id = "")
+        public JsonResult updateStatus(string id = "",bool rollback = false)
         {
             try
             {
@@ -160,42 +182,71 @@ namespace HPExpress.Controllers
                     Bill bill = _context.Bills.FirstOrDefault(u => u.BillID == id);
                     if(bill != null)
                     {
-                        if (bill.BillStatus.StatusName == "Chờ gửi")
+                        if (!rollback)
                         {
-                            int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Đã gửi")).Select(u => u.StatusID).Single();
-                            bill.Status = stt;
-                            
-                            bill.ShipAt = DateTime.Now;
-                            _context.SaveChanges();
-                            return this.Json(new
+                            if (bill.BillStatus.StatusName == "Chờ gửi")
                             {
-                                status = "success",
-                                message = "Thanh đổi trạng thái phiếu " + id + "  thành công!"
+                                int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Đã gửi")).Select(u => u.StatusID).Single();
+                                bill.Status = stt;
 
-                            }, JsonRequestBehavior.AllowGet);
-                        }
-                        else if(bill.BillStatus.StatusName == "Chưa hoàn thành")
-                        {
-                            int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chờ In")).Select(u => u.StatusID).Single();
-                            bill.Status = stt;
+                                bill.ShipAt = DateTime.Now;
+                                bill.ShipBy = (int)Session["UserID"];
+                                _context.SaveChanges();
+                                return this.Json(new
+                                {
+                                    status = "success",
+                                    message = "Thanh đổi trạng thái phiếu thành công!"
 
-                            
-                            _context.SaveChanges();
-                            return this.Json(new
+                                }, JsonRequestBehavior.AllowGet);
+                            }
+                            else if (bill.BillStatus.StatusName == "Chưa hoàn thành")
                             {
+                                int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chờ In")).Select(u => u.StatusID).Single();
+                                bill.Status = stt;
 
-                                status = "success",
-                                message = "Thanh đổi trạng thái phiếu thành công!"
-                            }, JsonRequestBehavior.AllowGet);
+
+                                _context.SaveChanges();
+                                return this.Json(new
+                                {
+
+                                    status = "success",
+                                    message = "Thanh đổi trạng thái phiếu thành công!"
+                                }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                return this.Json(new
+                                {
+                                    status = "error",
+                                    message = "Phiếu " + id + " chưa được in!"
+                                }, JsonRequestBehavior.AllowGet);
+                            }
                         }
                         else
                         {
-                            return this.Json(new
+                            if (bill.BillStatus.StatusName == "Chờ In")
                             {
-                                status = "error",
-                                message = "Phiếu " + id + " chưa được in!"
-                            }, JsonRequestBehavior.AllowGet);
+                                int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chưa hoàn thành")).Select(u => u.StatusID).Single();
+                                bill.Status = stt;
+                                                               
+                                _context.SaveChanges();
+                                return this.Json(new
+                                {
+                                    status = "success",
+                                    message = "Thanh đổi trạng thái phiếu thành công!"
+
+                                }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                return this.Json(new
+                                {
+                                    status = "error",
+                                    message = "Phiếu " + id + " không thể quay lại trạng thái Chưa hoàn thành!"
+                                }, JsonRequestBehavior.AllowGet);
+                            }
                         }
+                       
                     }
                     else
                     {
@@ -234,7 +285,7 @@ namespace HPExpress.Controllers
          
         }
         [HttpPost]
-
+        [Authorize(Roles = "PrintBill")]
         public JsonResult changeBillID(string oldId, string newID)
         {
             Bill oldbill = _context.Bills.FirstOrDefault(b => b.BillID == oldId);
@@ -245,26 +296,27 @@ namespace HPExpress.Controllers
                 if (!isvalid)
                 {
                     Bill newbill = new Bill()
-                        { BillID = newID,
-                           BillContent = oldbill.BillContent,
-                           
-                           CreateAT = oldbill.CreateAT,
-                           CustomerInf = oldbill.CustomerInf,
-                           PrintAt = oldbill.PrintAt,
-                           ShipAt = oldbill.ShipAt,
-                           Heigh = oldbill.Heigh,
-                           Lenght = oldbill.Lenght,
-                           Width = oldbill.Lenght,
-                           PaymentID = oldbill.PaymentID,
-                           UserID = oldbill.UserID,
-                           Note = oldbill.Note,
-                           ServiceID = oldbill.ServiceID,
-                           ProductPakage = oldbill.ProductPakage,
-                           ProviderID = oldbill.ProviderID,
-                           TransID = oldbill.TransID,
-                           ProductWeight = oldbill.ProductWeight,
-                           Status = oldbill.Status,
-                           OwnerID = oldbill.OwnerID
+                    { BillID = newID,
+                        BillContent = oldbill.BillContent,
+                        Phone = oldbill.Phone,
+                        CreateAT = oldbill.CreateAT,
+                        CustomerInf = oldbill.CustomerInf,
+                        PrintAt = oldbill.PrintAt,
+                        ShipAt = oldbill.ShipAt,
+                        Heigh = oldbill.Heigh,
+                        Lenght = oldbill.Lenght,
+                        Width = oldbill.Lenght,
+                        PaymentID = oldbill.PaymentID,
+                        UserID = oldbill.UserID,
+                        Note = oldbill.Note,
+                        ServiceID = oldbill.ServiceID,
+                        ProductPakage = oldbill.ProductPakage,
+                        ProviderID = oldbill.ProviderID,
+                        TransID = oldbill.TransID,
+                        ProductWeight = oldbill.ProductWeight,
+                        Status = oldbill.Status,
+                        OwnerID = oldbill.OwnerID,
+                        ShipBy = oldbill.ShipBy
                     };
 
                     newbill.ProductCategorys = oldbill.ProductCategorys;
@@ -376,8 +428,9 @@ namespace HPExpress.Controllers
             {
                 userlst = _context.Users.ToList();
             }
-            
-            
+            var lstOwner = _context.Users.Where(u => u.Status == 2).OrderBy(u => u.FullName.Trim()).ToList();
+            ViewBag.lstOwner = lstOwner;
+
             ViewBag.UserList = userlst;
             List<BillStatus> statuslst = new List<BillStatus>();
             statuslst = _context.BillStatuses.ToList();
@@ -393,9 +446,64 @@ namespace HPExpress.Controllers
        
 
         // GET: WayBill/Details/5
-        public ActionResult Details(int id)
+        [AllowAnonymous]
+        [HttpGet]
+        public JsonResult Details(string id)
         {
-            return View();
+            var bill = _context.Bills.FirstOrDefault(b => b.BillID == id);
+            DateTime? myDate = bill.PrintAt;
+            string printdate = myDate.HasValue ? myDate.Value.ToString("dd/MM/yyyy HH:mm") : "null";
+            DateTime? date = bill.CreateAT;
+            string createdate = date.HasValue ? date.Value.ToString("dd/MM/yyyy HH:mm") : "null";
+            if (bill != null)
+            {
+                return this.Json(
+                   new
+                   {
+                       status = "success",
+                       BillID = bill.BillID.Trim(),
+                       BillContent = bill.BillContent,
+                       ShipBy = bill.User2 != null ? bill.User2.FullName.Trim() : null,
+                       CreateBy = bill.User.FullName.Trim(),
+                       DateShip = bill.ShipAt,
+                       CreateAT = createdate,
+                       PrintAt = printdate,
+                       bill.CustomerInf,
+                       Heigh = bill.Heigh,
+                       Lenght = bill.Lenght,
+                       Width = bill.Width,
+                       PaymentID = bill.PaymentID,
+                       UserID = bill.UserID,
+                       ServiceID = bill.ServiceID,
+                       Service = bill.ServiceID != null ? bill.Service.ServiceName.Trim(): null,
+                       ProductPakage = bill.ProductPakage,
+                       ProviderID = bill.ProviderID,
+                       TransID = bill.TransID,
+                       Trans = bill.Transpot.TransName.Trim(),
+                       ProductWeight = bill.ProductWeight,
+                       Status = bill.Status,
+                       OwnerID = bill.OwnerID,
+                       Owner = bill.User1.FullName.Trim(),
+                       Phone = bill.Phone,
+                       Category = bill.ProductCategorys.Select(c => c.CatID).ToList(),
+                       CategoryName = bill.ProductCategorys.Select(c => c.CatName).ToList()
+                       
+                   }
+                   , JsonRequestBehavior.AllowGet
+                   );
+            }
+            else
+            {
+                return this.Json(
+                    new
+                    {
+                        status = "error",
+
+                    }
+                    , JsonRequestBehavior.AllowGet
+                    );
+            }
+            
         }
 
         // GET: WayBill/Create/{id}
@@ -451,7 +559,7 @@ namespace HPExpress.Controllers
                 
                 bill.UserID = Int32.Parse(collection["user_id"]);
                 bill.OwnerID = Int32.Parse(collection["owner_id"]);
-
+                bill.Phone = collection["comp_phone"].Trim();
                 bill.ProviderID = Int32.Parse(collection["prov_id"]) ;
                 string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
                 bill.CustomerInf = cus_inf.Trim();
@@ -520,6 +628,7 @@ namespace HPExpress.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "CreateBill")]
         public JsonResult ReadExcelData()
          {
             var bugIndex = 0;
@@ -537,16 +646,36 @@ namespace HPExpress.Controllers
                 for (int rw = 2; rw <= ws.Dimension.End.Row; rw++)
                 {
                     bugIndex = rw;
+                    ///Get Data from Excel
                     var date = ws.Cells[rw, 1].Value;
-                    var id = ws.Cells[rw, 2].Value;
-                    var weight = ws.Cells[rw, 3].Value;
-                    string provider = ws.Cells[rw, 4].Value.ToString();
-                    var customer = ws.Cells[rw, 5].Value;
-                    string trans = (ws.Cells[rw, 6].Value).ToString();
-                    
+                    string cus_name = ws.Cells[rw, 2].Value.ToString();
+                    string cus_comp = ws.Cells[rw, 3].Value.ToString();
+                    string cus_add = ws.Cells[rw, 4].Value.ToString();
+                    string content = ws.Cells[rw, 5].Value.ToString();
+                    string cus_phone = (ws.Cells[rw, 6].Value).ToString();
+                    string cate = ws.Cells[rw, 7].Value.ToString();
+                    string id = ws.Cells[rw, 8].Value.ToString();
+                    string trans = ws.Cells[rw, 9].Value.ToString();
+                    string pakage = ws.Cells[rw, 10].Value.ToString();
+                    string weight = ws.Cells[rw, 11].Value.ToString();
+                    string provider = ws.Cells[rw, 12].Value.ToString();
+                    string owner = ws.Cells[rw, 13].Value.ToString();
+                    ///Handle data
                     var transpot = _context.Transpots.SingleOrDefault(s => s.Description == trans);
                     var pro = _context.ShippingProviders.SingleOrDefault(s => s.ProviderName == provider);
+                    var own = _context.Users.SingleOrDefault(s => s.UserName == owner);
                     
+                    string cus_inf = cus_name + "|" + cus_comp + "|" + cus_add + "|" + cus_phone;
+                    List<ProductCategory> lstcate = new List<ProductCategory>();
+                    List<string> lstString = cate.Split(',').ToList();
+                    foreach(var str in lstString)
+                    {
+                        var tmp = _context.ProductCategorys.FirstOrDefault(t => t.CatName.Equals(str));
+                        if(tmp != null)
+                        {
+                            lstcate.Add(tmp);
+                        }
+                    }
                     bool check = _context.Bills.Any(b => b.BillID == id.ToString());
                     if (!check)
                     {
@@ -556,12 +685,16 @@ namespace HPExpress.Controllers
                             CreateAT = DateTime.Parse(date.ToString()),
                             ShipAt = DateTime.Parse(date.ToString()),
                             PrintAt = DateTime.Parse(date.ToString()),
-                            ProductWeight = Double.Parse(weight.ToString()),
-                            CustomerInf = customer.ToString(),
+                            ProductWeight = Double.Parse(weight),
+                            CustomerInf = cus_inf,
                             ProviderID = pro.ProviderID,
                             TransID = transpot.TransID,
                             UserID = Int16.Parse(currUser),
-                            Status = status
+                            Status = status,
+                            ProductCategorys = lstcate,
+                            OwnerID = own.UserID,
+                            ProductPakage = Int16.Parse(pakage),
+                            BillContent = content
 
                         };
                         excel_data.Add(bill);
@@ -592,6 +725,8 @@ namespace HPExpress.Controllers
                                      Transpot = se.TransName,
                                      Weight = obj.ProductWeight,
                                      Dateship = obj.ShipAt,
+                                     Owner = obj.User1.FullName
+                                     
 
                                  };
                 int count = returndata.Count();
@@ -607,7 +742,7 @@ namespace HPExpress.Controllers
         {
             DateTime dateFrom = DateTime.Now;
             DateTime dateTo = DateTime.Now;
-            var count = _context.Bills.Count();
+            
             //_context.Configuration.ProxyCreationEnabled = false;
             var table = from obj in _context.Bills
                         join se in _context.Transpots on obj.TransID equals se.TransID
@@ -620,7 +755,7 @@ namespace HPExpress.Controllers
                             Id = obj.BillID.Trim(),
                             Cusinf = obj.CustomerInf.Trim(),
                             UserID = us.UserID,
-                            UserName = us.UserName,
+                            UserName = us.FullName,
                             Content = obj.BillContent,
                             ProviderID = pro.ProviderID,
                             ProviderName = pro.ProviderName,
@@ -628,6 +763,7 @@ namespace HPExpress.Controllers
                             DepartmentName = de.DepartmentName,
                             Trans = se.TransName,
                             StatusID = s.StatusID,
+                            Status = s.StatusName,
                             Package = obj.ProductPakage,
                             Weight = obj.ProductWeight,
                             Dateship = obj.ShipAt,
@@ -650,6 +786,24 @@ namespace HPExpress.Controllers
                               .WhereIf(dep != 0, t => t.DepartmentID == dep);
 
             }
+
+            var idKho = _context.Departments.Single(d => d.DepartmentName == "BỘ PHẬN KHO XƯỞNG").DepartmentID;
+            var idHnoi = _context.Departments.Single(d => d.DepartmentName == "VĂN PHÒNG HÀ NỘI").DepartmentID;
+            int currentUserID = (int)Session["UserID"];
+            var currentUser = _context.Users.First(u => u.UserID == currentUserID);
+            if (currentUser.Role.RoleName == "BillManager")
+            {
+                if (currentUser.DepartmentID == idKho || currentUser.DepartmentID == idHnoi)
+                {
+                    table = table.WhereIf(currentUser.Department.DepartmentName == "BỘ PHẬN KHO XƯỞNG", t => t.DepartmentID == idKho)
+                             .WhereIf(currentUser.Department.DepartmentName == "VĂN PHÒNG HÀ NỘI", t => t.DepartmentID == idHnoi);
+                }
+                else if (currentUser.Department.DepartmentName == "HÀNH CHÍNH NHÂN SỰ" || currentUser.Department.DepartmentName == "SALES ADMIN")
+                {
+                    table = table.Where(t => t.DepartmentID != idKho && t.DepartmentID != idHnoi);
+                }
+            }
+
             if (search != "")
             {
 
@@ -670,7 +824,7 @@ namespace HPExpress.Controllers
 
 
 
-            table = table.Where(t => t.StatusID == 2).OrderByDescending(x => x.Dateship);
+            table = table.Where(t => t.Status == "Đã gửi").OrderByDescending(x => x.Dateship);
             if (table.Count() > 0)
             {
                 ExcelPackage ep = new ExcelPackage();
@@ -688,7 +842,7 @@ namespace HPExpress.Controllers
 
                     Sheet.Cells[string.Format("A{0}", row)].Value = item.Dateship.Value.ToString("dd/MM/yyyy");
                     Sheet.Cells[string.Format("B{0}", row)].Value = item.Id;
-                    Sheet.Cells[string.Format("C{0}", row)].Value = item.UserName.Trim() + "-" + item.DepartmentName;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.UserName.Trim() + " - " + item.DepartmentName;
                     Sheet.Cells[string.Format("D{0}", row)].Value = item.Weight;
                     Sheet.Cells[string.Format("E{0}", row)].Value = item.ProviderName;
                     Sheet.Cells[string.Format("F{0}", row)].Value = item.Trans;
@@ -701,22 +855,126 @@ namespace HPExpress.Controllers
                 Sheet.View.FreezePanes(2, 1);
                 // Set their text to bold, italic and underline.
                 headerCells.Style.Font.Bold = true;
-                headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                headerCells.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                headerCells.Style.Fill.BackgroundColor.SetColor(Color.Yellow);
 
                 Response.Clear();
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment; filename=" + "Report.xlsx");
+                string d = DateTime.Today.ToString("dd.MM.yy");
+                
+                Response.AddHeader("content-disposition", "attachment; filename=" + "Report_"+ d +".xlsx");
                 Response.BinaryWrite(ep.GetAsByteArray());
                 Response.End();
 
+                
             }
-
+            
            
           
 
             
         }
+
+        public JsonResult CheckExport(int id = 0, string date = "", string search = "", int dep = 0, int usid = 0, int stt = 0)
+        {
+            DateTime dateFrom = DateTime.Now;
+            DateTime dateTo = DateTime.Now;
+
+            //_context.Configuration.ProxyCreationEnabled = false;
+            var table = from obj in _context.Bills
+                        join se in _context.Transpots on obj.TransID equals se.TransID
+                        join pro in _context.ShippingProviders on obj.ProviderID equals pro.ProviderID
+                        join us in _context.Users on obj.UserID equals us.UserID
+                        join de in _context.Departments on us.DepartmentID equals de.DepartmentID
+                        join s in _context.BillStatuses on obj.Status equals s.StatusID
+                        select new
+                        {
+                            Id = obj.BillID.Trim(),
+                            Cusinf = obj.CustomerInf.Trim(),
+                            UserID = us.UserID,
+                            UserName = us.FullName,
+                            Content = obj.BillContent,
+                            ProviderID = pro.ProviderID,
+                            ProviderName = pro.ProviderName,
+                            DepartmentID = de.DepartmentID,
+                            DepartmentName = de.DepartmentName,
+                            Trans = se.TransName,
+                            StatusID = s.StatusID,
+                            Status = s.StatusName,
+                            Package = obj.ProductPakage,
+                            Weight = obj.ProductWeight,
+                            Dateship = obj.ShipAt,
+                            Category = obj.ProductCategorys.Select(c => c.CatName).ToList()
+                        };
+
+            if (date != "")
+            {
+                String[] dateSplit = date.Split('-');
+                dateFrom = DateTime.ParseExact(dateSplit[0].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                dateTo = DateTime.ParseExact(dateSplit[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                dateTo = dateTo.AddHours(23).AddMinutes(59);
+            }
+            if (id != 0 || date != "" || usid != 0 || dep != 0 || stt != 0)
+            {
+
+                table = table.WhereIf(id != 0, t => t.ProviderID == id)
+                              .WhereIf(date != "", t => t.Dateship >= dateFrom && t.Dateship <= dateTo)
+                              .WhereIf(usid != 0, t => t.UserID == usid)
+                              .WhereIf(dep != 0, t => t.DepartmentID == dep);
+
+            }
+
+            var idKho = _context.Departments.Single(d => d.DepartmentName == "BỘ PHẬN KHO XƯỞNG").DepartmentID;
+            var idHnoi = _context.Departments.Single(d => d.DepartmentName == "VĂN PHÒNG HÀ NỘI").DepartmentID;
+            int currentUserID = (int)Session["UserID"];
+            var currentUser = _context.Users.First(u => u.UserID == currentUserID);
+            if (currentUser.Role.RoleName == "BillManager")
+            {
+                if (currentUser.DepartmentID == idKho || currentUser.DepartmentID == idHnoi)
+                {
+                    table = table.WhereIf(currentUser.Department.DepartmentName == "BỘ PHẬN KHO XƯỞNG", t => t.DepartmentID == idKho)
+                             .WhereIf(currentUser.Department.DepartmentName == "VĂN PHÒNG HÀ NỘI", t => t.DepartmentID == idHnoi);
+                }
+                else if (currentUser.Department.DepartmentName == "HÀNH CHÍNH NHÂN SỰ" || currentUser.Department.DepartmentName == "SALES ADMIN")
+                {
+                    table = table.Where(t => t.DepartmentID != idKho && t.DepartmentID != idHnoi);
+                }
+            }
+
+            if (search != "")
+            {
+
+                search = search.Trim();
+                table = table.Search(t => t.Id,
+                 t => t.ProviderName,
+                 t => t.Cusinf,
+                 t => t.Content,
+                   t => t.Trans,
+
+                   t => t.Weight.ToString(),
+                   t => t.Category.FirstOrDefault(c => c.Contains(search))
+
+                                    ).Containing(search);
+
+
+            }
+
+
+
+            table = table.Where(t => t.Status == "Đã gửi").OrderByDescending(x => x.Dateship);
+
+            if (table.Any())
+            {
+                return Json(new { status = "success", message = "Xuất file Excel thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { status = "error", message = "Không có phiếu nào hợp lệ để xuất!" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
         [HttpPost]
         public JsonResult Remove(string id)
         {
@@ -773,6 +1031,7 @@ namespace HPExpress.Controllers
         }
         //Print
         [HttpPost]
+        [Authorize(Roles = "PrintBill")]
         public JsonResult Print(FormCollection collection)
         {
             try
@@ -813,6 +1072,7 @@ namespace HPExpress.Controllers
         }
         //printByID
         [HttpPost]
+        [Authorize(Roles = "PrintBill")]
         public JsonResult PrintByID(string id)
         {
             try
@@ -900,25 +1160,113 @@ namespace HPExpress.Controllers
         }
 
 
-        // GET: WayBill/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        
 
         // POST: WayBill/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit( FormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                // TODO: Add insert logic here
+               if(ModelState.IsValid )
+                {
+                    string idb = collection["bill_id"];
+                    var bill = _context.Bills.FirstOrDefault(b => b.BillID == idb);
+                    if(bill != null)
+                    {
+                        bill.UserID = Int32.Parse(collection["user_id"]);
+                        bill.OwnerID = Int32.Parse(collection["owner_id"]);
+                        bill.Phone = collection["comp_phone"].Trim();
+                        bill.ProviderID = Int32.Parse(collection["prov_id"]);
+                        string cus_inf = collection["customer_name"] + "|" + collection["customer_comp"] + "|" + collection["customer_add"] + "|" + collection["cus_phone"];
+                        bill.CustomerInf = cus_inf.Trim();
+                        string cates = collection["CatBox"];
+                        string[] cate = cates.Split(',');
+                        List<ProductCategory> catlst = new List<ProductCategory>();
+                        foreach (var a in cate)
+                        {
+                            int cat = Int16.Parse(a);
+                            if (cat == 1)
+                            {
 
-                return RedirectToAction("Index");
+                                catlst.Add(_context.ProductCategorys.Where(c => c.CatID == cat).FirstOrDefault());
+                            }
+                            if (cat == 2)
+                            {
+
+                                catlst.Add(_context.ProductCategorys.Where(c => c.CatID == cat).FirstOrDefault());
+                            }
+                            if (cat == 3)
+                            {
+
+                                catlst.Add(_context.ProductCategorys.Where(c => c.CatID == cat).FirstOrDefault());
+                            }
+
+                        }
+                        bill.ProductCategorys.Clear();
+                        bill.ProductCategorys = catlst;
+                        bill.ProductPakage = Int32.Parse(collection["package_numb"]);
+
+                        int stt = _context.BillStatuses.Where(s => s.StatusName.Equals("Chưa hoàn thành")).Select(u => u.StatusID).Single();
+                        bill.Status = stt;
+
+
+
+                        //String date = collection["date"];
+
+                        //DateTime tempDate = DateTime.ParseExact(date,"dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                        //DateTime tempDate = DateTime.Now;
+
+                        //bill.CreateAT = tempDate;
+                        bill.PaymentID = Int32.Parse(collection["paymentRadios"]);
+
+                        bill.TransID = Int32.Parse(collection["transRadios"]);
+                        bill.BillContent = collection["content"];
+                        bill.ProductWeight = Int32.Parse(collection["pro_wei"]);
+                        if (collection["serviceRadios"] != null)
+                        {
+                            bill.ServiceID = Int32.Parse(collection["serviceRadios"]);
+                        }
+                        if (collection["note"] != null)
+                        {
+                            bill.Note = collection["note"];
+                        }
+
+                        
+                        _context.SaveChanges();
+                        return Json(new
+                        {
+                            status = "success",
+                            message = "Thay đổi thông tin phiếu thành công!!"
+
+                        });
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            status = "error",
+                            message = "Phiếu không tồn tại, vui lòng kiểm tra lại!"
+                        });
+                    }
+                   
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = "error",
+                        message = "Có lỗi xảy ra vui lòng kiểm tra lại!"
+                    });
+                }
+
+
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+
+                return Json(new { message = e.ToString() });
             }
         }
 

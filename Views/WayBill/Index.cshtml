@@ -150,29 +150,14 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Export
+                                </span>Xuất
                             </button>
                             <!--begin::Dropdown Menu-->
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <!--begin::Navigation-->
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-icon">
-                                                <i class="la la-print"></i>
-                                            </span>
-                                            <span class="navi-text">Print</span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-icon">
-                                                <i class="la la-copy"></i>
-                                            </span>
-                                            <span class="navi-text">Copy</span>
-                                        </a>
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Chọn:</li>
+                                    
                                     <li class="navi-item">
                                         <a href="javascript:;" id="exportExcel" class="navi-link">
                                             <span class="navi-icon">
@@ -181,22 +166,7 @@
                                             <span class="navi-text">Excel</span>
                                         </a>
                                     </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-icon">
-                                                <i class="la la-file-text-o"></i>
-                                            </span>
-                                            <span class="navi-text">CSV</span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-icon">
-                                                <i class="la la-file-pdf-o"></i>
-                                            </span>
-                                            <span class="navi-text">PDF</span>
-                                        </a>
-                                    </li>
+                                    
                                 </ul>
 
                                 <!--end::Navigation-->
@@ -227,7 +197,7 @@
                                 <select class="form-control" id="kt_datatable_search_status">
                                     <option value="">Tất cả</option>
                                     @foreach (var Prov in ViewBag.ProvList)
-                        {
+                                    {
                                         <option value="@Prov.ProviderID">@Prov.ProviderName</option>
                                     }
                                 </select>
@@ -248,19 +218,19 @@
 
 
                             @if (Model.RoleID != 2 && Model.RoleID != 3)
-                        {
+                            {
                                 <div class="col-lg-4 mb-lg-0 mb-6">
                                     <label>Phòng - Ban:</label>
                                     <select class="form-control datatable-input" id="datable_search_department">
                                         <option value="">Tất cả</option>
                                         @foreach (var Dep in ViewBag.DepartList)
-                        {
+                                        {
                                             <option value="@Dep.DepartmentID">@Dep.DepartmentName</option>
                                         }
                                     </select>
                                 </div>
                             }
-                    @if (Model.RoleID != 3)
+                            @if (Model.RoleID != 3)
                             {
 
 
@@ -271,16 +241,16 @@
                                         <option value="">Tất cả</option>
                                         @foreach (var User in ViewBag.UserList)
                                         {
-                        if (Model.UserID == User.UserID)
-                        {
+                                            if (Model.UserID == User.UserID)
+                                            {
                                                 <option value="@User.UserID">Tôi</option>
                                             }
-                        else
-                        {
+                                            else
+                                            {
                                                 <option value="@User.UserID">@User.FullName</option>
                                             }
 
-                    }
+                                        }
 
                                     </select>
                                 </div>
@@ -361,8 +331,718 @@
             </div>
 
             <!--end::Modal ImportExcel-->
+            <!--start::Modal Netpost-->
+            <div class="modal fade" id="NetpostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><b><span style="color: #7d2f2f;">NET</span><span style="color:#ea3639;">POST</span></b></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" action="/" method="post" id="edt_netpost_form">
+                                <input hidden id="net_bill_id" name="bill_id" value="" />
+                                <input hidden id="net_user_id" name="user_id" value="" />
+                                <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
+                                    <div class="alert-icon">
+                                        <i class="flaticon2-bell-5"></i>
+                                    </div>
+                                    <div class="alert-text font-weight-bold">Oh snap! Change a few things up and try submitting again.</div>
+                                    <div class="alert-close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span>
+                                                <i class="ki ki-close"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                @Html.AntiForgeryToken()
+                                <input hidden type="text" name="prov_id" class="form-control" value="1" />
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>1. Thông tin người gửi:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Mã khách hàng:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" readonly placeholder="" value="70187" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người gửi:<span class="text-danger">*</span></label>
+                                                <br />
+                                                <select name="owner_id" id="net_owner_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                                    @foreach (var u in ViewBag.lstOwner)
+                                                    {
+                                                        if (u.UserID == Model.UserID)
+                                                        {
+                                                            <option value="@u.UserID" data-tokens="@u.FullName" >Tôi</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@u.UserID" data-tokens="@u.FullName">@u.FullName</option>
+                                                        }
+
+                                                    }
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea data-vali="true" rows="4" style="resize:none ;" readonly class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="comp_phone" id="net_comp_phone" class="form-control" placeholder="Nhập số điện thoại" value="" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>2. Thông tin người nhận:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Công ty nhận (khách lẻ):<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="net_customer_comp" name="customer_comp" class="form-control" placeholder="" value="" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người nhận:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="net_customer_name" name="customer_name" class="form-control" placeholder="" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea data-vali="true" id="net_customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control"></textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="net_cus_phone" name="cus_phone" class="form-control" placeholder="" value="" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">
+                                        <b>3. Nội dung BPBK</b>
+                                        <i data-toggle="tooltip" data-width="auto" class="mb-3__help" title="If different than the corresponding address"></i>
+                                    </h3>
+                                    <div class="mb-2">
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Nội dung <span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="net_content" name="content" class="form-control" placeholder="Nhập nội dung" value="" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row">
+
+                                            <div class="col-lg-6">
+                                                <label class="col-form-label">Loại sản phẩm<span class="text-danger">*</span></label>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="net_CatBox1" value="1" name="CatBox" />
+                                                    <label class="form-check-label">Tài liệu</label>
+
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="net_CatBox2" value="2" name="CatBox" />
+                                                    <label class="form-check-label">Hàng Hóa</label>
+
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Số kiện <span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="number" id="net_package_numb" name="package_numb" class="form-control" placeholder="Nhập số kiện" value="" />
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>Trọng lượng<span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input data-vali="true" id="net_pro_wei" name="pro_wei" type="number" class="form-control" placeholder="Nhập trọng lượng" />
+
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">kg</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Kích thước:</label>
+                                                <div class="input-group">
+                                                    <input type="number" id="net_pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
+                                                    <input type="number" id="net_pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
+                                                    <input type="number" id="net_pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">m</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>4. Hình thức vận chuyển:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức vận chuyển:<span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio1" checked value="1" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển phát nhanh
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio2" value="2" name="transRadios" />
+                                                        <span></span>
+                                                        Phát theo YC, hỏa tốc
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio8" value="8" name="transRadios" />
+                                                        <span></span>
+                                                        Phát theo chủ nhật, Ngày lễ
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio16" value="16" name="transRadios" />
+                                                        <span></span>
+                                                        Hàng GTC, hàng Express
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio3" value="3" name="transRadios" />
+                                                        <span></span>
+                                                        Tiêu chuẩn/ 30-36h
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio4" value="4" name="transRadios" />
+                                                        <span></span>
+                                                        Tiết kiệm/ 48h
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_transRadio5" value="5" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển thường/ Đường bộ
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>5. Hình thức thanh toán:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức thanh toán: <span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" checked id="net_paymentRadio1" value="1" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán ngay
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_paymentRadio2" value="2" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán cuối tháng
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_paymentRadio3"  value="3" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán đầu nhận
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_paymentRadio4" value="4" name="paymentRadios" />
+                                                        <span></span>
+                                                        Thanh toán Đầu nhận - Cuối tháng
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+
+
+
+
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>6. Dịch vụ gia tăng:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn dịch vụ gia tăng: </label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_serviceRadio1" value="1" name="serviceRadios" />
+                                                        <span></span>
+                                                        Báo phát
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_serviceRadio2" value="2" name="serviceRadios" />
+                                                        <span></span>
+                                                        Đồng kiểm
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="net_serviceRadio3" value="3" name="serviceRadios" />
+                                                        <span></span>
+                                                        Phát tận tay
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                            <button type="button" id="net_save" class="btn btn-primary font-weight-bold">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Modal Netpost-->
+            <!--start::Modal Viettel-->
+            <div class="modal fade" id="ViettelPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><b><span style="color: #01766b;">VIETTEL</span><span style="color: #f27510;">POST</span></b></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" action="/" method="post" id="edt_viettel_form">
+                                <input hidden id="vt_bill_id" name="bill_id" value="" />
+                                <input hidden id="vt_user_id" name="user_id" value="" />
+                                @Html.AntiForgeryToken()
+                                <input hidden type="text" name="prov_id" class="form-control" value="2" />
+
+                                <div class="alert alert-custom alert-light-success d-none" role="alert" id="kt_form_2_msg">
+                                    <div class="alert-icon">
+                                        <i class="flaticon2-bell-5"></i>
+                                    </div>
+                                    <div class="alert-text font-weight-bold">Oh snap! Change a few things up and try submitting again.</div>
+                                    <div class="alert-close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span>
+                                                <i class="ki ki-close"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>1. Thông tin người gửi:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+
+                                            <div class="col-lg-6">
+                                                <label> Người gửi:<span class="text-danger">*</span></label>
+                                                <br />
+                                                <select name="owner_id" id="vt_owner_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                                    @foreach (var u in ViewBag.lstOwner)
+                                                    {
+                                                        if (u.UserID == Model.UserID)
+                                                        {
+                                                            <option value="@u.UserID" data-tokens="@u.FullName" selected>Tôi</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@u.UserID" data-tokens="@u.FullName">@u.FullName</option>
+                                                        }
+
+                                                    }
+
+                                                </select>
+
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="comp_phone" id="vt_comp_phone" class="form-control" placeholder="Nhập số điện thoại người gửi" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea data-vali="true" rows="4" readonly style="resize:none ;" class="form-control">Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</textarea>
+                                            </div>
+
+
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>2. Thông tin người nhận:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>Công ty nhận :<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="vt_customer_comp" name="customer_comp" class="form-control" placeholder="Nhập tên công ty" value="" />
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Người nhận:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="vt_customer_name" name="customer_name" class="form-control" placeholder="Nhập tên người nhận" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label> Địa chỉ:<span class="text-danger">*</span></label>
+                                                <textarea data-vali="true" id="vt_customer_add" name="customer_add" rows="4" style="resize:none ;" class="form-control" placeholder="Nhập địa chỉ nhận"></textarea>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label> Số điện thoại:<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" name="cus_phone" id="vt_cus_phone" class="form-control" placeholder="Nhập số điện thoại nhận" value="" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10">
+                                        <b>3. Nội dung BPBK</b>
+                                        <i data-toggle="tooltip" data-width="auto" class="mb-3__help" title="If different than the corresponding address"></i>
+                                    </h3>
+                                    <div class="mb-2">
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>Nội dung <span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="vt_content" name="content" class="form-control" placeholder="Nhập nội dung" value="" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Số kiện <span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="number" id="vt_package_numb" name="package_numb" class="form-control" placeholder="Nhập số kiện" value="" />
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label>Trọng lượng<span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input data-vali="true" id="vt_pro_wei" name="pro_wei" type="number" class="form-control" placeholder="Nhập trọng lượng" />
+
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">kg</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Kích thước:</label>
+                                                <div class="input-group">
+                                                    <input type="number" id="vt_pro_leng" name="pro_leng" class="form-control" placeholder="Nhập chiều dài" />
+                                                    <input type="number" id="vt_pro_wid" name="pro_wid" class="form-control" placeholder="Nhập chiều rộng" />
+                                                    <input type="number" id="vt_pro_hei" name="pro_hei" class="form-control" placeholder="Nhập chiều cao" />
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">m</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+
+                                            <div class="col-lg-6">
+                                                <label class="col-form-label">Loại sản phẩm<span class="text-danger">*</span></label>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="vt_CatBox1" value="2" name="CatBox" />
+                                                    <label class="form-check-label">Hàng Hóa</label>
+
+                                                </div>
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="vt_CatBox2" value="1" name="CatBox" />
+                                                    <label class="form-check-label">Tài liệu</label>
+
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" data-check="false" id="vt_CatBox3" value="3" name="CatBox" />
+                                                    <label class="form-check-label">Hóa chất</label>
+
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>4. Hình thức vận chuyển:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức vận chuyển:<span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" id="vt_transRadio1" checked value="1" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển phát nhanh
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="vt_transRadio7" value="7" name="transRadios" />
+                                                        <span></span>
+                                                        Chuyển phát tiết kiệm
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="vt_transRadio6" value="6" name="transRadios" />
+                                                        <span></span>
+                                                        Giao hàng thu tiền
+                                                    </label>
+
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="mb-3">
+                                    <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>5. Hình thức thanh toán:</b></h3>
+                                    <div class="mb-2">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Chọn hình thức thanh toán: <span class="text-danger">*</span></label>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" checked id="vt_paymentRadio1" value="1" name="paymentRadios" />
+                                                        <span></span>
+                                                        Người gửi
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="3" id="vt_paymentRadio3" name="paymentRadios" />
+                                                        <span></span>
+                                                        Người nhận
+                                                    </label>
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary font-weight-bold" id="vt_save">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Modal Viettel-->
+            <!--start::Detail Netpost-->
+            <div class="modal fade" id="DetailsNetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                    <div class="modal-content">
+                       
+                        <div class="modal-body">
+                            <div class="card card-custom overflow-hidden" id="billdetail">
+                                <div class="card-body p-0">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <div class="row justify-content-center ">
+                                        <div class="col-md-9">
+                                            <div class="d-flex justify-content-between pb-10 pb-md-20 flex-column flex-md-row">
+                                                <h1 id="proName" class="display-4 font-weight-boldest mb-10">INVOICE</h1>
+                                                <div class="d-flex flex-column align-items-md-end px-0">
+                                                    <!--begin::Logo-->
+                                                    <a href="#" class="mb-5">
+                                                        <img src="assets/media/logos/logo-dark.png" alt="" />
+                                                    </a>
+                                                    <!--end::Logo-->
+                                                    <span class="d-flex flex-column align-items-md-end opacity-70">
+                                                        <span>Số 758/25/2b Xô Viết Nghệ Tĩnh, Phường 25,</span>
+                                                        <span> Quận Bình Thạnh, TP. Hồ Chí Minh</span>
+                                                        
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="border-bottom w-100"></div>
+                                            <div class="d-flex justify-content-between pt-6">
+                                                <div class="d-flex flex-column flex-root">
+                                                    <span class="font-weight-bolder mb-2">NGÀY GỬI</span>
+                                                    <span id="dateShip" class="opacity-70"></span>
+                                                </div>
+                                                <div class="d-flex flex-column flex-root">
+                                                    <span class="font-weight-bolder mb-2">MÃ PHIẾU</span>
+                                                    <span id="billID" class="opacity-70"></span>
+                                                </div>
+                                                <div class="d-flex flex-column flex-root">
+                                                    <span class="font-weight-bolder mb-2">NƠI NHẬN</span>
+                                                    <span id="cusInfo" class="opacity-70">
+                                                        
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end: Invoice header-->
+                                    <!-- begin: Invoice body-->
+                                    <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                                        <div class="col-md-9">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    @*<thead>
+                                                        <tr>
+                                                            <th class="pl-0 font-weight-bold text-muted text-uppercase">Description</th>
+                                                            <th class="text-right font-weight-bold text-muted text-uppercase">Hours</th>
+                                                            <th class="text-right font-weight-bold text-muted text-uppercase">Rate</th>
+                                                            <th class="text-right pr-0 font-weight-bold text-muted text-uppercase">Amount</th>
+                                                        </tr>
+                                                    </thead>*@
+                                                    <tbody id="bodyTable">
+                                                        <tr class="font-weight-boldest border-bottom-0">
+                                                            <td class="pl-0 pt-7">Creative Design</td>
+                                                            <td class="text-right pt-7">80</td>
+                                                            
+                                                        </tr>
+                                                        <tr class="font-weight-boldest border-bottom-0">
+                                                            <td class="border-top-0 pl-0 py-4">Front-End Development</td>
+                                                            <td class="text-danger border-top-0 text-right py-4">120</td>
+                                                           
+                                                        </tr>
+                                                       
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end: Invoice body-->
+                                    <!-- begin: Invoice footer-->
+                                    @*<div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0">
+                                        <div class="col-md-9">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="font-weight-bold text-muted text-uppercase">BANK</th>
+                                                            <th class="font-weight-bold text-muted text-uppercase">ACC.NO.</th>
+                                                            <th class="font-weight-bold text-muted text-uppercase">DUE DATE</th>
+                                                            <th class="font-weight-bold text-muted text-uppercase">TOTAL AMOUNT</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="font-weight-bolder">
+                                                            <td>BARCLAYS UK</td>
+                                                            <td>12345678909</td>
+                                                            <td>Jan 07, 2018</td>
+                                                            <td class="text-danger font-size-h3 font-weight-boldest">20,600.00</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                    <!-- end: Invoice footer-->
+                                    <!-- begin: Invoice action-->
+                                    <!--<div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                                        <div class="col-md-9">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>-->
+                                                @*<button type="button" class="btn btn-primary font-weight-bold" onclick="printDetailBill();">In Phiếu</button>*@
+                                            <!--</div>
+                                        </div>
+                                    </div>-->
+                                    <!-- end: Invoice action-->
+                                    <!-- end: Invoice-->
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <!--end::Modal Netpost-->
         </div>
-        <!--end::Container-->
+       
     </div>
     <!--end::Entry-->
     @*billtable*@
@@ -387,8 +1067,20 @@
 <script src="~/Scripts/jquery.scannerdetection.js"></script>
 <script src="~/assets/js/ImportExcel.js"></script>
 <script src="~/assets/js/ExportExcel.js"></script>
+<script src="~/assets/js/EditBill/Netpost.js"></script>
+<script src="~/assets/js/EditBill/Viettelpost.js"></script>
 <script type="text/javascript">
+    function printDetailBill() {
+        var printContents = document.getElementById("billdetail").innerHTML;
+        var originalContents = document.body.innerHTML;
 
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+
+    }
     $(document).scannerDetection({
         timeBeforeScanTest: 200, // wait for the next character for upto 200ms
         startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
@@ -409,8 +1101,8 @@
                 }
                 else {
                     var check =  @Html.Raw(Json.Encode(@ViewBag.lstper));
-                   
-                    if (check.includes("PrintBill")) {
+
+                    if (check.includes("ShipBill")) {
                         Swal.fire({
                             title: "Gửi phiếu " + barcode+" ?",
                             text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
@@ -596,15 +1288,18 @@
     }
     //hết
 
-     $(document).ready(function () {
+    $(document).ready(function () {
         var RoleID = @Model.RoleID;
-        var UserID = @Model.UserID;
         var DepID = @Model.DepartmentID;
-        AuthRole(RoleID, UserID, DepID)
+        var UserID = @Model.UserID;
+        AuthRole(DepID, UserID)
          @*var lstper = @ViewBag.lstper;
          console.log(lstper)*@
 
-
+       
+        setInterval(function () {
+            billsearch("", RoleID, DepID, UserID)
+        }, 5000)
 
         $("#searchInput").on("keyup", function () {
             billsearch("", RoleID, DepID, UserID)

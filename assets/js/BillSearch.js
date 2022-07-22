@@ -23,6 +23,8 @@
             break;
         case 3: showtable(id, date, value, "", UserID,stt, page)
             break;
+        case 4: showtable(id, date, value, depart, userid, stt, page)
+            break;
         default:
             break;
     }
@@ -52,6 +54,8 @@ function billsearchForDep(page, RoleID, DepID, UserID) {
         case 2: showtable(id, date, value, DepID, userid,stt, page)
             break;
         case 3: showtable(id, date, value, "", UserID,stt, page)
+            break;
+        case 4: showtable(id, date, value, depart, userid, stt, page)
             break;
         default:
             break;

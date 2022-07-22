@@ -380,6 +380,8 @@
     <Content Include="assets\js\DateFormat.js" />
     <Content Include="assets\js\Department\AddDep.js" />
     <Content Include="assets\js\Department\UpdateDep.js" />
+    <Content Include="assets\js\EditBill\Netpost.js" />
+    <Content Include="assets\js\EditBill\Viettelpost.js" />
     <Content Include="assets\js\ExportExcel.js" />
     <Content Include="assets\js\ImportExcel.js" />
     <Content Include="assets\js\pages\crud\datatables\advanced\column-rendering.js" />
@@ -2422,6 +2424,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

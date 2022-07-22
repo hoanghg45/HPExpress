@@ -76,7 +76,7 @@
                                         heightAuto: false
                                     }).then(function () {
 
-                                        
+                                        showtable();
                                         KTUtil.scrollTop();
 
                                     })
@@ -96,6 +96,8 @@
                             text: "Dữ liệu vẫn an toàn!",
                             icon: "warning",
                             heightAuto: false
+                        }).then(function () {
+                            showtable();
                         })
                           
                     }

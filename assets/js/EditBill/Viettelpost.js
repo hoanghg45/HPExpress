@@ -1,20 +1,20 @@
 ﻿"use strict";
 
 // Class Definition
-var Netpost = function () {
+var edtViettelpost = function () {
 
 
 
 
     var _handleForm = function () {
         var validation;
-        const form = document.getElementById('netpost_form');
+        const form = document.getElementById('edt_viettel_form');
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validation = FormValidation.formValidation(
-            KTUtil.getById('netpost_form'),
+            KTUtil.getById('edt_viettel_form'),
             {
                 fields: {
-                   
+                  
                   
                     comp_phone: {
                         validators: {
@@ -25,13 +25,6 @@ var Netpost = function () {
                                 message: 'Số điện thoại không hợp lệ',
                                 country: 'US',
                             },
-                        }
-                    },
-                    customer_comp: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Vui lòng nhập tên công ty hoặc khách lẻ'
-                            }
                         }
                     },
                     customer_name: {
@@ -52,13 +45,20 @@ var Netpost = function () {
                             },
                         }
                     },
+                    customer_comp: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Vui lòng nhập tên công ty hoặc khách lẻ'
+                            }
+                        }
+                    },
                     customer_add: {
                         validators: {
                             notEmpty: {
                                 message: 'Vui lòng nhập địa chỉ người nhận',
 
                             },
-                         
+
                         }
                     },
                     content: {
@@ -67,7 +67,7 @@ var Netpost = function () {
                                 message: 'Vui lòng nhập nội dung phiếu gửi',
 
                             },
-                         
+
                         }
                     },
                     package_numb: {
@@ -80,14 +80,14 @@ var Netpost = function () {
                                 message: 'Trọng lượng của hàng phải lớn hơn 0',
                                 min: 1,
                             },
-                         
+
                         }
                     },
                     'CatBox': {
                         validators: {
                             choice: {
                                 min: 1,
-                                
+
                                 message: 'Vui lòng chọn loại hàng hóa',
                             },
                         },
@@ -103,7 +103,7 @@ var Netpost = function () {
                                 min: 0.01,
                             },
                         },
-                      
+
                     },
                     pro_wid: {
                         validators: {
@@ -112,7 +112,7 @@ var Netpost = function () {
                                 min: 0.01,
                             },
                         },
-                      
+
                     },
                     pro_hei: {
                         validators: {
@@ -147,57 +147,52 @@ var Netpost = function () {
                 }
             }
         );
-        
 
-        $('#save').on('click', function (e) {
+
+        $('#vt_save').on('click', function (e) {
             e.preventDefault();
-            var returnUrl = HOST_URL + "WayBill"
-            addNetPost(returnUrl)
+            
+            UpdateViettel()
         });
-        $('#exit').on('click', function (e) {
-            e.preventDefault();
-            var returnUrl = HOST_URL + "WayBill"
-            window.location.href = returnUrl;
-        });
+       
 
 
 
-        function addNetPost(returnUrl) {
+        function UpdateViettel() {
             validation.validate().then(function (status) {
                 if (status == 'Valid') {
-                var formdata =
-                        $("#netpost_form").serialize() + '&returnUrl=' + returnUrl
-                    console.log(formdata)
+                    var formdata =
+                        $("#edt_viettel_form").serialize()
+                    var page = $("#billpagi a.active").data('page')
+                    var RoleID = $("#scrUserInf").data('roleid')
+                    var DepID = $("#scrUserInf").data('depid')
+                    var UserID = $("#UserID").val()
                     $.ajax({
                         type: "post",
-                        url: HOST_URL + "Waybill/Create",
+                        url: HOST_URL + "Waybill/Edit",
                         data: formdata,
                         datatype: 'json',
-                         
+
                         success: function (data) {
                             if (data.status == "success") {
                                 swal.fire({
                                     title: "Thành công",
-                                    text: "Thêm phiếu thành công, tiếp theo bạn muốn?",
+                                    text: data.message,
                                     icon: "success",
-                                    showCancelButton: true,   
+                                    showCancelButton: false,
 
                                     buttonsStyling: true,
-                                    confirmButtonText: "Tiếp tục tạo!",
-                                    cancelButtonText: "Trở trang danh sách!",
+
                                     heightAuto: false,
                                     customClass: {
                                         confirmButton: "btn font-weight-bold btn-light-primary"
                                     }
 
-                                }).then(function (result) {
-                                    if (!result.value) {
-                                        window.location.href = data.returnURL;
-                                    }
-                                    else {
-                                        location.reload(true)
-                                        KTUtil.scrollTop();
-                                    }                                  
+                                }).then(function () {
+
+                                    billsearch(page, RoleID, DepID, UserID)
+
+                                    $("#ViettelPostModal").modal('hide')
                                 });
                             } else {
                                 swal.fire({
@@ -213,7 +208,9 @@ var Netpost = function () {
 
                                 }).then(function () {
 
+                                    billsearch(page, RoleID, DepID, UserID)
                                     KTUtil.scrollTop();
+
                                 });
                             }
                         },
@@ -270,5 +267,5 @@ var Netpost = function () {
 
 // Class Initialization
 jQuery(document).ready(function () {
-    Netpost.init();
+    edtViettelpost.init();
 });

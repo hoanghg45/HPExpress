@@ -1,21 +1,21 @@
 ﻿"use strict";
 
 // Class Definition
-var Netpost = function () {
+var edtNetpost = function () {
 
 
 
 
     var _handleForm = function () {
         var validation;
-        const form = document.getElementById('netpost_form');
+        const form = document.getElementById('edt_netpost_form');
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validation = FormValidation.formValidation(
-            KTUtil.getById('netpost_form'),
+            KTUtil.getById('edt_netpost_form'),
             {
                 fields: {
                    
-                  
+                   
                     comp_phone: {
                         validators: {
                             notEmpty: {
@@ -149,28 +149,28 @@ var Netpost = function () {
         );
         
 
-        $('#save').on('click', function (e) {
+        $('#net_save').on('click', function (e) {
             e.preventDefault();
-            var returnUrl = HOST_URL + "WayBill"
-            addNetPost(returnUrl)
+            
+            UpdateNetPost()
         });
-        $('#exit').on('click', function (e) {
-            e.preventDefault();
-            var returnUrl = HOST_URL + "WayBill"
-            window.location.href = returnUrl;
-        });
+    
 
 
 
-        function addNetPost(returnUrl) {
+        function UpdateNetPost() {
             validation.validate().then(function (status) {
                 if (status == 'Valid') {
                 var formdata =
-                        $("#netpost_form").serialize() + '&returnUrl=' + returnUrl
-                    console.log(formdata)
+                    $("#edt_netpost_form").serialize()
+                    
+                    var page = $("#billpagi a.active").data('page')
+                    var RoleID = $("#scrUserInf").data('roleid')
+                    var DepID = $("#scrUserInf").data('depid')
+                    var UserID = $("#UserID").val()
                     $.ajax({
                         type: "post",
-                        url: HOST_URL + "Waybill/Create",
+                        url: HOST_URL + "Waybill/Edit",
                         data: formdata,
                         datatype: 'json',
                          
@@ -178,26 +178,22 @@ var Netpost = function () {
                             if (data.status == "success") {
                                 swal.fire({
                                     title: "Thành công",
-                                    text: "Thêm phiếu thành công, tiếp theo bạn muốn?",
+                                    text: data.message,
                                     icon: "success",
-                                    showCancelButton: true,   
+                                    showCancelButton: false,
 
                                     buttonsStyling: true,
-                                    confirmButtonText: "Tiếp tục tạo!",
-                                    cancelButtonText: "Trở trang danh sách!",
+                                    
                                     heightAuto: false,
                                     customClass: {
                                         confirmButton: "btn font-weight-bold btn-light-primary"
                                     }
 
-                                }).then(function (result) {
-                                    if (!result.value) {
-                                        window.location.href = data.returnURL;
-                                    }
-                                    else {
-                                        location.reload(true)
-                                        KTUtil.scrollTop();
-                                    }                                  
+                                }).then(function () {
+
+                                    billsearch(page, RoleID, DepID, UserID)
+                                   
+                                    $("#NetpostModal").modal('hide')
                                 });
                             } else {
                                 swal.fire({
@@ -212,8 +208,10 @@ var Netpost = function () {
                                     }
 
                                 }).then(function () {
-
+                                   
+                                    billsearch(page, RoleID, DepID, UserID)
                                     KTUtil.scrollTop();
+                                   
                                 });
                             }
                         },
@@ -270,5 +268,5 @@ var Netpost = function () {
 
 // Class Initialization
 jQuery(document).ready(function () {
-    Netpost.init();
+    edtNetpost.init();
 });

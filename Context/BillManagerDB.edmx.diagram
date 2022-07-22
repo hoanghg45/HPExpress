@@ -28,6 +28,8 @@
         <EntityTypeShape EntityType="BillManagerDBModel.Permission" Width="1.5" PointX="0.75" PointY="0.5" />
         <AssociationConnector Association="BillManagerDBModel.FK_Bills_Users1" />
         <AssociationConnector Association="BillManagerDBModel.PerOfRole" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Bills_Users2" />
+        <AssociationConnector Association="BillManagerDBModel.FK_Users_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -76,7 +76,7 @@
                                 </div>
 
                                 
-                                <div class="separator separator-dashed my-10"></div>
+                              
 
                                 <div class="mb-3">
                                     <h3 class="font-size-lg text-dark-75 font-weight-bold mb-10"><b>1. Thông tin người gửi:</b></h3>
@@ -85,11 +85,27 @@
 
                                             <div class="col-lg-6">
                                                 <label> Người gửi:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" name="billing_card_name" class="form-control" readonly placeholder="" value="CÔNG TY CỔ PHẨN THƯƠNG MẠI HÀ PHAN" />
+                                                <br />
+                                                <select name="owner_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                                    @foreach (var u in ViewBag.lstOwner)
+                                                    {
+                                                        if (u.UserID == Model.UserID)
+                                                        {
+                                                            <option value="@u.UserID" data-tokens="@u.FullName" selected>Tôi</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@u.UserID" data-tokens="@u.FullName">@u.FullName</option>
+                                                        }
+
+                                                    }
+
+                                                </select>
+
                                             </div>
                                             <div class="col-lg-6">
                                                 <label> Số điện thoại:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" name="comp_phone" class="form-control" placeholder="" value="123456789" />
+                                                <input data-vali="true" type="text" name="comp_phone" class="form-control" placeholder="Nhập số điện thoại người gửi" value="" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -112,14 +128,14 @@
                                     <div class="mb-2">
                                         <div class="form-group row">
                                             <div class="col-lg-6">
-                                                <label>Công ty nhận (khách lẻ):<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="Nhập tên công ty (Khách)" value="" />
+                                                <label>Công ty nhận :<span class="text-danger">*</span></label>
+                                                <input data-vali="true" type="text" id="customer_comp" name="customer_comp" class="form-control" placeholder="Nhập tên công ty" value="" />
                                             </div>
 
 
                                             <div class="col-lg-6">
                                                 <label> Người nhận:<span class="text-danger">*</span></label>
-                                                <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="" value="Nhập tên người nhận" />
+                                                <input data-vali="true" type="text" id="customer_name" name="customer_name" class="form-control" placeholder="Nhập tên người nhận" value="" />
                                             </div>
                                         </div>
                                         <div class="form-group row">

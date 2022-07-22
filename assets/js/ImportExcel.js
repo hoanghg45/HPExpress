@@ -40,6 +40,7 @@ function uploadFile() {
                         table += '<th scope="col">Đơn vị vận chuyển</th>'
                         table += '<th scope="col">Người nhận</th>'
                         table += '<th scope="col">Loại hình gửi</th>'
+                        table += '<th scope="col">NVKD</th>'
 
                        
 
@@ -71,6 +72,7 @@ function uploadFile() {
                             table += '<th>' + '<span class="label label-inline ' + prov[value.ProviderID].class + ' font-weight-bold">' + prov[value.ProviderID].title + '</span >' + '</th>'
                             table += '<td>' + value.Cusinf + '</th>'
                             table += '<td>' + value.Transpot + '</th>'
+                            table += '<td>' + value.Owner + '</th>'
                             table += '</tr>'
                             
                         })

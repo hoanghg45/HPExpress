@@ -17,10 +17,10 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
         },
         datatype: 'json',
         beforeSend: function () {
-            $('#loading').show();
+          /*  $('#loading').show();*/
         },
         complete: function () {
-            $('#loading').hide();
+                $('#loading').hide();
         },
         success: function (data) {
          
@@ -126,40 +126,14 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                 var span = '<span class="label label-' + stt[d.StatusName.trim()].class + ' label-dot mr-2"></span><span class="font-weight-bold text-' + stt[d.StatusName.trim()].class + '">' +
                     stt[d.StatusName.trim()].title + '</span>'
                 var currentUser = $("#UserID").val()
-                function getPer() {
-                    var result = "";
-                     $.ajax({
-                        type: "Get",
-                        url: HOST_URL + 'Account/DetailAccount/',
-                        data: {
-                            "id": currentUser
-                         },
-                         async: false,
-                         datatype: 'json',
-                         success: function (data) {
-                             result = data.Per;
-                         }
-
-                        
-                     });
-                    return result;
-                }
+               
 
                 var lstPer = getPer()
-
-                if ( d.StatusName.trim() == "Chờ gửi" && lstPer.includes("ShipBill"))
-                {
-                    table += '<a href="javascript:;" class="shipBill">' + span+'</a>'
-                } else {
-
-                    table += span
-                }
-
+                table += span
                 table += '</span> </th>'
-                 
                 table += '<td> ';
                 
-                if (d.StatusName.trim() != "Chưa hoàn thành" && lstPer.includes("PrintBill")) {
+                if (d.StatusName.trim() == "Chờ In" && lstPer.includes("PrintBill")) {
                     table += '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
@@ -167,7 +141,7 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
                                             <rect x="0" y="0" width="24" height="24"/>\
-                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"/>\
+                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"></path>\
                                         </g>\
                                     </svg>\
                                 </span>\
@@ -177,16 +151,16 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                     <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
                                         Chọn hành động:\
                                     </li>\
-                                    <li class="navi-item changeID">\
-                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link printBtn">\
-                                            <span class="navi-icon"><i class="la la-print"></i></span>\
-                                            <span class="navi-text">In phiếu</span>\
-                                        </a>\
-                                    </li>\
                                     <li class="navi-item">\
                                         <a href="javascript:;"  data-id=' + d.Id + ' class="navi-link btnChangeID">\
                                             <span class="navi-icon"><i class="la la-pen"></i></span>\
                                             <span class="navi-text">Sửa mã đơn</span>\
+                                        </a>\
+                                    </li>\
+                                    <li class="navi-item">\
+                                        <a href="javascript:;"  data-id=' + d.Id + ' class="navi-link rollback">\
+                                            <span class="navi-icon"><i class="la la-undo"></i></span>\
+                                            <span class="navi-text">Trở về trạng thái <b>Chưa hoàn thành</b> </span>\
                                         </a>\
                                     </li>\
                                  </ul>\
@@ -195,15 +169,16 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                        </tr>\
                        \
                     ';
-                } else if (d.StatusName.trim() == "Chưa hoàn thành" && lstPer.includes("CreateBill") ) {
-                    table += '\
+                } else
+                    if (d.StatusName.trim() == "Chưa hoàn thành" && lstPer.includes("CreateBill")) {
+                        table += '\
                         <div class="dropdown dropdown-inline">\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
                                 <span class="svg-icon svg-icon-md">\
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
                                             <rect x="0" y="0" width="24" height="24"/>\
-                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"/>\
+                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"></path>\
                                         </g>\
                                     </svg>\
                                 </span>\
@@ -220,6 +195,12 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                                         </a>\
                                     </li>\
                                     <li class="navi-item ">\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link editBtn">\
+                                            <span class="navi-icon"><i class="la la-edit"></i></span>\
+                                            <span class="navi-text">Chỉnh sửa phiếu</span>\
+                                        </a>\
+                                    </li>\
+                                    <li class="navi-item ">\
                                         <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link removeBtn">\
                                             <span class="navi-icon"><i class="la la-trash"></i></span>\
                                             <span class="navi-text">Hủy phiếu</span>\
@@ -230,7 +211,81 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                         </div>\
                        </tr>\
                        \
-                    ';}
+                    ';
+                    } else
+                        if (d.StatusName.trim() == "Chờ gửi" && lstPer.includes("ShipBill")) {
+                            table += '\
+                        <div class="dropdown dropdown-inline">\
+                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
+                                <span class="svg-icon svg-icon-md">\
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                            <rect x="0" y="0" width="24" height="24"/>\
+                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"></path>\
+                                        </g>\
+                                    </svg>\
+                                </span>\
+                            </a>\
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
+                                <ul class="navi flex-column navi-hover py-2">\
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
+                                        Chọn hành động:\
+                                    </li>\
+                                    <li class="navi-item ">\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link shipBill">\
+                                            <span class="navi-icon"><i class="la la-shipping-fast"></i></span>\
+                                            <span class="navi-text">Gửi phiếu</span>\
+                                        </a>\
+                                    </li>\
+                                    <li class="navi-item changeID">\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link printBtn">\
+                                            <span class="navi-icon"><i class="la la-print"></i></span>\
+                                            <span class="navi-text">In phiếu</span>\
+                                        </a>\
+                                    </li>\
+                                    <li class="navi-item ">\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link removeBtn">\
+                                            <span class="navi-icon"><i class="la la-trash"></i></span>\
+                                            <span class="navi-text">Hủy phiếu</span>\
+                                        </a>\
+                                    </li>\
+                                </ul>\
+                            </div>\
+                        </div>\
+                       </tr>\
+                       \
+                    ';
+                        } else {
+                            table += '\
+                        <div class="dropdown dropdown-inline">\
+                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
+                                <span class="svg-icon svg-icon-md">\
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                            <rect x="0" y="0" width="24" height="24"/>\
+                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"></path>\
+                                        </g>\
+                                    </svg>\
+                                </span>\
+                            </a>\
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
+                                <ul class="navi flex-column navi-hover py-2">\
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
+                                        Chọn hành động:\
+                                    </li>\
+                                    <li class="navi-item ">\
+                                        <a href="#"  data-id=' + d.Id + ' data-proid=' + d.ProviderID + ' class="navi-link detailBill">\
+                                            <span class="navi-icon"><i class="la la-file-text-o"></i></span>\
+                                            <span class="navi-text">Chi tiết phiếu</span>\
+                                        </a>\
+                                    </li>\
+                                   </ul>\
+                            </div>\
+                        </div>\
+                       </tr>\
+                       \
+                    ';
+                        }
                     
                
                     table += '</td>';
@@ -338,78 +393,102 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
             }
            
             ///Funtion chức năng
-           
+            
+            function getPer() {
+                var currentUser = $("#UserID").val()
+                var result = "";
+                $.ajax({
+                    type: "Get",
+                    url: HOST_URL + 'Account/DetailAccount/',
+                    data: {
+                        "id": currentUser
+                    },
+                    async: false,
+                    datatype: 'json',
+                    success: function (data) {
+                        result = data.Per;
+                    }
+
+
+                });
+                return result;
+            }
                       
 
             $('.shipBill').click(function (event) {
-                var barcode = $(this).parent().parent().attr('id');
-                console.log(barcode)
-                Swal.fire({
-                    title: "Gửi phiếu " + barcode + " ?",
-                    text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Có!",
-                    cancelButtonText: "Không!",
-                    reverseButtons: true,
-                    heightAuto: false,
-                }).then(function (result) {
-                    var page = $("#billpagi a.active").data('page')
-                    var RoleID = $("#scrUserInf").data('roleid')
-                    var DepID = $("#scrUserInf").data('depid')
-                    var UserID = $("#UserID").val()
-                    if (result.value) {
-                        $.ajax({
-                            type: "post",
-                            url: HOST_URL + 'Waybill/updateStatus',
-                            data: {
-                                id: barcode
-                            },
-                            datatype: 'json',
+                var lstPer = getPer()
+                if (lstPer.includes("ShipBill"))
+                {
+                    var barcode = $(this).data('id');
+                    console.log(barcode)
+                    Swal.fire({
+                        title: "Gửi phiếu " + barcode + " ?",
+                        text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Có!",
+                        cancelButtonText: "Không!",
+                        reverseButtons: true,
+                        heightAuto: false,
+                    }).then(function (result) {
+                        var page = $("#billpagi a.active").data('page')
+                        var RoleID = $("#scrUserInf").data('roleid')
+                        var DepID = $("#scrUserInf").data('depid')
+                        var UserID = $("#UserID").val()
+                        if (result.value) {
+                            $.ajax({
+                                type: "post",
+                                url: HOST_URL + 'Waybill/updateStatus',
+                                data: {
+                                    id: barcode
+                                },
+                                datatype: 'json',
 
-                            success: function (data) {
-                                if (data.status == "success") {
-                                    Swal.fire({
+                                success: function (data) {
+                                    if (data.status == "success") {
+                                        Swal.fire({
 
-                                        icon: "success",
-                                        title: "Phiếu đã được cập nhật trạng thái",
-                                        showConfirmButton: false,
-                                        heightAuto: false,
-                                        timer: 2000
-                                    }).then(function () {
-                                        billsearch(page, RoleID, DepID, UserID)
-                                    })
-                                } else {
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: data.message,
-                                        showConfirmButton: false,
-                                        heightAuto: false,
-                                        timer: 2000
-                                    })
+                                            icon: "success",
+                                            title: "Phiếu đã được cập nhật trạng thái",
+                                            showConfirmButton: false,
+                                            heightAuto: false,
+                                            timer: 2000
+                                        }).then(function () {
+                                            billsearch(page, RoleID, DepID, UserID)
+                                        })
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: data.message,
+                                            showConfirmButton: false,
+                                            heightAuto: false,
+                                            timer: 2000
+                                        })
+                                    }
+                                },
+                                error: function (errorResult) {
+                                    console.log(errorResult.responseText)
                                 }
-                            },
-                            error: function (errorResult) {
-                                console.log(errorResult.responseText)
-                            }
-                        })
-                        // result.dismiss can be "cancel", "overlay",
-                        // "close", and "timer"
-                    } else if (result.dismiss === "cancel") {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Dữ liệu vẫn an toàn",
-                            showConfirmButton: false,
-                            heightAuto: false,
-                            timer: 2000
-                        }).then(function () {
+                            })
+                            // result.dismiss can be "cancel", "overlay",
+                            // "close", and "timer"
+                        } else if (result.dismiss === "cancel") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Dữ liệu vẫn an toàn",
+                                showConfirmButton: false,
+                                heightAuto: false,
+                                timer: 2000
+                            }).then(function () {
 
-                            billsearch(page, RoleID, DepID, UserID)
+                                billsearch(page, RoleID, DepID, UserID)
 
 
-                        })
-                    }
-                });
+                            })
+                        }
+                    });
+                }
+                
 
                 
             });
@@ -727,7 +806,281 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
                
             });
 
-         
+            //Rollback
+            $('.rollback').click(function (event) {
+                    var barcode = $(this).data('id');
+                    
+                    Swal.fire({
+                        title: "Trả phiếu về trạng thái Chưa hoàn thành ?",
+                        text: "Thao tác này có thể ảnh hưởng đến dữ liệu hệ thống!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Có!",
+                        cancelButtonText: "Không!",
+                        reverseButtons: true,
+                        heightAuto: false,
+                    }).then(function (result) {
+                        var page = $("#billpagi a.active").data('page')
+                        var RoleID = $("#scrUserInf").data('roleid')
+                        var DepID = $("#scrUserInf").data('depid')
+                        var UserID = $("#UserID").val()
+                        if (result.value) {
+                            $.ajax({
+                                type: "post",
+                                url: HOST_URL + 'Waybill/updateStatus',
+                                data: {
+                                    id: barcode,
+                                    rollback: true
+                                },
+                                datatype: 'json',
+
+                                success: function (data) {
+                                    if (data.status == "success") {
+                                        Swal.fire({
+
+                                            icon: "success",
+                                            title: "Phiếu đã được cập nhật trạng thái",
+                                            showConfirmButton: false,
+                                            heightAuto: false,
+                                            timer: 2000
+                                        }).then(function () {
+                                            billsearch(page, RoleID, DepID, UserID)
+                                        })
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: data.message,
+                                            showConfirmButton: false,
+                                            heightAuto: false,
+                                            timer: 2000
+                                        })
+                                    }
+                                },
+                                error: function (errorResult) {
+                                    console.log(errorResult.responseText)
+                                }
+                            })
+                            // result.dismiss can be "cancel", "overlay",
+                            // "close", and "timer"
+                        } else if (result.dismiss === "cancel") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Dữ liệu vẫn an toàn",
+                                showConfirmButton: false,
+                                heightAuto: false,
+                                timer: 2000
+                            }).then(function () {
+
+                                billsearch(page, RoleID, DepID, UserID)
+
+
+                            })
+                        }
+                    });
+                
+
+
+
+            });
+
+            //Edit
+            $('.editBtn').click(function (event) {
+                var barcode = $(this).data('id')
+                var pro_id = $(this).data('proid')
+                switch (pro_id) {
+                    case 1: modalNetPost(barcode)
+                         break;
+                    case 2: modalViettelPost(barcode)
+                        break;
+                    case 3: printTasetco()
+                        break;
+                    default:
+                        break;
+                }
+
+               
+            });
+
+            function modalNetPost(id) {
+                $.ajax({
+                    type: "Get",
+                    url: HOST_URL + 'Waybill/Details/',
+                    data: {
+                        "id": id
+                    },
+                    async: false,
+                    datatype: 'json',
+                    success: function (data) {
+                        if (data.status == "success") {
+                            $("#net_owner_id").val(data.OwnerID).change();
+                            $("#net_comp_phone").val(data.Phone);
+                            $("#net_bill_id").val(data.BillID);
+                            $("#net_user_id").val(data.UserID);
+                            var cus_inf = data.CustomerInf.split('|');
+                            $("#net_customer_name").val(cus_inf[0]);
+                            $("#net_customer_comp").val(cus_inf[1]);
+                            $("#net_customer_add").val(cus_inf[2]);
+                            $("#net_cus_phone").val(cus_inf[3]);
+                            $("#net_content").val(data.BillContent);
+                            $("#net_package_numb").val(data.ProductPakage);
+                            $("#net_pro_wei").val(data.ProductWeight);
+                            var leng = (data.Lenght == null) ? "" : data.Lenght
+                            var wid = (data.Width == null) ? "" : data.Width
+                            var hei = (data.Heigh == null) ? "" : data.Heigh
+
+                            $("#net_pro_leng").val(leng);
+                            $("#net_pro_wid").val(wid);
+                            $("#net_pro_hei").val(hei);
+
+                            var cate = data.Category;
+                            $("input[name='CatBox']").prop('checked', false)
+                            $.each(cate, function (k, v) {
+                                var check = $("input#net_CatBox" + v)
+                                check.prop('checked', true);
+
+                            })
+                            $("input#net_transRadio" + data.TransID).prop('checked', true);
+                            $("input#net_paymentRadio" + data.PaymentID).prop('checked', true);
+                            if (data.ServiceID != null) {
+                                $("input#net_serviceRadio" + data.ServiceID).prop('checked', true);
+                            }
+                            
+                               
+                            
+                        }
+                    }
+
+
+                });
+                $("#NetpostModal").modal()
+
+            }
+
+            function modalViettelPost(id) {
+                $.ajax({
+                    type: "Get",
+                    url: HOST_URL + 'Waybill/Details/',
+                    data: {
+                        "id": id
+                    },
+                    async: false,
+                    datatype: 'json',
+                    success: function (data) {
+                        if (data.status == "success") {
+                            $("#vt_bill_id").val(data.BillID);
+                            $("#vt_user_id").val(data.UserID);
+                            $("#vt_owner_id").val(data.OwnerID).change();
+                            $("#vt_comp_phone").val(data.Phone);
+                            var cus_inf = data.CustomerInf.split('|');
+                            $("#vt_customer_name").val(cus_inf[0]);
+                            $("#vt_customer_comp").val(cus_inf[1]);
+                            $("#vt_customer_add").val(cus_inf[2]);
+                            $("#vt_cus_phone").val(cus_inf[3]);
+                            $("#vt_content").val(data.BillContent);
+                            $("#vt_package_numb").val(data.ProductPakage);
+                            $("#vt_pro_wei").val(data.ProductWeight);
+                            var leng = (data.Lenght == null) ? "" : data.Lenght
+                            var wid = (data.Width == null) ? "" : data.Width
+                            var hei = (data.Heigh == null) ? "" : data.Heigh
+
+                            $("#vt_pro_leng").val(leng);
+                            $("#vt_pro_wid").val(wid);
+                            $("#vt_pro_hei").val(hei);
+
+                            var cate = data.Category;
+                            $("input[name='CatBox']").prop('checked', false)
+                            $.each(cate, function (k, v) {
+                                var check = $("input#vt_CatBox" + v)
+                                check.prop('checked', true);
+
+                            })
+                            $("input#vt_transRadio" + data.TransID).prop('checked', true);
+                            $("input#vt_paymentRadio" + data.PaymentID).prop('checked', true);
+                            if (data.ServiceID != null) {
+                                $("input#vt_serviceRadio" + data.ServiceID).prop('checked', true);
+                            }
+
+
+
+                        }
+                    }
+
+
+                });
+                $("#ViettelPostModal").modal()
+
+            }
+
+            $('.detailBill').click(function () {
+                var idbill = $(this).data('id')
+                var idpro = $(this).data('proid')
+                if (idpro == 1) {
+                    $('#proName').html('<b><span style="color: #7d2f2f; ">NET</span><span style="color:#ea3639;">POST</span></b>');
+                } else if (idpro == 2) {
+                    $('#proName').html('<b><span style="color: #01766b;">VIETTEL</span><span style="color: #f27510;">POST</span></b>');
+                }
+                $.ajax({
+                    type: "Get",
+                    url: HOST_URL + 'Waybill/Details/',
+                    data: {
+                        "id": idbill
+                    },
+                    async: false,
+                    datatype: 'json',
+                    success: function (data) {
+                        if (data.status == "success") {
+                           
+                            var sl = data.BillID.slice(0, 4)
+                            var bid = sl == 'bill' ? 'Phiếu chưa gán mã' : data.BillID
+                            $("#billID").text(bid);
+                            var ds = data.DateShip == null ? 'Chưa gửi' : formatDate(data.DateShip.substr(6))
+                            $("#dateShip").text(ds)
+                            var cus_inf = data.CustomerInf.split('|');
+                            $("#cusInfo").html( cus_inf[1] + ' - ' + cus_inf[2] + '</br>' + cus_inf[0] + ' - ' + cus_inf[3] + '');
+
+
+                            
+                            var tr = '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Người tạo phiếu:</td><td class="font-weight-boldest text-right pt-7">' + data.CreateBy + '</td> </tr >'
+                            if (data.ShipBy != null) {
+                                tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Người gửi phiếu:</td><td class="font-weight-boldest text-right pt-7">' + data.ShipBy + '</td> </tr >'
+                            }
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Người sở hữu:</td><td class="font-weight-boldest text-right pt-7">' + data.Owner + '</td> </tr >'
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Ngày tạo:</td><td class="font-weight-boldest text-right pt-7">' + data.CreateAT + '</td> </tr >'
+                            if (data.PrintAt != 'null') {
+                                tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Ngày in:</td><td class="font-weight-boldest text-right pt-7">' + data.PrintAt + '</td> </tr >'
+                            }
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Nội dung:</td><td class="font-weight-boldest text-right pt-7">' + data.BillContent + '</td> </tr >'
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Phương thức vận chuyển:</td><td class="font-weight-boldest text-right pt-7">' + data.Trans + '</td> </tr >'
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Số kiện:</td><td class="font-weight-boldest text-right pt-7">' + data.ProductPakage + '</td> </tr >'
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Cân nặng:</td><td class="font-weight-boldest text-right pt-7">' + data.ProductWeight + 'kg</td> </tr >'
+                            if (data.Heigh != null) {
+                                tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Chiều cao:</td><td class="font-weight-boldest text-right pt-7">' + data.Heigh + 'kg</td> </tr >'
+                            } if (data.Lenght != null) {
+                                tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Chiều dài:</td><td class="font-weight-boldest text-right pt-7">' + data.Lenght + 'kg</td> </tr >'
+                            } if (data.Width != null) {
+                                tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Chiều rộng:</td><td class="font-weight-boldest text-right pt-7">' + data.Width + 'kg</td> </tr >'
+                            } if (data.Service != null) {
+                                tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Dịch vụ:</td><td class="font-weight-boldest text-right pt-7">' + data.Service + 'kg</td> </tr >'
+                            }
+                            tr += '<tr class=" border-bottom-0" ><td class="pl-0 pt-7">Phân loại:</td><td class="font-weight-boldest text-right pt-7">' + data.CategoryName + '</td> </tr >'
+
+                            $("#bodyTable").empty()
+                            $("#bodyTable").append(tr)
+                            
+                                                       
+
+
+
+
+                        }
+                    }
+
+
+                });
+                $('#DetailsNetModal').modal()
+            })
+
+            
 
             function printNetPost(idbill) {
                 $.ajax({
@@ -892,17 +1245,37 @@ function showtable(idpr, datetime, search, depart, userid,status ,page) {
     });
 
 }
-function AuthRole(RoleID, UserID, DepID) {
+function AuthRole(DepID, UserID) {
+    
+   
+    $.ajax({
+        type: "Get",
+        url: HOST_URL + 'Account/DetailAccount/',
+        data: {
+            "id": UserID
+        },
+        async: false,
+        datatype: 'json',
+        success: function (data) {
+            var Role = data.RoleName
+            if (Role == "Admin") {
+                showtable("", "", "", "", "")
+            }
+            if (Role == "Manager") {
+                showtable("", "", "", DepID, "")
+            }
+            if (Role == "Staff") {
+                showtable("", "", "", "", UserID)
+            }
+            if (Role == "BillManager") {
+                showtable("", "", "", "", "")
+            }
+        }
 
-    if (RoleID == 1) {
-        showtable("", "", "", "", "")
-    }
-    if (RoleID == 2) {
-        showtable("", "", "", DepID, "")
-    }
-    if (RoleID == 3) {
-        showtable("", "", "", "", UserID)
-    }
+
+    });
+
+    
 }
 
 

@@ -15,13 +15,7 @@ var Viettelpost = function () {
             {
                 fields: {
                   
-                    date: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Vui lòng chọn ngày gửi'
-                            }
-                        }
-                    },
+                   
                     comp_phone: {
                         validators: {
                             notEmpty: {

@@ -18,6 +18,7 @@ using System.Data.Entity;
 using HPExpress.Extension;
 using NinjaNye.SearchExtensions;
 using System.Data.Entity.Validation;
+using System.Collections.Generic;
 
 namespace HPExpress.Controllers
 {
@@ -72,11 +73,17 @@ namespace HPExpress.Controllers
 
             try
             {
-                User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(model.UserName));
+                
+                User user = _context.Users.Where(u => u.UserName.Equals(model.UserName)).FirstOrDefault();
                 bool isValid = false;
                 if (user != null)
                 {
                     isValid = BCrypt.Net.BCrypt.Verify(model.Password, user.UserPass.Trim());
+                    
+                }
+                if(!user.UserName.Trim().Equals(model.UserName))
+                {
+                    isValid = false;
                 }
 
                 if (user != null && isValid)
@@ -202,6 +209,7 @@ namespace HPExpress.Controllers
                     FullName = account.FullName.Trim(),
                     RoleID = account.RoleID,
                     Role = account.Role.RoleDesc,
+                    RoleName = account.Role.RoleName,
                     Department = account.Department.DepartmentName,
                     DepartmentID = account.DepartmentID,
                     Email = account.UserEmail.Trim(),
@@ -222,6 +230,8 @@ namespace HPExpress.Controllers
 
 
         }
+
+
         [SessionCheck]
         [Authorize(Roles = "Admin")]
         public ActionResult CreateAcc()
