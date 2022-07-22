@@ -138,7 +138,7 @@ $(document).ready(function () {
         
         $("#body").empty()
         $("#footer").empty()
-        var body = '<form><label class="form-label" for="customFile"> Chọn file Excel:</label><input type="file" class="form-control" id="filename" accept=".xls,.xlsx"/></form>'
+        var body = '<form><label class="form-label" for="customFile"> Chọn file Excel:</label> <a href="/Dowloads/Sample.xlsx" download>File mẫu<i class="icon-xl la la-file-excel"></i></a><input type="file" class="form-control" id="filename" accept=".xls,.xlsx"/></form>'
         var footer = '<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button><button type = "button" id = "saveExcel" onclick = "uploadFile()" class="btn btn-primary font-weight-bold" > Lưu dữ liệu</button>'
         $("#body").append(body)
         $("#footer").append(footer)
